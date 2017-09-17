@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="3.4" client="site">
+	<tag>lt-LT</tag>
+	<name>Lithuanian (lt-LT)</name>
+	<version>3.4.3</version>
+	<creationDate>2015.07.03</creationDate>
+	<author>Lithuanian translation team : joomla123.lt</author>
+	<authorEmail>info@joomla123.lt</authorEmail>
+	<authorUrl>http://www.joomla123.lt</authorUrl>
+  <copyright>Copyright (C) 2010 - 2015 joomla123.lt.</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <description>Lithuanian language pack for Joomla! 3.4.3</description>
+	<metadata>
+		<name>Lithuanian (lt-LT)</name>
+		<tag>lt-LT</tag>
+		<rtl>0</rtl>
+		<locale>lt_LT.utf8, lt_LT.UTF-8, lt_LT, ltu_LT, lt, lithuanian, lithuanian-lt, LT, ltu, lt_LT.UTF-8@euro, lithuanian_Standard, lt-LT</locale>
+		<firstDay>1</firstDay>
+        <weekEnd>0,6</weekEnd>
+	</metadata>
+	<params />
+</metafile>

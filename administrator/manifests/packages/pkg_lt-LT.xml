@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="3.4">
+<name>Lithuanian Language Pack</name>
+<packagename>lt-LT</packagename>
+<version>3.4.3.1</version>
+<creationDate>2015.07.03</creationDate>
+<author>joomla123.lt</author>
+<url>http://www.joomla123.lt</url>
+<packager>Martis</packager>
+<packagerurl>http://www.joomla123.lt</packagerurl>
+<description>
+<![CDATA[
+	<div style="float:left;display:inline-block;">
+    <img alt="Joomla3" src="http://www.joomla123.lt/images/stories/flexicontent/m_j3.jpg" /></div>
+    <div style="margin-left:120px; padding: 8px 20px 8px 20px; background-color: #DFF0D8; border:1px dashed #08532f;">
+    <span style="font-size: 14pt;"><strong>Lietuvių kalbos paketas TVS Joomla 3.4.3<br/><br/>Išversta:</span><br/>
+		  <img style="margin: 0px 4px 0px 0px; vertical-align: middle;" alt="lng_frontend" src="http://www.joomla123.lt/images/stories/page_images/translation_icons/lng_frontend.png" width="17" height="17" />išorinė sąsaja (front-end)<br/>
+		  <img style="margin: 0px 4px 0px 0px; vertical-align: middle;" alt="lng_backend" src="http://www.joomla123.lt/images/stories/page_images/translation_icons/lng_backend.png" width="17" height="17" />vidinė sąsaja (back-end)<br/>
+		  <img style="margin: 0px 4px 0px 0px; vertical-align: middle;" alt="lng_ini" src="http://www.joomla123.lt/images/stories/page_images/translation_icons/lng_ini.png" width="17" height="17" />Saugus vertimas. Naudojami tik INI failai.<br/></div>
+     </div>
+    <div style="clear:both;"></div>
+    <div style="margin-left:120px; margin-top:20px; margin-bottom:10px; background-color: #DFF0D8; padding: 8px 20px 8px 20px; color:#08532f;	border-top: 1px dashed #08532f ; border-bottom: 1px dashed #08532f;">
+		  <span style="font-size: 9pt;">Vertimą atliko Martis iš <a target="_blank" href="http://www.joomla123.lt">Joomla123.lt</a> komandos.</span></span><br/>
+			<span style="font-size: 8pt;">Jei norite prisijungti prie vertimų komandos arba pastebėjote vertimo klaidų, <a target="_blank" href="http://www.joomla123.lt/parasyk-mums">susisiekite su mumis</a>.</span><br/></div>
+		]]>
+</description>
+<files>
+        <file type="language" client="site" id="lt-LT">site_lt-LT.zip</file>
+        <file type="language" client="administrator" id="lt-LT">admin_lt-LT.zip</file>
+</files>
+</extension>
