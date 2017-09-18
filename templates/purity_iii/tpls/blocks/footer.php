@@ -46,12 +46,9 @@ defined('_JEXEC') or die;
 				<div class="<?php echo $this->getParam('t3-rmvlogo', 1) ? 'col-md-8' : 'col-md-12' ?> copyright <?php $this->_c('footer') ?>">
 					<jdoc:include type="modules" name="<?php $this->_p('footer') ?>" />
           <small>
-            <a href="http://twitter.github.io/bootstrap/" title="Bootstrap by Twitter" target="_blank">Bootstrap</a> is a front-end framework of Twitter, Inc. Code licensed under <a href="https://github.com/twbs/bootstrap/blob/master/LICENSE" title="MIT License" target="_blank">MIT License.</a>
+            <a href="http://www.kileris.lt" title="Interneto svetaini&#371 k&#363rimas" target="_blank">kileris.lt</a> Interneto svetaini&#371 k&#363rimas</a>
           </small>
-          <small>
-            <a href="http://fortawesome.github.io/Font-Awesome/" target="_blank">Font Awesome</a> font licensed under <a href="http://scripts.sil.org/OFL">SIL OFL 1.1</a>.
-          </small>
-				</div>
+      				</div>
 				<?php if ($this->getParam('t3-rmvlogo', 1)): ?>
 					<div class="col-md-4 poweredby text-hide">
 						<a class="t3-logo t3-logo-color" href="http://t3-framework.org" title="Powered By T3 Framework"

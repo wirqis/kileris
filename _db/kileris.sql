@@ -3,14 +3,106 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Darbinė stotis: custsql-spro-ipg04.ipagemysql.com
--- Atlikimo laikas:  2017 m. Rugsėjo 17 d.  14:29
+-- Atlikimo laikas:  2017 m. Rugsėjo 18 d.  01:18
 -- Serverio versija: 5.6.32
 -- PHP versija: 4.4.9
 -- 
 -- Duombazė: `kileris_nfq`
 -- 
-CREATE DATABASE `kileris_nfq` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `kileris_nfq`;
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_ak_profiles`
+-- 
+
+CREATE TABLE `aj14x_ak_profiles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `configuration` longtext COLLATE utf8mb4_unicode_ci,
+  `filters` longtext COLLATE utf8mb4_unicode_ci,
+  `quickicon` tinyint(3) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=2 ;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_ak_profiles`
+-- 
+
+INSERT INTO `aj14x_ak_profiles` VALUES (1, 'Default Backup Profile', '', '', 1);
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_ak_stats`
+-- 
+
+CREATE TABLE `aj14x_ak_stats` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comment` longtext COLLATE utf8mb4_unicode_ci,
+  `backupstart` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `backupend` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `status` enum('run','fail','complete') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'run',
+  `origin` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'backend',
+  `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'full',
+  `profile_id` bigint(20) NOT NULL DEFAULT '1',
+  `archivename` longtext COLLATE utf8mb4_unicode_ci,
+  `absolute_path` longtext COLLATE utf8mb4_unicode_ci,
+  `multipart` int(11) NOT NULL DEFAULT '0',
+  `tag` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `backupid` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `filesexist` tinyint(3) NOT NULL DEFAULT '1',
+  `remote_filename` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `total_size` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_fullstatus` (`filesexist`,`status`),
+  KEY `idx_stale` (`status`,`origin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_ak_stats`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_ak_storage`
+-- 
+
+CREATE TABLE `aj14x_ak_storage` (
+  `tag` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `data` longtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`tag`(100))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_ak_storage`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_akeeba_common`
+-- 
+
+CREATE TABLE `aj14x_akeeba_common` (
+  `key` varchar(192) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_akeeba_common`
+-- 
+
+INSERT INTO `aj14x_akeeba_common` VALUES ('fof30', '["com_akeeba"]');
+INSERT INTO `aj14x_akeeba_common` VALUES ('stats_lastrun', '1505710898');
+INSERT INTO `aj14x_akeeba_common` VALUES ('stats_siteid', '937b58ec52c77532796cb44e2bd5c833a234409c');
+INSERT INTO `aj14x_akeeba_common` VALUES ('stats_siteurl', 'a8ff505b8e03629d6b456e654667aef1');
 
 -- --------------------------------------------------------
 
@@ -31,67 +123,75 @@ CREATE TABLE `aj14x_assets` (
   UNIQUE KEY `idx_asset_name` (`name`),
   KEY `idx_lft_rgt` (`lft`,`rgt`),
   KEY `idx_parent_id` (`parent_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=58 ;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=66 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_assets`
 -- 
 
-INSERT INTO `aj14x_assets` VALUES (1, 0, 0, 109, 0, 'root.1', 'Root Asset', '{"core.login.site":{"6":1,"2":1},"core.login.admin":{"6":1},"core.login.offline":{"6":1},"core.admin":{"8":1},"core.manage":{"7":1},"core.create":{"6":1,"3":1},"core.delete":{"6":1},"core.edit":{"6":1,"4":1},"core.edit.state":{"6":1,"5":1},"core.edit.own":{"6":1,"3":1}}');
+INSERT INTO `aj14x_assets` VALUES (1, 0, 0, 125, 0, 'root.1', 'Root Asset', '{"core.login.site":{"6":1,"2":1},"core.login.admin":{"6":1},"core.login.offline":{"6":1},"core.admin":{"8":1},"core.manage":{"7":1},"core.create":{"6":1,"3":1},"core.delete":{"6":1},"core.edit":{"6":1,"4":1},"core.edit.state":{"6":1,"5":1},"core.edit.own":{"6":1,"3":1}}');
 INSERT INTO `aj14x_assets` VALUES (2, 1, 1, 2, 1, 'com_admin', 'com_admin', '{}');
 INSERT INTO `aj14x_assets` VALUES (3, 1, 3, 6, 1, 'com_banners', 'com_banners', '{"core.admin":{"7":1},"core.manage":{"6":1}}');
 INSERT INTO `aj14x_assets` VALUES (4, 1, 7, 8, 1, 'com_cache', 'com_cache', '{"core.admin":{"7":1},"core.manage":{"7":1}}');
 INSERT INTO `aj14x_assets` VALUES (5, 1, 9, 10, 1, 'com_checkin', 'com_checkin', '{"core.admin":{"7":1},"core.manage":{"7":1}}');
 INSERT INTO `aj14x_assets` VALUES (6, 1, 11, 12, 1, 'com_config', 'com_config', '{}');
 INSERT INTO `aj14x_assets` VALUES (7, 1, 13, 16, 1, 'com_contact', 'com_contact', '{"core.admin":{"7":1},"core.manage":{"6":1}}');
-INSERT INTO `aj14x_assets` VALUES (8, 1, 17, 20, 1, 'com_content', 'com_content', '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":{"3":1},"core.edit":{"4":1},"core.edit.state":{"5":1}}');
-INSERT INTO `aj14x_assets` VALUES (9, 1, 21, 22, 1, 'com_cpanel', 'com_cpanel', '{}');
-INSERT INTO `aj14x_assets` VALUES (10, 1, 23, 24, 1, 'com_installer', 'com_installer', '{"core.manage":{"7":0},"core.delete":{"7":0},"core.edit.state":{"7":0}}');
-INSERT INTO `aj14x_assets` VALUES (11, 1, 25, 26, 1, 'com_languages', 'com_languages', '{"core.admin":{"7":1}}');
-INSERT INTO `aj14x_assets` VALUES (12, 1, 27, 28, 1, 'com_login', 'com_login', '{}');
-INSERT INTO `aj14x_assets` VALUES (13, 1, 29, 30, 1, 'com_mailto', 'com_mailto', '{}');
-INSERT INTO `aj14x_assets` VALUES (14, 1, 31, 32, 1, 'com_massmail', 'com_massmail', '{}');
-INSERT INTO `aj14x_assets` VALUES (15, 1, 33, 34, 1, 'com_media', 'com_media', '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":{"3":1},"core.delete":{"5":1}}');
-INSERT INTO `aj14x_assets` VALUES (16, 1, 35, 38, 1, 'com_menus', 'com_menus', '{"core.admin":{"7":1}}');
-INSERT INTO `aj14x_assets` VALUES (17, 1, 39, 40, 1, 'com_messages', 'com_messages', '{"core.admin":{"7":1},"core.manage":{"7":1}}');
-INSERT INTO `aj14x_assets` VALUES (18, 1, 41, 72, 1, 'com_modules', 'com_modules', '{"core.admin":{"7":1}}');
-INSERT INTO `aj14x_assets` VALUES (19, 1, 73, 76, 1, 'com_newsfeeds', 'com_newsfeeds', '{"core.admin":{"7":1},"core.manage":{"6":1}}');
-INSERT INTO `aj14x_assets` VALUES (20, 1, 77, 78, 1, 'com_plugins', 'com_plugins', '{"core.admin":{"7":1}}');
-INSERT INTO `aj14x_assets` VALUES (21, 1, 79, 80, 1, 'com_redirect', 'com_redirect', '{"core.admin":{"7":1}}');
-INSERT INTO `aj14x_assets` VALUES (22, 1, 81, 82, 1, 'com_search', 'com_search', '{"core.admin":{"7":1},"core.manage":{"6":1}}');
-INSERT INTO `aj14x_assets` VALUES (23, 1, 83, 84, 1, 'com_templates', 'com_templates', '{"core.admin":{"7":1}}');
-INSERT INTO `aj14x_assets` VALUES (24, 1, 85, 88, 1, 'com_users', 'com_users', '{"core.admin":{"7":1}}');
-INSERT INTO `aj14x_assets` VALUES (26, 1, 89, 90, 1, 'com_wrapper', 'com_wrapper', '{}');
+INSERT INTO `aj14x_assets` VALUES (8, 1, 17, 26, 1, 'com_content', 'com_content', '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":{"3":1},"core.edit":{"4":1},"core.edit.state":{"5":1}}');
+INSERT INTO `aj14x_assets` VALUES (9, 1, 27, 28, 1, 'com_cpanel', 'com_cpanel', '{}');
+INSERT INTO `aj14x_assets` VALUES (10, 1, 29, 30, 1, 'com_installer', 'com_installer', '{"core.manage":{"7":0},"core.delete":{"7":0},"core.edit.state":{"7":0}}');
+INSERT INTO `aj14x_assets` VALUES (11, 1, 31, 32, 1, 'com_languages', 'com_languages', '{"core.admin":{"7":1}}');
+INSERT INTO `aj14x_assets` VALUES (12, 1, 33, 34, 1, 'com_login', 'com_login', '{}');
+INSERT INTO `aj14x_assets` VALUES (13, 1, 35, 36, 1, 'com_mailto', 'com_mailto', '{}');
+INSERT INTO `aj14x_assets` VALUES (14, 1, 37, 38, 1, 'com_massmail', 'com_massmail', '{}');
+INSERT INTO `aj14x_assets` VALUES (15, 1, 39, 40, 1, 'com_media', 'com_media', '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":{"3":1},"core.delete":{"5":1}}');
+INSERT INTO `aj14x_assets` VALUES (16, 1, 41, 46, 1, 'com_menus', 'com_menus', '{"core.admin":{"7":1}}');
+INSERT INTO `aj14x_assets` VALUES (17, 1, 47, 48, 1, 'com_messages', 'com_messages', '{"core.admin":{"7":1},"core.manage":{"7":1}}');
+INSERT INTO `aj14x_assets` VALUES (18, 1, 49, 82, 1, 'com_modules', 'com_modules', '{"core.admin":{"7":1}}');
+INSERT INTO `aj14x_assets` VALUES (19, 1, 83, 86, 1, 'com_newsfeeds', 'com_newsfeeds', '{"core.admin":{"7":1},"core.manage":{"6":1}}');
+INSERT INTO `aj14x_assets` VALUES (20, 1, 87, 88, 1, 'com_plugins', 'com_plugins', '{"core.admin":{"7":1}}');
+INSERT INTO `aj14x_assets` VALUES (21, 1, 89, 90, 1, 'com_redirect', 'com_redirect', '{"core.admin":{"7":1}}');
+INSERT INTO `aj14x_assets` VALUES (22, 1, 91, 92, 1, 'com_search', 'com_search', '{"core.admin":{"7":1},"core.manage":{"6":1}}');
+INSERT INTO `aj14x_assets` VALUES (23, 1, 93, 94, 1, 'com_templates', 'com_templates', '{"core.admin":{"7":1}}');
+INSERT INTO `aj14x_assets` VALUES (24, 1, 95, 98, 1, 'com_users', 'com_users', '{"core.admin":{"7":1}}');
+INSERT INTO `aj14x_assets` VALUES (26, 1, 99, 100, 1, 'com_wrapper', 'com_wrapper', '{}');
 INSERT INTO `aj14x_assets` VALUES (27, 8, 18, 19, 2, 'com_content.category.2', 'Uncategorised', '{}');
 INSERT INTO `aj14x_assets` VALUES (28, 3, 4, 5, 2, 'com_banners.category.3', 'Uncategorised', '{}');
 INSERT INTO `aj14x_assets` VALUES (29, 7, 14, 15, 2, 'com_contact.category.4', 'Uncategorised', '{}');
-INSERT INTO `aj14x_assets` VALUES (30, 19, 74, 75, 2, 'com_newsfeeds.category.5', 'Uncategorised', '{}');
-INSERT INTO `aj14x_assets` VALUES (32, 24, 86, 87, 2, 'com_users.category.7', 'Uncategorised', '{}');
-INSERT INTO `aj14x_assets` VALUES (33, 1, 91, 92, 1, 'com_finder', 'com_finder', '{"core.admin":{"7":1},"core.manage":{"6":1}}');
-INSERT INTO `aj14x_assets` VALUES (34, 1, 93, 94, 1, 'com_joomlaupdate', 'com_joomlaupdate', '{}');
-INSERT INTO `aj14x_assets` VALUES (35, 1, 95, 96, 1, 'com_tags', 'com_tags', '{}');
-INSERT INTO `aj14x_assets` VALUES (36, 1, 97, 98, 1, 'com_contenthistory', 'com_contenthistory', '{}');
-INSERT INTO `aj14x_assets` VALUES (37, 1, 99, 100, 1, 'com_ajax', 'com_ajax', '{}');
-INSERT INTO `aj14x_assets` VALUES (38, 1, 101, 102, 1, 'com_postinstall', 'com_postinstall', '{}');
-INSERT INTO `aj14x_assets` VALUES (39, 18, 42, 43, 2, 'com_modules.module.1', 'Main Menu', '{}');
-INSERT INTO `aj14x_assets` VALUES (40, 18, 44, 45, 2, 'com_modules.module.2', 'Login', '{}');
-INSERT INTO `aj14x_assets` VALUES (41, 18, 46, 47, 2, 'com_modules.module.3', 'Popular Articles', '{}');
-INSERT INTO `aj14x_assets` VALUES (42, 18, 48, 49, 2, 'com_modules.module.4', 'Recently Added Articles', '{}');
-INSERT INTO `aj14x_assets` VALUES (43, 18, 50, 51, 2, 'com_modules.module.8', 'Toolbar', '{}');
-INSERT INTO `aj14x_assets` VALUES (44, 18, 52, 53, 2, 'com_modules.module.9', 'Quick Icons', '{}');
-INSERT INTO `aj14x_assets` VALUES (45, 18, 54, 55, 2, 'com_modules.module.10', 'Logged-in Users', '{}');
-INSERT INTO `aj14x_assets` VALUES (46, 18, 56, 57, 2, 'com_modules.module.12', 'Admin Menu', '{}');
-INSERT INTO `aj14x_assets` VALUES (47, 18, 58, 59, 2, 'com_modules.module.13', 'Admin Submenu', '{}');
-INSERT INTO `aj14x_assets` VALUES (48, 18, 60, 61, 2, 'com_modules.module.14', 'User Status', '{}');
-INSERT INTO `aj14x_assets` VALUES (49, 18, 62, 63, 2, 'com_modules.module.15', 'Title', '{}');
-INSERT INTO `aj14x_assets` VALUES (50, 18, 64, 65, 2, 'com_modules.module.16', 'Login Form', '{}');
-INSERT INTO `aj14x_assets` VALUES (51, 18, 66, 67, 2, 'com_modules.module.17', 'Breadcrumbs', '{}');
-INSERT INTO `aj14x_assets` VALUES (52, 18, 68, 69, 2, 'com_modules.module.79', 'Multilanguage status', '{}');
-INSERT INTO `aj14x_assets` VALUES (53, 18, 70, 71, 2, 'com_modules.module.86', 'Joomla Version', '{}');
-INSERT INTO `aj14x_assets` VALUES (54, 16, 36, 37, 2, 'com_menus.menu.1', 'Main Menu', '{}');
-INSERT INTO `aj14x_assets` VALUES (55, 1, 103, 104, 1, 'com_rsform', 'com_rsform', '{}');
-INSERT INTO `aj14x_assets` VALUES (56, 1, 105, 106, 1, '#__languages.2', '#__languages.2', '{}');
-INSERT INTO `aj14x_assets` VALUES (57, 1, 107, 108, 1, 'com_jaextmanager', 'com_jaextmanager', '{}');
+INSERT INTO `aj14x_assets` VALUES (30, 19, 84, 85, 2, 'com_newsfeeds.category.5', 'Uncategorised', '{}');
+INSERT INTO `aj14x_assets` VALUES (32, 24, 96, 97, 2, 'com_users.category.7', 'Uncategorised', '{}');
+INSERT INTO `aj14x_assets` VALUES (33, 1, 101, 102, 1, 'com_finder', 'com_finder', '{"core.admin":{"7":1},"core.manage":{"6":1}}');
+INSERT INTO `aj14x_assets` VALUES (34, 1, 103, 104, 1, 'com_joomlaupdate', 'com_joomlaupdate', '{}');
+INSERT INTO `aj14x_assets` VALUES (35, 1, 105, 106, 1, 'com_tags', 'com_tags', '{}');
+INSERT INTO `aj14x_assets` VALUES (36, 1, 107, 108, 1, 'com_contenthistory', 'com_contenthistory', '{}');
+INSERT INTO `aj14x_assets` VALUES (37, 1, 109, 110, 1, 'com_ajax', 'com_ajax', '{}');
+INSERT INTO `aj14x_assets` VALUES (38, 1, 111, 112, 1, 'com_postinstall', 'com_postinstall', '{}');
+INSERT INTO `aj14x_assets` VALUES (39, 18, 50, 51, 2, 'com_modules.module.1', 'Main Menu', '{}');
+INSERT INTO `aj14x_assets` VALUES (40, 18, 52, 53, 2, 'com_modules.module.2', 'Login', '{}');
+INSERT INTO `aj14x_assets` VALUES (41, 18, 54, 55, 2, 'com_modules.module.3', 'Popular Articles', '{}');
+INSERT INTO `aj14x_assets` VALUES (42, 18, 56, 57, 2, 'com_modules.module.4', 'Recently Added Articles', '{}');
+INSERT INTO `aj14x_assets` VALUES (43, 18, 58, 59, 2, 'com_modules.module.8', 'Toolbar', '{}');
+INSERT INTO `aj14x_assets` VALUES (44, 18, 60, 61, 2, 'com_modules.module.9', 'Quick Icons', '{}');
+INSERT INTO `aj14x_assets` VALUES (45, 18, 62, 63, 2, 'com_modules.module.10', 'Logged-in Users', '{}');
+INSERT INTO `aj14x_assets` VALUES (46, 18, 64, 65, 2, 'com_modules.module.12', 'Admin Menu', '{}');
+INSERT INTO `aj14x_assets` VALUES (47, 18, 66, 67, 2, 'com_modules.module.13', 'Admin Submenu', '{}');
+INSERT INTO `aj14x_assets` VALUES (48, 18, 68, 69, 2, 'com_modules.module.14', 'User Status', '{}');
+INSERT INTO `aj14x_assets` VALUES (49, 18, 70, 71, 2, 'com_modules.module.15', 'Title', '{}');
+INSERT INTO `aj14x_assets` VALUES (50, 18, 72, 73, 2, 'com_modules.module.16', 'Login Form', '{}');
+INSERT INTO `aj14x_assets` VALUES (51, 18, 74, 75, 2, 'com_modules.module.17', 'Breadcrumbs', '{}');
+INSERT INTO `aj14x_assets` VALUES (52, 18, 76, 77, 2, 'com_modules.module.79', 'Multilanguage status', '{}');
+INSERT INTO `aj14x_assets` VALUES (53, 18, 78, 79, 2, 'com_modules.module.86', 'Joomla Version', '{}');
+INSERT INTO `aj14x_assets` VALUES (54, 16, 42, 43, 2, 'com_menus.menu.1', 'Main Menu', '{}');
+INSERT INTO `aj14x_assets` VALUES (55, 1, 113, 114, 1, 'com_rsform', 'com_rsform', '{}');
+INSERT INTO `aj14x_assets` VALUES (56, 1, 115, 116, 1, '#__languages.2', '#__languages.2', '{}');
+INSERT INTO `aj14x_assets` VALUES (57, 1, 117, 118, 1, 'com_jaextmanager', 'com_jaextmanager', '{}');
+INSERT INTO `aj14x_assets` VALUES (58, 61, 23, 24, 3, 'com_content.article.1', 'Kainos', '{}');
+INSERT INTO `aj14x_assets` VALUES (59, 61, 21, 22, 3, 'com_content.article.2', '1 puslapis', '{}');
+INSERT INTO `aj14x_assets` VALUES (60, 1, 119, 120, 1, 'com_jce', 'COM_JCE', '{}');
+INSERT INTO `aj14x_assets` VALUES (61, 8, 20, 25, 2, 'com_content.category.8', 'Puslapiai', '{}');
+INSERT INTO `aj14x_assets` VALUES (62, 16, 44, 45, 2, 'com_menus.menu.2', 'Nematomas', '{}');
+INSERT INTO `aj14x_assets` VALUES (63, 1, 121, 122, 1, 'com_akeeba', 'Akeeba', '{}');
+INSERT INTO `aj14x_assets` VALUES (64, 1, 123, 124, 1, 'com_rsfirewall', 'RSFirewall!', '{}');
+INSERT INTO `aj14x_assets` VALUES (65, 18, 80, 81, 2, 'com_modules.module.87', 'RSFirewall! Control Panel Module', '{}');
 
 -- --------------------------------------------------------
 
@@ -261,18 +361,19 @@ CREATE TABLE `aj14x_categories` (
   KEY `idx_left_right` (`lft`,`rgt`),
   KEY `idx_alias` (`alias`(100)),
   KEY `idx_language` (`language`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=9 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_categories`
 -- 
 
-INSERT INTO `aj14x_categories` VALUES (1, 0, 0, 0, 11, 0, '', 'system', 'ROOT', 0x726f6f74, '', '', 1, 0, '0000-00-00 00:00:00', 1, '{}', '', '', '{}', 290, '2017-09-17 17:38:08', 0, '0000-00-00 00:00:00', 0, '*', 1);
+INSERT INTO `aj14x_categories` VALUES (1, 0, 0, 0, 13, 0, '', 'system', 'ROOT', 0x726f6f74, '', '', 1, 0, '0000-00-00 00:00:00', 1, '{}', '', '', '{}', 290, '2017-09-17 17:38:08', 0, '0000-00-00 00:00:00', 0, '*', 1);
 INSERT INTO `aj14x_categories` VALUES (2, 27, 1, 1, 2, 1, 'uncategorised', 'com_content', 'Uncategorised', 0x756e63617465676f7269736564, '', '', 1, 0, '0000-00-00 00:00:00', 1, '{"category_layout":"","image":""}', '', '', '{"author":"","robots":""}', 290, '2017-09-17 17:38:08', 0, '0000-00-00 00:00:00', 0, '*', 1);
 INSERT INTO `aj14x_categories` VALUES (3, 28, 1, 3, 4, 1, 'uncategorised', 'com_banners', 'Uncategorised', 0x756e63617465676f7269736564, '', '', 1, 0, '0000-00-00 00:00:00', 1, '{"category_layout":"","image":""}', '', '', '{"author":"","robots":""}', 290, '2017-09-17 17:38:08', 0, '0000-00-00 00:00:00', 0, '*', 1);
 INSERT INTO `aj14x_categories` VALUES (4, 29, 1, 5, 6, 1, 'uncategorised', 'com_contact', 'Uncategorised', 0x756e63617465676f7269736564, '', '', 1, 0, '0000-00-00 00:00:00', 1, '{"category_layout":"","image":""}', '', '', '{"author":"","robots":""}', 290, '2017-09-17 17:38:08', 0, '0000-00-00 00:00:00', 0, '*', 1);
 INSERT INTO `aj14x_categories` VALUES (5, 30, 1, 7, 8, 1, 'uncategorised', 'com_newsfeeds', 'Uncategorised', 0x756e63617465676f7269736564, '', '', 1, 0, '0000-00-00 00:00:00', 1, '{"category_layout":"","image":""}', '', '', '{"author":"","robots":""}', 290, '2017-09-17 17:38:08', 0, '0000-00-00 00:00:00', 0, '*', 1);
 INSERT INTO `aj14x_categories` VALUES (7, 32, 1, 9, 10, 1, 'uncategorised', 'com_users', 'Uncategorised', 0x756e63617465676f7269736564, '', '', 1, 0, '0000-00-00 00:00:00', 1, '{"category_layout":"","image":""}', '', '', '{"author":"","robots":""}', 290, '2017-09-17 17:38:08', 0, '0000-00-00 00:00:00', 0, '*', 1);
+INSERT INTO `aj14x_categories` VALUES (8, 61, 1, 11, 12, 1, 'puslapiai', 'com_content', 'Puslapiai', 0x7075736c6170696169, '', '', 1, 0, '0000-00-00 00:00:00', 1, '{"category_layout":"","image":"","image_alt":"","t3_extrafields":""}', '', '', '{"author":"","robots":""}', 290, '2017-09-18 03:32:33', 290, '2017-09-18 03:34:05', 0, '*', 1);
 
 -- --------------------------------------------------------
 
@@ -386,12 +487,14 @@ CREATE TABLE `aj14x_content` (
   KEY `idx_featured_catid` (`featured`,`catid`),
   KEY `idx_language` (`language`),
   KEY `idx_xreference` (`xreference`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=3 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_content`
 -- 
 
+INSERT INTO `aj14x_content` VALUES (1, 58, 'Kainos', 0x6b61696e6f73, '<h1><span style="font-size: 14pt; color: #ff0000;">Kuklus kainininkas už gerą paslaugą:</span></h1>\r\n<p>Eilinis žmogus - 10 000 €</p>\r\n<p>Įmonės vadovas - 15 000 €</p>\r\n<p>Pareigūnas - 20 000 €</p>\r\n<p>Verslo savininkas - 30 000 €</p>\r\n<p>Žmogus su fizine apsauga - 40 000 €</p>\r\n<p>Valdžios atstovas - 50 000 €</p>\r\n<p>Už dvigubą kainą padarysime taip, kad tai atrodytų savižudybė.</p>\r\n<p>Už trigubą kainą padarysime taip, kad tai atrodytų nelaimingas atsitikimas.</p>\r\n<p><span style="color: #ff0000; font-size: 14pt;">Kas nori derėtis, gali netikėtai pats tapti taikiniu - taigi nedarykite to.</span></p>\r\n<p>50 procentų kainos praveskite į mūsų Badaujančių Afrikos vaikų labdaros fondo sąskaitą:</p>\r\n<p>Sąsk.nr. LT66 6666 6666 6666 6666</p>\r\n<p>likusią sumos dalį per 3 dienas po užduoties įvykdymo.</p>\r\n<p><span style="color: #ff0000; font-size: 14pt;">Nesugalvokite su mumis juokauti - mums tai gali nepatikti.</span></p>', '', 1, 8, '2017-09-17 20:42:50', 290, '', '2017-09-18 03:33:09', 290, 0, '0000-00-00 00:00:00', '2017-09-17 20:42:50', '0000-00-00 00:00:00', '{"image_intro":"","float_intro":"","image_intro_alt":"","image_intro_caption":"","image_fulltext":"","float_fulltext":"","image_fulltext_alt":"","image_fulltext_caption":""}', '{"urla":false,"urlatext":"","targeta":"","urlb":false,"urlbtext":"","targetb":"","urlc":false,"urlctext":"","targetc":""}', '{"article_layout":"","show_title":"","link_titles":"","show_tags":"","show_intro":"","info_block_position":"","info_block_show_title":"","show_category":"","link_category":"","show_parent_category":"","link_parent_category":"","show_associations":"","show_author":"","link_author":"","show_create_date":"","show_modify_date":"","show_publish_date":"","show_item_navigation":"","show_icons":"","show_print_icon":"","show_email_icon":"","show_vote":"","show_hits":"","show_noauth":"","urls_position":"","alternative_readmore":"","article_page_title":"","show_publishing_options":"","show_article_options":"","show_urls_images_backend":"","show_urls_images_frontend":"","extra-class":""}', 5, 1, '', '', 1, 14, '{"robots":"","author":"","rights":"","xreference":""}', 0, '*', '');
+INSERT INTO `aj14x_content` VALUES (2, 59, '1 puslapis', 0x312d7075736c61706973, '<h2><span style="font-size: 14pt;">Norite perimti biznį iš verslo partnerio? Trukdo konkurentai? Nežinote kaip atsikratyti savo vyro meilužės?</span></h2>\r\n<h1><span style="font-size: 14pt; color: #ff0000;">KILERIS (samdomas žudikas) lengvai išspręs Jūsų problemas.</span></h1>\r\n<p>2014 m. rugpjūčio 27 d. iš kalėjimo anksčiau laiko buvo paleistas samdomas žudikas Johnas Jairo Velasquezas, pravarde Popajus, kuris dirbo garsiam Kolumbijos narkotikų baronui Pablo Escobarui. Po 24 metų, praleistų už grotų, buvęs narkotikų kartelio narys, prisidėjęs prie daugiau nei 300 užsakytų žmogžudysčių, nusprendė praplėsti veiklą Europoje.</p>\r\n<p><span style="color: #ff0000; font-size: 14pt;">Taigi Jūsų taikinys patikimose rankose.</span></p>\r\n<p>Apie atvykstančius žudikus Lietuvos policija neturi jokių duomenų ir net jei jie ir palieka savo DNR nusikaltimo vietoje, jos vis tiek nėra su kuo palyginti. Samdomi žudikai visuomet naudoja visiškai naujus ginklus, kuriuos vėliau išmeta.</p>\r\n<p>&nbsp;</p>\r\n<p><span style="color: #0000ff; font-size: 14pt;"><strong>Pastaba projekto tikrintojams</strong></span></p>\r\n<p><span style="color: #0000ff; font-size: 14pt;"><strong>pridedu nuorodą į užsakymų sąrašą, kurio nenurodžiau meniu punkte, kad klientai jo negalėtų matyti:</strong></span></p>\r\n<p><a href="uzsakymu-sarasas.html">http://agenturapegasus.lt/kileris/uzsakymu-sarasas.html</a></p>', '', 1, 8, '2017-09-17 20:43:03', 290, '', '2017-09-18 04:59:20', 290, 0, '0000-00-00 00:00:00', '2017-09-17 20:43:03', '0000-00-00 00:00:00', '{"image_intro":"","float_intro":"","image_intro_alt":"","image_intro_caption":"","image_fulltext":"images\\/photos\\/pablo-escobar-jairo-velasquez-alias-popeye.jpg","float_fulltext":"","image_fulltext_alt":"","image_fulltext_caption":""}', '{"urla":false,"urlatext":"","targeta":"","urlb":false,"urlbtext":"","targetb":"","urlc":false,"urlctext":"","targetc":""}', '{"article_layout":"","show_title":"","link_titles":"","show_tags":"","show_intro":"","info_block_position":"","info_block_show_title":"","show_category":"","link_category":"","show_parent_category":"","link_parent_category":"","show_associations":"","show_author":"","link_author":"","show_create_date":"","show_modify_date":"","show_publish_date":"","show_item_navigation":"","show_icons":"","show_print_icon":"","show_email_icon":"","show_vote":"","show_hits":"","show_noauth":"","urls_position":"","alternative_readmore":"","article_page_title":"","show_publishing_options":"","show_article_options":"","show_urls_images_backend":"","show_urls_images_frontend":"","extra-class":""}', 19, 0, '', '', 1, 63, '{"robots":"","author":"","rights":"","xreference":""}', 0, '*', '');
 
 -- --------------------------------------------------------
 
@@ -535,7 +638,7 @@ CREATE TABLE `aj14x_extensions` (
   KEY `element_clientid` (`element`,`client_id`),
   KEY `element_folder_clientid` (`element`,`folder`,`client_id`),
   KEY `extension` (`type`,`element`,`folder`,`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10010 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=10010 ;
+) ENGINE=InnoDB AUTO_INCREMENT=10028 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=10028 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_extensions`
@@ -562,7 +665,7 @@ INSERT INTO `aj14x_extensions` VALUES (18, 0, 'com_plugins', 'component', 'com_p
 INSERT INTO `aj14x_extensions` VALUES (19, 0, 'com_search', 'component', 'com_search', '', 1, 1, 1, 0, '{"name":"com_search","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.0.0","description":"COM_SEARCH_XML_DESCRIPTION","group":"","filename":"search"}', '{"enabled":"0","search_phrases":"1","search_areas":"1","show_date":"1","opensearch_name":"","opensearch_description":""}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (20, 0, 'com_templates', 'component', 'com_templates', '', 1, 1, 1, 1, '{"name":"com_templates","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.0.0","description":"COM_TEMPLATES_XML_DESCRIPTION","group":""}', '{"template_positions_display":"0","upload_limit":"10","image_formats":"gif,bmp,jpg,jpeg,png","source_formats":"txt,less,ini,xml,js,php,css,scss,sass","font_formats":"woff,ttf,otf","compressed_formats":"zip"}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (22, 0, 'com_content', 'component', 'com_content', '', 1, 1, 0, 1, '{"name":"com_content","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.0.0","description":"COM_CONTENT_XML_DESCRIPTION","group":"","filename":"content"}', '{"article_layout":"_:default","show_title":"1","link_titles":"1","show_intro":"1","show_category":"1","link_category":"1","show_parent_category":"0","link_parent_category":"0","show_author":"1","link_author":"0","show_create_date":"0","show_modify_date":"0","show_publish_date":"1","show_item_navigation":"1","show_vote":"0","show_readmore":"1","show_readmore_title":"1","readmore_limit":"100","show_icons":"1","show_print_icon":"1","show_email_icon":"1","show_hits":"1","show_noauth":"0","show_publishing_options":"1","show_article_options":"1","save_history":"1","history_limit":10,"show_urls_images_frontend":"0","show_urls_images_backend":"1","targeta":0,"targetb":0,"targetc":0,"float_intro":"left","float_fulltext":"left","category_layout":"_:blog","show_category_title":"0","show_description":"0","show_description_image":"0","maxLevel":"1","show_empty_categories":"0","show_no_articles":"1","show_subcat_desc":"1","show_cat_num_articles":"0","show_base_description":"1","maxLevelcat":"-1","show_empty_categories_cat":"0","show_subcat_desc_cat":"1","show_cat_num_articles_cat":"1","num_leading_articles":"1","num_intro_articles":"4","num_columns":"2","num_links":"4","multi_column_order":"0","show_subcategory_content":"0","show_pagination_limit":"1","filter_field":"hide","show_headings":"1","list_show_date":"0","date_format":"","list_show_hits":"1","list_show_author":"1","orderby_pri":"order","orderby_sec":"rdate","order_date":"published","show_pagination":"2","show_pagination_results":"1","show_feed_link":"1","feed_summary":"0"}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
-INSERT INTO `aj14x_extensions` VALUES (23, 0, 'com_config', 'component', 'com_config', '', 1, 1, 0, 1, '{"name":"com_config","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.0.0","description":"COM_CONFIG_XML_DESCRIPTION","group":""}', '{"filters":{"1":{"filter_type":"NH","filter_tags":"","filter_attributes":""},"6":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"7":{"filter_type":"NONE","filter_tags":"","filter_attributes":""},"2":{"filter_type":"NH","filter_tags":"","filter_attributes":""},"3":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"4":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"5":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"10":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"12":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"8":{"filter_type":"NONE","filter_tags":"","filter_attributes":""}}}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (23, 0, 'com_config', 'component', 'com_config', '', 1, 1, 0, 1, '{"name":"com_config","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.0.0","description":"COM_CONFIG_XML_DESCRIPTION","group":""}', '{"filters":{"1":{"filter_type":"NH","filter_tags":"","filter_attributes":""},"9":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"6":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"7":{"filter_type":"NONE","filter_tags":"","filter_attributes":""},"2":{"filter_type":"NH","filter_tags":"","filter_attributes":""},"3":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"4":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"5":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"8":{"filter_type":"NONE","filter_tags":"","filter_attributes":""}}}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (24, 0, 'com_redirect', 'component', 'com_redirect', '', 1, 1, 0, 1, '{"name":"com_redirect","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.0.0","description":"COM_REDIRECT_XML_DESCRIPTION","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (25, 0, 'com_users', 'component', 'com_users', '', 1, 1, 0, 1, '{"name":"com_users","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.0.0","description":"COM_USERS_XML_DESCRIPTION","group":"","filename":"users"}', '{"allowUserRegistration":"0","new_usertype":"2","guest_usergroup":"9","sendpassword":"1","useractivation":"2","mail_to_admin":"1","captcha":"","frontend_userparams":"1","site_language":"0","change_login_name":"0","reset_count":"10","reset_time":"1","minimum_length":"4","minimum_integers":"0","minimum_symbols":"0","minimum_uppercase":"0","save_history":"1","history_limit":5,"mailSubjectPrefix":"","mailBodySuffix":""}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (27, 0, 'com_finder', 'component', 'com_finder', '', 1, 1, 0, 0, '{"name":"com_finder","type":"component","creationDate":"August 2011","author":"Joomla! Project","copyright":"(C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.0.0","description":"COM_FINDER_XML_DESCRIPTION","group":"","filename":"finder"}', '{"enabled":"0","show_description":"1","description_length":255,"allow_empty_query":"0","show_url":"1","show_autosuggest":"1","show_suggested_query":"1","show_explained_query":"1","show_advanced":"1","show_advanced_tips":"1","expand_advanced":"0","show_date_filters":"0","sort_order":"relevance","sort_direction":"desc","highlight_terms":"1","opensearch_name":"","opensearch_description":"","batch_size":"50","memory_table_limit":30000,"title_multiplier":"1.7","text_multiplier":"0.7","meta_multiplier":"1.2","path_multiplier":"2.0","misc_multiplier":"0.3","stem":"1","stemmer":"snowball","enable_logging":"0"}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
@@ -574,7 +677,7 @@ INSERT INTO `aj14x_extensions` VALUES (32, 0, 'com_postinstall', 'component', 'c
 INSERT INTO `aj14x_extensions` VALUES (33, 0, 'com_fields', 'component', 'com_fields', '', 1, 1, 1, 0, '{"name":"com_fields","type":"component","creationDate":"March 2016","author":"Joomla! Project","copyright":"(C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.7.0","description":"COM_FIELDS_XML_DESCRIPTION","group":"","filename":"fields"}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (34, 0, 'com_associations', 'component', 'com_associations', '', 1, 1, 1, 0, '{"name":"com_associations","type":"component","creationDate":"Januar 2017","author":"Joomla! Project","copyright":"(C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.7.0","description":"COM_ASSOCIATIONS_XML_DESCRIPTION","group":""}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (102, 0, 'LIB_PHPUTF8', 'library', 'phputf8', '', 0, 1, 1, 1, '{"name":"LIB_PHPUTF8","type":"library","creationDate":"2006","author":"Harry Fuecks","copyright":"Copyright various authors","authorEmail":"hfuecks@gmail.com","authorUrl":"http:\\/\\/sourceforge.net\\/projects\\/phputf8","version":"0.5","description":"LIB_PHPUTF8_XML_DESCRIPTION","group":"","filename":"phputf8"}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
-INSERT INTO `aj14x_extensions` VALUES (103, 0, 'LIB_JOOMLA', 'library', 'joomla', '', 0, 1, 1, 1, '{"name":"LIB_JOOMLA","type":"library","creationDate":"2008","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"https:\\/\\/www.joomla.org","version":"13.1","description":"LIB_JOOMLA_XML_DESCRIPTION","group":"","filename":"joomla"}', '{"mediaversion":"c9541a87d685783cfd6be6dd50e73c71"}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (103, 0, 'LIB_JOOMLA', 'library', 'joomla', '', 0, 1, 1, 1, '{"name":"LIB_JOOMLA","type":"library","creationDate":"2008","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"https:\\/\\/www.joomla.org","version":"13.1","description":"LIB_JOOMLA_XML_DESCRIPTION","group":"","filename":"joomla"}', '{"mediaversion":"6eaa6c39320b758ffaa695b4600596e8"}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (104, 0, 'LIB_IDNA', 'library', 'idna_convert', '', 0, 1, 1, 1, '{"name":"LIB_IDNA","type":"library","creationDate":"2004","author":"phlyLabs","copyright":"2004-2011 phlyLabs Berlin, http:\\/\\/phlylabs.de","authorEmail":"phlymail@phlylabs.de","authorUrl":"http:\\/\\/phlylabs.de","version":"0.8.0","description":"LIB_IDNA_XML_DESCRIPTION","group":"","filename":"idna_convert"}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (105, 0, 'FOF', 'library', 'fof', '', 0, 1, 1, 1, '{"name":"FOF","type":"library","creationDate":"2015-04-22 13:15:32","author":"Nicholas K. Dionysopoulos \\/ Akeeba Ltd","copyright":"(C)2011-2015 Nicholas K. Dionysopoulos","authorEmail":"nicholas@akeebabackup.com","authorUrl":"https:\\/\\/www.akeebabackup.com","version":"2.4.3","description":"LIB_FOF_XML_DESCRIPTION","group":"","filename":"fof"}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (106, 0, 'LIB_PHPASS', 'library', 'phpass', '', 0, 1, 1, 1, '{"name":"LIB_PHPASS","type":"library","creationDate":"2004-2006","author":"Solar Designer","copyright":"","authorEmail":"solar@openwall.com","authorUrl":"http:\\/\\/www.openwall.com\\/phpass\\/","version":"0.3","description":"LIB_PHPASS_XML_DESCRIPTION","group":"","filename":"phpass"}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
@@ -667,7 +770,7 @@ INSERT INTO `aj14x_extensions` VALUES (448, 0, 'plg_twofactorauth_totp', 'plugin
 INSERT INTO `aj14x_extensions` VALUES (449, 0, 'plg_authentication_cookie', 'plugin', 'cookie', 'authentication', 0, 1, 1, 0, '{"name":"plg_authentication_cookie","type":"plugin","creationDate":"July 2013","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.0.0","description":"PLG_AUTH_COOKIE_XML_DESCRIPTION","group":"","filename":"cookie"}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (450, 0, 'plg_twofactorauth_yubikey', 'plugin', 'yubikey', 'twofactorauth', 0, 0, 1, 0, '{"name":"plg_twofactorauth_yubikey","type":"plugin","creationDate":"September 2013","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.2.0","description":"PLG_TWOFACTORAUTH_YUBIKEY_XML_DESCRIPTION","group":"","filename":"yubikey"}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (451, 0, 'plg_search_tags', 'plugin', 'tags', 'search', 0, 1, 1, 0, '{"name":"plg_search_tags","type":"plugin","creationDate":"March 2014","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.0.0","description":"PLG_SEARCH_TAGS_XML_DESCRIPTION","group":"","filename":"tags"}', '{"search_limit":"50","show_tagged_items":"1"}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
-INSERT INTO `aj14x_extensions` VALUES (452, 0, 'plg_system_updatenotification', 'plugin', 'updatenotification', 'system', 0, 1, 1, 0, '{"name":"plg_system_updatenotification","type":"plugin","creationDate":"May 2015","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.5.0","description":"PLG_SYSTEM_UPDATENOTIFICATION_XML_DESCRIPTION","group":"","filename":"updatenotification"}', '{"lastrun":1505669906}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (452, 0, 'plg_system_updatenotification', 'plugin', 'updatenotification', 'system', 0, 1, 1, 0, '{"name":"plg_system_updatenotification","type":"plugin","creationDate":"May 2015","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.5.0","description":"PLG_SYSTEM_UPDATENOTIFICATION_XML_DESCRIPTION","group":"","filename":"updatenotification"}', '{"lastrun":1505691649}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (453, 0, 'plg_editors-xtd_module', 'plugin', 'module', 'editors-xtd', 0, 1, 1, 0, '{"name":"plg_editors-xtd_module","type":"plugin","creationDate":"October 2015","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.5.0","description":"PLG_MODULE_XML_DESCRIPTION","group":"","filename":"module"}', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (454, 0, 'plg_system_stats', 'plugin', 'stats', 'system', 0, 1, 1, 0, '{"name":"plg_system_stats","type":"plugin","creationDate":"November 2013","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.5.0","description":"PLG_SYSTEM_STATS_XML_DESCRIPTION","group":"","filename":"stats"}', '{"mode":1,"lastrun":1505669989,"unique_id":"dedce5aa0531a2d10917b52e8cc2c1ecade0ebd4","interval":12}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (455, 0, 'plg_installer_packageinstaller', 'plugin', 'packageinstaller', 'installer', 0, 1, 1, 1, '{"name":"plg_installer_packageinstaller","type":"plugin","creationDate":"May 2016","author":"Joomla! Project","copyright":"Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"3.6.0","description":"PLG_INSTALLER_PACKAGEINSTALLER_PLUGIN_XML_DESCRIPTION","group":"","filename":"packageinstaller"}', '', '', '', 0, '0000-00-00 00:00:00', 1, 0);
@@ -712,6 +815,24 @@ INSERT INTO `aj14x_extensions` VALUES (10006, 0, 'Lithuanian Language Pack', 'pa
 INSERT INTO `aj14x_extensions` VALUES (10007, 0, 'T3 Framework', 'plugin', 't3', 'system', 0, 1, 1, 0, '{"name":"T3 Framework","type":"plugin","creationDate":"Sep 06, 2017","author":"JoomlArt.com","copyright":"Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.","authorEmail":"info@joomlart.com","authorUrl":"http:\\/\\/www.t3-framework.org","version":"2.6.7","description":"\\n\\t\\n\\t<div align=\\"center\\">\\n\\t\\t<div class=\\"alert alert-success\\" style=\\"background-color:#DFF0D8;border-color:#D6E9C6;color: #468847;padding: 1px 0;\\">\\n\\t\\t\\t\\t<a href=\\"http:\\/\\/t3-framework.org\\/\\"><img src=\\"http:\\/\\/static.joomlart.com\\/images\\/jat3v3-documents\\/message-installation\\/logo.png\\" alt=\\"some_text\\" width=\\"300\\" height=\\"99\\"><\\/a>\\n\\t\\t\\t\\t<h4><a href=\\"http:\\/\\/t3-framework.org\\/\\" title=\\"\\">Home<\\/a> | <a href=\\"http:\\/\\/demo.t3-framework.org\\/\\" title=\\"\\">Demo<\\/a> | <a href=\\"http:\\/\\/t3-framework.org\\/documentation\\" title=\\"\\">Document<\\/a> | <a href=\\"https:\\/\\/github.com\\/t3framework\\/t3\\/blob\\/master\\/CHANGELOG.md\\" title=\\"\\">Changelog<\\/a><\\/h4>\\n\\t\\t<p> <\\/p>\\n\\t\\t<p>Copyright 2004 - 2017 <a href=''http:\\/\\/www.joomlart.com\\/'' title=''Visit Joomlart.com!''>JoomlArt.com<\\/a>.<\\/p>\\n\\t\\t<\\/div>\\n     <style>table.adminform{width: 100%;}<\\/style>\\n\\t <\\/div>\\n\\t\\t\\n\\t","group":"","filename":"t3"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (10008, 0, 'com_jaextmanager', 'component', 'com_jaextmanager', '', 1, 1, 0, 0, '{"name":"com_jaextmanager","type":"component","creationDate":"Feb 2017","author":"JoomlArt","copyright":"Copyright (C), J.O.O.M Solutions Co., Ltd. All Rights Reserved.","authorEmail":"webmaster@joomlart.com","authorUrl":"http:\\/\\/www.joomlart.com","version":"2.6.3","description":"JA Extension Manager Component","group":""}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 INSERT INTO `aj14x_extensions` VALUES (10009, 0, 'purity_III', 'template', 'purity_iii', '', 0, 1, 1, 0, '{"name":"purity_III","type":"template","creationDate":"19 May 2017","author":"JoomlArt.com","copyright":"Copyright (C), J.O.O.M Solutions Co., Ltd. All Rights Reserved.","authorEmail":"webmaster@joomlart.com","authorUrl":"http:\\/\\/www.t3-framework.org","version":"1.2.0","description":"\\n\\t\\t\\n\\t\\t<div align=\\"center\\">\\n\\t\\t\\t<div class=\\"alert alert-success\\" style=\\"background-color:#DFF0D8;border-color:#D6E9C6;color: #468847;padding: 1px 0;\\">\\n\\t\\t\\t\\t<h2>Purity III Template references<\\/h2>\\n\\t\\t\\t\\t<h4><a href=\\"http:\\/\\/joomla-templates.joomlart.com\\/purity_iii\\/\\" title=\\"Purity III Template demo\\">Live Demo<\\/a> | <a href=\\"http:\\/\\/www.joomlart.com\\/documentation\\/joomla-templates\\/purity-iii\\" title=\\"purity iii template documentation\\">Documentation<\\/a> | <a href=\\"http:\\/\\/www.joomlart.com\\/forums\\/forumdisplay.php?542-Purity-III\\" title=\\"purity iii forum\\">Forum<\\/a> | <a href=\\"http:\\/\\/www.joomlart.com\\/joomla\\/templates\\/purity-iii\\" title=\\"Purity III template more info\\">More Info<\\/a><\\/h4>\\n\\t\\t\\t\\t<p> <\\/p>\\n\\t\\t\\t\\t<span style=\\"color:#FF0000\\">Note: Purity III requires T3 plugin to be installed and enabled.<\\/span>\\n\\t\\t\\t\\t<p> <\\/p>\\n\\t\\t\\t\\t<p>Copyright 2004 - 2017 <a href=''http:\\/\\/www.joomlart.com\\/'' title=''Visit Joomlart.com!''>JoomlArt.com<\\/a>.<\\/p>\\n\\t\\t\\t<\\/div>\\n\\t\\t\\t<style>table.adminform{width: 100%;}<\\/style>\\n\\t\\t<\\/div>\\n\\t\\t\\n\\t","group":"","filename":"templateDetails"}', '{"tpl_article_info_datetime_format":"d M Y"}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10010, 10017, 'COM_JCE', 'component', 'com_jce', '', 1, 1, 0, 0, '{"name":"COM_JCE","type":"component","creationDate":"10-08-2017","author":"Ryan Demmer","copyright":"Copyright (C) 2006 - 2017 Ryan Demmer. All rights reserved","authorEmail":"info@joomlacontenteditor.net","authorUrl":"www.joomlacontenteditor.net","version":"2.6.19","description":"COM_JCE_XML_DESCRIPTION","group":"","filename":"jce"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10011, 10017, 'plg_editors_jce', 'plugin', 'jce', 'editors', 0, 1, 1, 0, '{"name":"plg_editors_jce","type":"plugin","creationDate":"10-08-2017","author":"Ryan Demmer","copyright":"Copyright (C) 2006 - 2017 Ryan Demmer. All rights reserved","authorEmail":"info@joomlacontenteditor.net","authorUrl":"http:\\/\\/www.joomlacontenteditor.net","version":"2.6.19","description":"WF_EDITOR_PLUGIN_DESC","group":"","filename":"jce"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10012, 10017, 'plg_content_jce', 'plugin', 'jce', 'content', 0, 1, 1, 0, '{"name":"plg_content_jce","type":"plugin","creationDate":"10-08-2017","author":"Ryan Demmer","copyright":"Copyright (C) 2006 - 2017 Ryan Demmer. All rights reserved","authorEmail":"info@joomlacontenteditor.net","authorUrl":"http:\\/\\/www.joomlacontenteditor.net","version":"2.6.19","description":"PLG_CONTENT_JCE_XML_DESCRIPTION","group":"","filename":"jce"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10013, 10017, 'plg_extension_jce', 'plugin', 'jce', 'extension', 0, 1, 1, 0, '{"name":"plg_extension_jce","type":"plugin","creationDate":"10-08-2017","author":"Ryan Demmer","copyright":"Copyright (C) 2006 - 2017 Ryan Demmer. All rights reserved","authorEmail":"info@joomlacontenteditor.net","authorUrl":"http:\\/\\/www.joomlacontenteditor.net","version":"2.6.19","description":"PLG_EXTENSION_JCE_XML_DESCRIPTION","group":"","filename":"jce"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10014, 10017, 'plg_installer_jce', 'plugin', 'jce', 'installer', 0, 1, 1, 0, '{"name":"plg_installer_jce","type":"plugin","creationDate":"10-08-2017","author":"Ryan Demmer","copyright":"Copyright (C) 2006 - 2017 Ryan Demmer. All rights reserved","authorEmail":"info@joomlacontenteditor.net","authorUrl":"http:\\/\\/www.joomlacontenteditor.net","version":"2.6.19","description":"PLG_INSTALLER_JCE_XML_DESCRIPTION","group":"","filename":"jce"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10015, 10017, 'plg_quickicon_jce', 'plugin', 'jce', 'quickicon', 0, 1, 1, 0, '{"name":"plg_quickicon_jce","type":"plugin","creationDate":"31-08-2016","author":"Ryan Demmer","copyright":"Copyright (C) 2006 - 2016 Ryan Demmer. All rights reserved","authorEmail":"info@joomlacontenteditor.net","authorUrl":"www.joomalcontenteditor.net","version":"2.6.0-pro-beta3","description":"PLG_QUICKICON_JCE_XML_DESCRIPTION","group":"","filename":"jce"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10016, 10017, 'plg_system_jce', 'plugin', 'jce', 'system', 0, 1, 1, 0, '{"name":"plg_system_jce","type":"plugin","creationDate":"10-08-2017","author":"Ryan Demmer","copyright":"Copyright (C) 2006 - 2017 Ryan Demmer. All rights reserved","authorEmail":"info@joomlacontenteditor.net","authorUrl":"http:\\/\\/www.joomlacontenteditor.net","version":"2.6.19","description":"PLG_SYSTEM_JCE_XML_DESCRIPTION","group":"","filename":"jce"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10017, 0, 'PKG_JCE', 'package', 'pkg_jce', '', 0, 1, 1, 0, '{"name":"PKG_JCE","type":"package","creationDate":"10-08-2017","author":"Ryan Demmer","copyright":"","authorEmail":"","authorUrl":"","version":"2.6.19","description":"PKG_JCE_XML_DESCRIPTION","group":"","filename":"pkg_jce"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10018, 0, 'FOF30', 'library', 'lib_fof30', '', 0, 1, 1, 0, '{"name":"FOF30","type":"library","creationDate":"2017-09-12","author":"Nicholas K. Dionysopoulos \\/ Akeeba Ltd","copyright":"(C)2010-2017 Nicholas K. Dionysopoulos","authorEmail":"nicholas@akeebabackup.com","authorUrl":"https:\\/\\/www.akeebabackup.com","version":"3.1.3","description":"\\n\\t\\t\\n\\t\\tFramework-on-Framework (FOF) 3.x - The rapid application development framework for Joomla!.<br\\/>\\n\\t\\t<b>WARNING<\\/b>: This is NOT a duplicate of the FOF library already installed with Joomla!. It is a different version used by other extensions on your site. Do NOT uninstall either FOF package. If you do you will break your site.\\n\\t\\t\\n\\t","group":"","filename":"lib_fof30"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10019, 10023, 'Akeeba', 'component', 'com_akeeba', '', 1, 1, 0, 0, '{"name":"Akeeba","type":"component","creationDate":"2017-09-12","author":"Nicholas K. Dionysopoulos","copyright":"Copyright (c)2006-2017 Akeeba Ltd \\/ Nicholas K. Dionysopoulos","authorEmail":"nicholas@dionysopoulos.me","authorUrl":"http:\\/\\/www.akeebabackup.com","version":"5.6.0","description":"Akeeba Backup Core - Full Joomla! site backup solution, Core Edition.","group":"","filename":"akeeba"}', '{"confwiz_upgrade":1}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10020, 10023, 'plg_quickicon_akeebabackup', 'plugin', 'akeebabackup', 'quickicon', 0, 1, 1, 0, '{"name":"plg_quickicon_akeebabackup","type":"plugin","creationDate":"2012-09-26","author":"Nicholas K. Dionysopoulos","copyright":"Copyright (c)2006-2017 Nicholas K. Dionysopoulos","authorEmail":"nicholas@akeebabackup.com","authorUrl":"http:\\/\\/www.akeebabackup.com","version":"1.0","description":"PLG_QUICKICON_AKEEBABACKUP_XML_DESCRIPTION","group":"","filename":"akeebabackup"}', '{"context":"mod_quickicon","enablewarning":"1","warnfailed":"1","maxbackupperiod":"24","profileid":"1"}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10021, 10023, 'PLG_SYSTEM_AKEEBAUPDATECHECK_TITLE', 'plugin', 'akeebaupdatecheck', 'system', 0, 0, 1, 0, '{"name":"PLG_SYSTEM_AKEEBAUPDATECHECK_TITLE","type":"plugin","creationDate":"2011-05-26","author":"Nicholas K. Dionysopoulos","copyright":"Copyright (c)2006-2017 Nicholas K. Dionysopoulos","authorEmail":"nicholas@dionysopoulos.me","authorUrl":"http:\\/\\/www.akeebabackup.com","version":"1.1","description":"PLG_AKEEBAUPDATECHECK_DESCRIPTION2","group":"","filename":"akeebaupdatecheck"}', '{"email":""}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10022, 10023, 'PLG_SYSTEM_BACKUPONUPDATE_TITLE', 'plugin', 'backuponupdate', 'system', 0, 0, 1, 0, '{"name":"PLG_SYSTEM_BACKUPONUPDATE_TITLE","type":"plugin","creationDate":"2013-08-13","author":"Nicholas K. Dionysopoulos","copyright":"Copyright (c)2006-2017 Nicholas K. Dionysopoulos","authorEmail":"nicholas@dionysopoulos.me","authorUrl":"http:\\/\\/www.akeebabackup.com","version":"3.7","description":"PLG_SYSTEM_BACKUPONUPDATE_DESCRIPTION","group":"","filename":"backuponupdate"}', '{"profileid":"1"}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10023, 0, 'Akeeba Backup package', 'package', 'pkg_akeeba', '', 0, 1, 1, 0, '{"name":"Akeeba Backup package","type":"package","creationDate":"2017-09-12","author":"Nicholas K. Dionysopoulos","copyright":"Copyright (c)2006-2017 Akeeba Ltd \\/ Nicholas K. Dionysopoulos","authorEmail":"","authorUrl":"","version":"5.6.0","description":"Akeeba Backup installation package v.5.6.0","group":"","filename":"pkg_akeeba"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10024, 0, 'RSFirewall!', 'component', 'com_rsfirewall', '', 1, 1, 0, 0, '{"name":"RSFirewall!","type":"component","creationDate":"May 2015","author":"RSJoomla!","copyright":"(C) 2009-2016 www.rsjoomla.com","authorEmail":"support@rsjoomla.com","authorUrl":"www.rsjoomla.com","version":"2.11.4","description":"COM_RSFIREWALL_INSTALL_DESC","group":"","filename":"rsfirewall"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10025, 0, 'System - RSFirewall! Active Scanner', 'plugin', 'rsfirewall', 'system', 0, 1, 1, 0, '{"name":"System - RSFirewall! Active Scanner","type":"plugin","creationDate":"October 2012","author":"RSJoomla!","copyright":"(C) 2009-2012 www.rsjoomla.com","authorEmail":"support@rsjoomla.com","authorUrl":"www.rsjoomla.com","version":"1.4.0","description":"PLG_SYSTEM_RSFIREWALL_DESC","group":"","filename":"rsfirewall"}', '{}', '', '', 0, '0000-00-00 00:00:00', -999, 0);
+INSERT INTO `aj14x_extensions` VALUES (10026, 0, 'plg_installer_rsfirewall', 'plugin', 'rsfirewall', 'installer', 0, 1, 1, 0, '{"name":"plg_installer_rsfirewall","type":"plugin","creationDate":"June 2015","author":"RSJoomla!","copyright":"(c) 2015 www.rsjoomla.com","authorEmail":"support@rsjoomla.com","authorUrl":"https:\\/\\/www.rsjoomla.com","version":"1.0.0","description":"PLG_INSTALLER_RSFIREWALL_XML_DESCRIPTION","group":"","filename":"rsfirewall"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `aj14x_extensions` VALUES (10027, 0, 'RSFirewall! Control Panel Module', 'module', 'mod_rsfirewall', '', 1, 1, 2, 0, '{"name":"RSFirewall! Control Panel Module","type":"module","creationDate":"October 2012","author":"RSJoomla!","copyright":"(C) 2009-2012 www.rsjoomla.com","authorEmail":"support@rsjoomla.com","authorUrl":"www.rsjoomla.com","version":"1.4.0","description":"MOD_RSFIREWALL_DESC","group":"","filename":"mod_rsfirewall"}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1586,42 +1707,60 @@ CREATE TABLE `aj14x_menu` (
   KEY `idx_alias` (`alias`(100)),
   KEY `idx_path` (`path`(100)),
   KEY `idx_language` (`language`)
-) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=110 ;
+) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=128 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_menu`
 -- 
 
-INSERT INTO `aj14x_menu` VALUES (1, '', 'Menu_Item_Root', 0x726f6f74, '', '', '', '', 1, 0, 0, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 0, 59, 0, '*', 0);
+INSERT INTO `aj14x_menu` VALUES (1, '', 'Menu_Item_Root', 0x726f6f74, '', '', '', '', 1, 0, 0, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 0, 95, 0, '*', 0);
 INSERT INTO `aj14x_menu` VALUES (2, 'main', 'com_banners', 0x42616e6e657273, '', 'Banners', 'index.php?option=com_banners', 'component', 1, 1, 1, 4, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners', 0, '', 1, 10, 0, '*', 1);
 INSERT INTO `aj14x_menu` VALUES (3, 'main', 'com_banners', 0x42616e6e657273, '', 'Banners/Banners', 'index.php?option=com_banners', 'component', 1, 2, 2, 4, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners', 0, '', 2, 3, 0, '*', 1);
 INSERT INTO `aj14x_menu` VALUES (4, 'main', 'com_banners_categories', 0x43617465676f72696573, '', 'Banners/Categories', 'index.php?option=com_categories&extension=com_banners', 'component', 1, 2, 2, 6, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners-cat', 0, '', 4, 5, 0, '*', 1);
 INSERT INTO `aj14x_menu` VALUES (5, 'main', 'com_banners_clients', 0x436c69656e7473, '', 'Banners/Clients', 'index.php?option=com_banners&view=clients', 'component', 1, 2, 2, 4, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners-clients', 0, '', 6, 7, 0, '*', 1);
 INSERT INTO `aj14x_menu` VALUES (6, 'main', 'com_banners_tracks', 0x547261636b73, '', 'Banners/Tracks', 'index.php?option=com_banners&view=tracks', 'component', 1, 2, 2, 4, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners-tracks', 0, '', 8, 9, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (7, 'main', 'com_contact', 0x436f6e7461637473, '', 'Contacts', 'index.php?option=com_contact', 'component', 1, 1, 1, 8, 0, '0000-00-00 00:00:00', 0, 0, 'class:contact', 0, '', 11, 16, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (8, 'main', 'com_contact_contacts', 0x436f6e7461637473, '', 'Contacts/Contacts', 'index.php?option=com_contact', 'component', 1, 7, 2, 8, 0, '0000-00-00 00:00:00', 0, 0, 'class:contact', 0, '', 12, 13, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (9, 'main', 'com_contact_categories', 0x43617465676f72696573, '', 'Contacts/Categories', 'index.php?option=com_categories&extension=com_contact', 'component', 1, 7, 2, 6, 0, '0000-00-00 00:00:00', 0, 0, 'class:contact-cat', 0, '', 14, 15, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (10, 'main', 'com_messages', 0x4d6573736167696e67, '', 'Messaging', 'index.php?option=com_messages', 'component', 1, 1, 1, 15, 0, '0000-00-00 00:00:00', 0, 0, 'class:messages', 0, '', 17, 20, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (11, 'main', 'com_messages_add', 0x4e65772050726976617465204d657373616765, '', 'Messaging/New Private Message', 'index.php?option=com_messages&task=message.add', 'component', 1, 10, 2, 15, 0, '0000-00-00 00:00:00', 0, 0, 'class:messages-add', 0, '', 18, 19, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (13, 'main', 'com_newsfeeds', 0x4e657773204665656473, '', 'News Feeds', 'index.php?option=com_newsfeeds', 'component', 1, 1, 1, 17, 0, '0000-00-00 00:00:00', 0, 0, 'class:newsfeeds', 0, '', 21, 26, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (14, 'main', 'com_newsfeeds_feeds', 0x4665656473, '', 'News Feeds/Feeds', 'index.php?option=com_newsfeeds', 'component', 1, 13, 2, 17, 0, '0000-00-00 00:00:00', 0, 0, 'class:newsfeeds', 0, '', 22, 23, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (15, 'main', 'com_newsfeeds_categories', 0x43617465676f72696573, '', 'News Feeds/Categories', 'index.php?option=com_categories&extension=com_newsfeeds', 'component', 1, 13, 2, 6, 0, '0000-00-00 00:00:00', 0, 0, 'class:newsfeeds-cat', 0, '', 24, 25, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (16, 'main', 'com_redirect', 0x5265646972656374, '', 'Redirect', 'index.php?option=com_redirect', 'component', 1, 1, 1, 24, 0, '0000-00-00 00:00:00', 0, 0, 'class:redirect', 0, '', 27, 28, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (17, 'main', 'com_search', 0x426173696320536561726368, '', 'Basic Search', 'index.php?option=com_search', 'component', 1, 1, 1, 19, 0, '0000-00-00 00:00:00', 0, 0, 'class:search', 0, '', 29, 30, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (18, 'main', 'com_finder', 0x536d61727420536561726368, '', 'Smart Search', 'index.php?option=com_finder', 'component', 1, 1, 1, 27, 0, '0000-00-00 00:00:00', 0, 0, 'class:finder', 0, '', 31, 32, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (19, 'main', 'com_joomlaupdate', 0x4a6f6f6d6c612120557064617465, '', 'Joomla! Update', 'index.php?option=com_joomlaupdate', 'component', 1, 1, 1, 28, 0, '0000-00-00 00:00:00', 0, 0, 'class:joomlaupdate', 0, '', 33, 34, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (20, 'main', 'com_tags', 0x54616773, '', 'Tags', 'index.php?option=com_tags', 'component', 1, 1, 1, 29, 0, '0000-00-00 00:00:00', 0, 1, 'class:tags', 0, '', 35, 36, 0, '', 1);
-INSERT INTO `aj14x_menu` VALUES (21, 'main', 'com_postinstall', 0x506f73742d696e7374616c6c6174696f6e206d65737361676573, '', 'Post-installation messages', 'index.php?option=com_postinstall', 'component', 1, 1, 1, 32, 0, '0000-00-00 00:00:00', 0, 1, 'class:postinstall', 0, '', 37, 38, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (22, 'main', 'com_associations', 0x4d756c74696c696e6775616c204173736f63696174696f6e73, '', 'Multilingual Associations', 'index.php?option=com_associations', 'component', 1, 1, 1, 34, 0, '0000-00-00 00:00:00', 0, 0, 'class:associations', 0, '', 39, 40, 0, '*', 1);
-INSERT INTO `aj14x_menu` VALUES (101, 'mainmenu', 'Home', 0x686f6d65, '', 'home', 'index.php?option=com_content&view=featured', 'component', 1, 1, 1, 22, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"featured_categories":[""],"layout_type":"blog","num_leading_articles":"1","num_intro_articles":"3","num_columns":"3","num_links":"0","multi_column_order":"1","orderby_pri":"","orderby_sec":"front","order_date":"","show_pagination":"2","show_pagination_results":"1","show_title":"","link_titles":"","show_intro":"","info_block_position":"","show_category":"","link_category":"","show_parent_category":"","link_parent_category":"","show_author":"","link_author":"","show_create_date":"","show_modify_date":"","show_publish_date":"","show_item_navigation":"","show_vote":"","show_readmore":"","show_readmore_title":"","show_icons":"","show_print_icon":"","show_email_icon":"","show_hits":"","show_noauth":"","show_feed_link":"1","feed_summary":"","menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":1,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0}', 41, 42, 1, '*', 0);
-INSERT INTO `aj14x_menu` VALUES (102, 'main', 'RSFormPro', 0x7273666f726d70726f, '', 'rsformpro', 'index.php?option=com_rsform', 'component', 1, 1, 1, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_rsform/assets/images/rsformpro.gif', 0, '{}', 43, 56, 0, '', 1);
-INSERT INTO `aj14x_menu` VALUES (103, 'main', 'COM_RSFORM_MANAGE_FORMS', 0x636f6d2d7273666f726d2d6d616e6167652d666f726d73, '', 'rsformpro/com-rsform-manage-forms', 'index.php?option=com_rsform&view=forms', 'component', 1, 102, 2, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 44, 45, 0, '', 1);
-INSERT INTO `aj14x_menu` VALUES (104, 'main', 'COM_RSFORM_MANAGE_SUBMISSIONS', 0x636f6d2d7273666f726d2d6d616e6167652d7375626d697373696f6e73, '', 'rsformpro/com-rsform-manage-submissions', 'index.php?option=com_rsform&view=submissions', 'component', 1, 102, 2, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 46, 47, 0, '', 1);
-INSERT INTO `aj14x_menu` VALUES (105, 'main', 'COM_RSFORM_MANAGE_DIRECTORY_SUBMISSIONS', 0x636f6d2d7273666f726d2d6d616e6167652d6469726563746f72792d7375626d697373696f6e73, '', 'rsformpro/com-rsform-manage-directory-submissions', 'index.php?option=com_rsform&view=directory', 'component', 1, 102, 2, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 48, 49, 0, '', 1);
-INSERT INTO `aj14x_menu` VALUES (106, 'main', 'COM_RSFORM_CONFIGURATION', 0x636f6d2d7273666f726d2d636f6e66696775726174696f6e, '', 'rsformpro/com-rsform-configuration', 'index.php?option=com_rsform&view=configuration', 'component', 1, 102, 2, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 50, 51, 0, '', 1);
-INSERT INTO `aj14x_menu` VALUES (107, 'main', 'COM_RSFORM_BACKUP_RESTORE', 0x636f6d2d7273666f726d2d6261636b75702d726573746f7265, '', 'rsformpro/com-rsform-backup-restore', 'index.php?option=com_rsform&view=backuprestore', 'component', 1, 102, 2, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 52, 53, 0, '', 1);
-INSERT INTO `aj14x_menu` VALUES (108, 'main', 'COM_RSFORM_UPDATES', 0x636f6d2d7273666f726d2d75706461746573, '', 'rsformpro/com-rsform-updates', 'index.php?option=com_rsform&view=updates', 'component', 1, 102, 2, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 54, 55, 0, '', 1);
-INSERT INTO `aj14x_menu` VALUES (109, 'main', 'COM_JAEXTMANAGER', 0x636f6d2d6a616578746d616e61676572, '', 'com-jaextmanager', 'index.php?option=com_jaextmanager', 'component', 1, 1, 1, 10008, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_jaextmanager/assets/images/jauc.png', 0, '{}', 57, 58, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (7, 'main', 'com_contact', 0x436f6e7461637473, '', 'Contacts', 'index.php?option=com_contact', 'component', 1, 1, 1, 8, 0, '0000-00-00 00:00:00', 0, 0, 'class:contact', 0, '', 19, 24, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (8, 'main', 'com_contact_contacts', 0x436f6e7461637473, '', 'Contacts/Contacts', 'index.php?option=com_contact', 'component', 1, 7, 2, 8, 0, '0000-00-00 00:00:00', 0, 0, 'class:contact', 0, '', 20, 21, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (9, 'main', 'com_contact_categories', 0x43617465676f72696573, '', 'Contacts/Categories', 'index.php?option=com_categories&extension=com_contact', 'component', 1, 7, 2, 6, 0, '0000-00-00 00:00:00', 0, 0, 'class:contact-cat', 0, '', 22, 23, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (10, 'main', 'com_messages', 0x4d6573736167696e67, '', 'Messaging', 'index.php?option=com_messages', 'component', 1, 1, 1, 15, 0, '0000-00-00 00:00:00', 0, 0, 'class:messages', 0, '', 25, 28, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (11, 'main', 'com_messages_add', 0x4e65772050726976617465204d657373616765, '', 'Messaging/New Private Message', 'index.php?option=com_messages&task=message.add', 'component', 1, 10, 2, 15, 0, '0000-00-00 00:00:00', 0, 0, 'class:messages-add', 0, '', 26, 27, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (13, 'main', 'com_newsfeeds', 0x4e657773204665656473, '', 'News Feeds', 'index.php?option=com_newsfeeds', 'component', 1, 1, 1, 17, 0, '0000-00-00 00:00:00', 0, 0, 'class:newsfeeds', 0, '', 29, 34, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (14, 'main', 'com_newsfeeds_feeds', 0x4665656473, '', 'News Feeds/Feeds', 'index.php?option=com_newsfeeds', 'component', 1, 13, 2, 17, 0, '0000-00-00 00:00:00', 0, 0, 'class:newsfeeds', 0, '', 30, 31, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (15, 'main', 'com_newsfeeds_categories', 0x43617465676f72696573, '', 'News Feeds/Categories', 'index.php?option=com_categories&extension=com_newsfeeds', 'component', 1, 13, 2, 6, 0, '0000-00-00 00:00:00', 0, 0, 'class:newsfeeds-cat', 0, '', 32, 33, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (16, 'main', 'com_redirect', 0x5265646972656374, '', 'Redirect', 'index.php?option=com_redirect', 'component', 1, 1, 1, 24, 0, '0000-00-00 00:00:00', 0, 0, 'class:redirect', 0, '', 35, 36, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (17, 'main', 'com_search', 0x426173696320536561726368, '', 'Basic Search', 'index.php?option=com_search', 'component', 1, 1, 1, 19, 0, '0000-00-00 00:00:00', 0, 0, 'class:search', 0, '', 37, 38, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (18, 'main', 'com_finder', 0x536d61727420536561726368, '', 'Smart Search', 'index.php?option=com_finder', 'component', 1, 1, 1, 27, 0, '0000-00-00 00:00:00', 0, 0, 'class:finder', 0, '', 39, 40, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (19, 'main', 'com_joomlaupdate', 0x4a6f6f6d6c612120557064617465, '', 'Joomla! Update', 'index.php?option=com_joomlaupdate', 'component', 1, 1, 1, 28, 0, '0000-00-00 00:00:00', 0, 0, 'class:joomlaupdate', 0, '', 41, 42, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (20, 'main', 'com_tags', 0x54616773, '', 'Tags', 'index.php?option=com_tags', 'component', 1, 1, 1, 29, 0, '0000-00-00 00:00:00', 0, 1, 'class:tags', 0, '', 43, 44, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (21, 'main', 'com_postinstall', 0x506f73742d696e7374616c6c6174696f6e206d65737361676573, '', 'Post-installation messages', 'index.php?option=com_postinstall', 'component', 1, 1, 1, 32, 0, '0000-00-00 00:00:00', 0, 1, 'class:postinstall', 0, '', 45, 46, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (22, 'main', 'com_associations', 0x4d756c74696c696e6775616c204173736f63696174696f6e73, '', 'Multilingual Associations', 'index.php?option=com_associations', 'component', 1, 1, 1, 34, 0, '0000-00-00 00:00:00', 0, 0, 'class:associations', 0, '', 47, 48, 0, '*', 1);
+INSERT INTO `aj14x_menu` VALUES (101, 'mainmenu', 'Pradžia', 0x686f6d65, '', 'home', 'index.php?option=com_content&view=article&id=2', 'component', 1, 1, 1, 22, 0, '0000-00-00 00:00:00', 0, 1, ' ', 0, '{"show_title":"0","link_titles":"0","show_intro":"0","info_block_position":"","info_block_show_title":"","show_category":"0","link_category":"0","show_parent_category":"0","link_parent_category":"0","show_associations":"1","show_author":"0","link_author":"0","show_create_date":"0","show_modify_date":"0","show_publish_date":"0","show_item_navigation":"0","show_vote":"0","show_icons":"0","show_print_icon":"0","show_email_icon":"0","show_hits":"0","show_tags":"0","show_noauth":"","urls_position":"","menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"menu_show":1,"page_title":"KILERIS (samdomas \\u017eudikas) lengvai i\\u0161spr\\u0119s J\\u016bs\\u0173 problemas.","show_page_heading":"0","page_heading":"","pageclass_sfx":"","menu-meta_description":"Norite perimti bizn\\u012f i\\u0161 verslo partnerio? Trukdo konkurentai? Ne\\u017einote kaip atsikratyti savo vyro meilu\\u017e\\u0117s?\\r\\nKILERIS (samdomas \\u017eudikas) lengvai i\\u0161spr\\u0119s J\\u016bs\\u0173 problemas.","menu-meta_keywords":"kileris, samdomas \\u017eudikas, konkurent\\u0173 \\u0161alinimas, \\u017eudymas u\\u017e pinigus, u\\u017esakomos \\u017emog\\u017eudyst\\u0117s","robots":"","secure":0,"masthead-title":"","masthead-slogan":""}', 11, 12, 1, '*', 0);
+INSERT INTO `aj14x_menu` VALUES (102, 'main', 'RSFormPro', 0x7273666f726d70726f, '', 'rsformpro', 'index.php?option=com_rsform', 'component', 1, 1, 1, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_rsform/assets/images/rsformpro.gif', 0, '{}', 49, 62, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (103, 'main', 'COM_RSFORM_MANAGE_FORMS', 0x636f6d2d7273666f726d2d6d616e6167652d666f726d73, '', 'rsformpro/com-rsform-manage-forms', 'index.php?option=com_rsform&view=forms', 'component', 1, 102, 2, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 50, 51, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (104, 'main', 'COM_RSFORM_MANAGE_SUBMISSIONS', 0x636f6d2d7273666f726d2d6d616e6167652d7375626d697373696f6e73, '', 'rsformpro/com-rsform-manage-submissions', 'index.php?option=com_rsform&view=submissions', 'component', 1, 102, 2, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 52, 53, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (105, 'main', 'COM_RSFORM_MANAGE_DIRECTORY_SUBMISSIONS', 0x636f6d2d7273666f726d2d6d616e6167652d6469726563746f72792d7375626d697373696f6e73, '', 'rsformpro/com-rsform-manage-directory-submissions', 'index.php?option=com_rsform&view=directory', 'component', 1, 102, 2, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 54, 55, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (106, 'main', 'COM_RSFORM_CONFIGURATION', 0x636f6d2d7273666f726d2d636f6e66696775726174696f6e, '', 'rsformpro/com-rsform-configuration', 'index.php?option=com_rsform&view=configuration', 'component', 1, 102, 2, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 56, 57, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (107, 'main', 'COM_RSFORM_BACKUP_RESTORE', 0x636f6d2d7273666f726d2d6261636b75702d726573746f7265, '', 'rsformpro/com-rsform-backup-restore', 'index.php?option=com_rsform&view=backuprestore', 'component', 1, 102, 2, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 58, 59, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (108, 'main', 'COM_RSFORM_UPDATES', 0x636f6d2d7273666f726d2d75706461746573, '', 'rsformpro/com-rsform-updates', 'index.php?option=com_rsform&view=updates', 'component', 1, 102, 2, 10001, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 60, 61, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (109, 'main', 'COM_JAEXTMANAGER', 0x636f6d2d6a616578746d616e61676572, '', 'com-jaextmanager', 'index.php?option=com_jaextmanager', 'component', 1, 1, 1, 10008, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_jaextmanager/assets/images/jauc.png', 0, '{}', 63, 64, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (110, 'mainmenu', 'Užsakymai', 0x757a73616b796d6169, '', 'uzsakymai', 'index.php?option=com_rsform&view=rsform&formId=1', 'component', 1, 1, 1, 10001, 0, '0000-00-00 00:00:00', 0, 1, ' ', 0, '{"menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"menu_show":1,"page_title":"","show_page_heading":"","page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0,"masthead-title":"","masthead-slogan":""}', 13, 14, 0, '*', 0);
+INSERT INTO `aj14x_menu` VALUES (111, 'mainmenu', 'Kainos', 0x6b61696e6f73, '', 'kainos', 'index.php?option=com_content&view=article&id=1', 'component', 1, 1, 1, 22, 0, '0000-00-00 00:00:00', 0, 1, ' ', 0, '{"show_title":"0","link_titles":"0","show_intro":"0","info_block_position":"","info_block_show_title":"0","show_category":"0","link_category":"0","show_parent_category":"0","link_parent_category":"0","show_associations":"0","show_author":"0","link_author":"0","show_create_date":"0","show_modify_date":"0","show_publish_date":"0","show_item_navigation":"0","show_vote":"0","show_icons":"0","show_print_icon":"0","show_email_icon":"0","show_hits":"0","show_tags":"0","show_noauth":"0","urls_position":"","menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"menu_show":1,"page_title":"","show_page_heading":"","page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0,"masthead-title":"","masthead-slogan":""}', 15, 16, 0, '*', 0);
+INSERT INTO `aj14x_menu` VALUES (112, 'menu', 'Užsakymų sąrašas', 0x757a73616b796d752d73617261736173, '', 'uzsakymu-sarasas', 'index.php?option=com_rsform&view=submissions', 'component', 1, 1, 1, 10001, 0, '0000-00-00 00:00:00', 0, 1, ' ', 0, '{"formId":"1","lang":"","enable_submissions":"1","show_search":"1","sort_submissions":"0","userId":"0","show_confirmed":"0","template_module":"<table width=\\"100%\\">{formdata}<\\/table>","template_formdatarow":"<tr><td>{details}{FullName:value}{\\/details}<\\/td><td>{Adress:value}<\\/td><td>{Photo:value}<\\/td><td>{Position:value}<\\/td><td>{Email:value}<\\/td><\\/tr>","template_formdetail":"<table width=\\"100%\\"><tr><td>{FullName:value}<\\/td><td>{Adress:value}<\\/td><td>{Photo:value}<\\/td><td>{Position:value}<\\/td><td>{Email:value}<\\/td><\\/tr><\\/table>","menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"menu_show":1,"page_title":"","show_page_heading":"1","page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0,"masthead-title":"","masthead-slogan":""}', 17, 18, 0, '*', 0);
+INSERT INTO `aj14x_menu` VALUES (113, 'main', 'COM_JCE', 0x636f6d2d6a6365, '', 'com-jce', 'index.php?option=com_jce', 'component', 1, 1, 1, 10010, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_jce/media/img/menu/logo.png', 0, '{}', 65, 72, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (114, 'main', 'COM_JCE_MENU_CPANEL', 0x636f6d2d6a63652d6d656e752d6370616e656c, '', 'com-jce/com-jce-menu-cpanel', 'index.php?option=com_jce', 'component', 1, 113, 2, 10010, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 66, 67, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (115, 'main', 'COM_JCE_MENU_CONFIG', 0x636f6d2d6a63652d6d656e752d636f6e666967, '', 'com-jce/com-jce-menu-config', 'index.php?option=com_jce&view=config', 'component', 1, 113, 2, 10010, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 68, 69, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (116, 'main', 'COM_JCE_MENU_PROFILES', 0x636f6d2d6a63652d6d656e752d70726f66696c6573, '', 'com-jce/com-jce-menu-profiles', 'index.php?option=com_jce&view=profiles', 'component', 1, 113, 2, 10010, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 70, 71, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (117, 'main', 'COM_AKEEBA', 0x636f6d2d616b65656261, '', 'com-akeeba', 'index.php?option=com_akeeba', 'component', 1, 1, 1, 10019, 0, '0000-00-00 00:00:00', 0, 1, '../media/com_akeeba/icons/akeeba-16.png', 0, '{}', 73, 74, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (118, 'main', 'RSFirewall', 0x72736669726577616c6c, '', 'rsfirewall', 'index.php?option=com_rsfirewall', 'component', 1, 1, 1, 10024, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_rsfirewall/assets/images/rsfirewall.gif', 0, '{}', 75, 94, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (119, 'main', 'COM_RSFIREWALL_OVERVIEW', 0x636f6d2d72736669726577616c6c2d6f76657276696577, '', 'rsfirewall/com-rsfirewall-overview', 'index.php?option=com_rsfirewall', 'component', 1, 118, 2, 10024, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 76, 77, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (120, 'main', 'COM_RSFIREWALL_SYSTEM_CHECK', 0x636f6d2d72736669726577616c6c2d73797374656d2d636865636b, '', 'rsfirewall/com-rsfirewall-system-check', 'index.php?option=com_rsfirewall&view=check', 'component', 1, 118, 2, 10024, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 78, 79, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (121, 'main', 'COM_RSFIREWALL_DATABASE_CHECK', 0x636f6d2d72736669726577616c6c2d64617461626173652d636865636b, '', 'rsfirewall/com-rsfirewall-database-check', 'index.php?option=com_rsfirewall&view=dbcheck', 'component', 1, 118, 2, 10024, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 80, 81, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (122, 'main', 'COM_RSFIREWALL_SYSTEM_LOGS', 0x636f6d2d72736669726577616c6c2d73797374656d2d6c6f6773, '', 'rsfirewall/com-rsfirewall-system-logs', 'index.php?option=com_rsfirewall&view=logs', 'component', 1, 118, 2, 10024, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 82, 83, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (123, 'main', 'COM_RSFIREWALL_FIREWALL_CONFIGURATION', 0x636f6d2d72736669726577616c6c2d6669726577616c6c2d636f6e66696775726174696f6e, '', 'rsfirewall/com-rsfirewall-firewall-configuration', 'index.php?option=com_rsfirewall&view=configuration', 'component', 1, 118, 2, 10024, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 84, 85, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (124, 'main', 'COM_RSFIREWALL_LISTS', 0x636f6d2d72736669726577616c6c2d6c69737473, '', 'rsfirewall/com-rsfirewall-lists', 'index.php?option=com_rsfirewall&view=lists', 'component', 1, 118, 2, 10024, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 86, 87, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (125, 'main', 'COM_RSFIREWALL_EXCEPTIONS', 0x636f6d2d72736669726577616c6c2d657863657074696f6e73, '', 'rsfirewall/com-rsfirewall-exceptions', 'index.php?option=com_rsfirewall&view=exceptions', 'component', 1, 118, 2, 10024, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 88, 89, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (126, 'main', 'COM_RSFIREWALL_RSS_FEEDS_CONFIGURATION', 0x636f6d2d72736669726577616c6c2d7273732d66656564732d636f6e66696775726174696f6e, '', 'rsfirewall/com-rsfirewall-rss-feeds-configuration', 'index.php?option=com_rsfirewall&view=feeds', 'component', 1, 118, 2, 10024, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 90, 91, 0, '', 1);
+INSERT INTO `aj14x_menu` VALUES (127, 'main', 'COM_RSFIREWALL_UPDATES', 0x636f6d2d72736669726577616c6c2d75706461746573, '', 'rsfirewall/com-rsfirewall-updates', 'index.php?option=com_rsfirewall&view=updates', 'component', 1, 118, 2, 10024, 0, '0000-00-00 00:00:00', 0, 1, 'class:component', 0, '{}', 92, 93, 0, '', 1);
 
 -- --------------------------------------------------------
 
@@ -1638,13 +1777,14 @@ CREATE TABLE `aj14x_menu_types` (
   `client_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_menutype` (`menutype`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=3 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_menu_types`
 -- 
 
 INSERT INTO `aj14x_menu_types` VALUES (1, 0, 'mainmenu', 'Main Menu', 'The main menu for the site', 0);
+INSERT INTO `aj14x_menu_types` VALUES (2, 62, 'menu', 'Nematomas', '', 0);
 
 -- --------------------------------------------------------
 
@@ -1718,7 +1858,7 @@ CREATE TABLE `aj14x_modules` (
   KEY `published` (`published`,`access`),
   KEY `newsfeeds` (`module`,`published`),
   KEY `idx_language` (`language`)
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=87 ;
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=88 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_modules`
@@ -1739,6 +1879,7 @@ INSERT INTO `aj14x_modules` VALUES (16, 50, 'Login Form', '', '', 7, 'position-7
 INSERT INTO `aj14x_modules` VALUES (17, 51, 'Breadcrumbs', '', '', 1, 'position-2', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_breadcrumbs', 1, 1, '{"moduleclass_sfx":"","showHome":"1","homeText":"","showComponent":"1","separator":"","cache":"0","cache_time":"0","cachemode":"itemid"}', 0, '*');
 INSERT INTO `aj14x_modules` VALUES (79, 52, 'Multilanguage status', '', '', 1, 'status', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 'mod_multilangstatus', 3, 1, '{"layout":"_:default","moduleclass_sfx":"","cache":"0"}', 1, '*');
 INSERT INTO `aj14x_modules` VALUES (86, 53, 'Joomla Version', '', '', 1, 'footer', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_version', 3, 1, '{"format":"short","product":"1","layout":"_:default","moduleclass_sfx":"","cache":"0"}', 1, '*');
+INSERT INTO `aj14x_modules` VALUES (87, 65, 'RSFirewall! Control Panel Module', '', '', 1, 'cpanel', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_rsfirewall', 1, 1, '', 1, '*');
 
 -- --------------------------------------------------------
 
@@ -1773,6 +1914,7 @@ INSERT INTO `aj14x_modules_menu` VALUES (16, 0);
 INSERT INTO `aj14x_modules_menu` VALUES (17, 0);
 INSERT INTO `aj14x_modules_menu` VALUES (79, 0);
 INSERT INTO `aj14x_modules_menu` VALUES (86, 0);
+INSERT INTO `aj14x_modules_menu` VALUES (87, 0);
 
 -- --------------------------------------------------------
 
@@ -1904,6 +2046,626 @@ CREATE TABLE `aj14x_redirect_links` (
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_redirect_links`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_rsfirewall_configuration`
+-- 
+
+CREATE TABLE `aj14x_rsfirewall_configuration` (
+  `name` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  `type` varchar(16) NOT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_rsfirewall_configuration`
+-- 
+
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('abusive_ips', '0', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('active_scanner_status', '1', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('active_scanner_status_backend', '1', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('admin_users', '', 'array-int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('autoban_attempts', '10', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('backend_captcha', '3', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('backend_password', '', 'text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('backend_password_enabled', '0', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('blocked_countries', '', 'array-text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('capture_backend_login', '1', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('capture_backend_password', '1', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('check_proxy_ip_headers', 'HTTP_X_REAL_IP\nHTTP_CLIENT_IP\nHTTP_TRUE_CLIENT_IP\nHTTP_X_FWD_IP_ADDR\nHTTP_X_FORWARDED_FOR\nHTTP_X_FORWARDED\nHTTP_FORWARDED_FOR\nHTTP_FORWARDED\nHTTP_VIA\nHTTP_X_COMING_FROM\nHTTP_COMING_FROM', 'array-text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('code', '', 'text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('deny_referer', '', 'text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('disable_installer', '0', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('disable_new_admin_users', '0', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('enable_autoban', '0', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('enable_autoban_login', '0', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('enable_backend_captcha', '0', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('enable_extra_logging', '0', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('enable_js_for', 'post', 'array-text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('enable_php_for', 'get', 'array-text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('enable_sql_for', 'get', 'array-text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('file_permissions', '644', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('filter_js', '1', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('filter_uploads', '1', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('folder_permissions', '755', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('google_safebrowsing_api_key', '', 'text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('grade', '82', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('ipv4_whois', 'http://whois.domaintools.com/{ip}', 'text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('ipv6_whois', '', 'text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('lfi', '1', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('log_alert_level', '', 'array-text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('log_emails', 'virgismankus@gmail.com', 'text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('log_emails_count', '0', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('log_emails_send_after', '0', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('log_history', '30', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('log_hour_limit', '50', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('log_overview', '5', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('log_system_check', '0', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('monitor_core', '1', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('monitor_users', '', 'array-int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('offset', '300', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('request_timeout', '0', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('rfi', '1', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('system_check_last_run', '2017-09-18 05:06:18', 'text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('verify_agents', 'perl\ncurl\njava', 'array-text');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('verify_emails', '0', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('verify_generator', '1', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('verify_multiple_exts', '1', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('verify_upload', '1', 'int');
+INSERT INTO `aj14x_rsfirewall_configuration` VALUES ('verify_upload_blacklist_exts', 'pht\r\nphp\r\njs\r\nexe\r\ncom\r\nbat\r\ncmd\r\nmp3', 'text');
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_rsfirewall_exceptions`
+-- 
+
+CREATE TABLE `aj14x_rsfirewall_exceptions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(4) NOT NULL,
+  `regex` tinyint(1) NOT NULL,
+  `match` text NOT NULL,
+  `php` tinyint(1) NOT NULL,
+  `sql` tinyint(1) NOT NULL,
+  `js` tinyint(1) NOT NULL,
+  `uploads` tinyint(1) NOT NULL,
+  `reason` text NOT NULL,
+  `date` datetime NOT NULL,
+  `published` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_rsfirewall_exceptions`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_rsfirewall_feeds`
+-- 
+
+CREATE TABLE `aj14x_rsfirewall_feeds` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `url` text NOT NULL,
+  `limit` tinyint(4) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  `published` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_rsfirewall_feeds`
+-- 
+
+INSERT INTO `aj14x_rsfirewall_feeds` VALUES (1, 'http://feeds.joomla.org/JoomlaSecurityNews', 5, 1, 0);
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_rsfirewall_hashes`
+-- 
+
+CREATE TABLE `aj14x_rsfirewall_hashes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `file` text NOT NULL,
+  `hash` varchar(32) NOT NULL,
+  `type` varchar(64) NOT NULL,
+  `flag` varchar(1) NOT NULL,
+  `date` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=245 DEFAULT CHARSET=utf8 AUTO_INCREMENT=245 ;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_rsfirewall_hashes`
+-- 
+
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (1, 'plugins/user/joomla/joomla.php', '37c680d3f1965de56b6907731392055f', '2.5.7', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (2, 'plugins/authentication/joomla/joomla.php', '493aa7e7fdcc8810d20c852ac8793ca5', '2.5.7', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (3, 'index.php', '7b8842445269965a434c7bae60db279d', '2.5.7', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (4, 'administrator/index.php', '43aa843ec0f3bbb0c0ee7654378a6470', '2.5.7', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (5, 'plugins/user/joomla/joomla.php', '37c680d3f1965de56b6907731392055f', '2.5.8', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (6, 'plugins/authentication/joomla/joomla.php', '493aa7e7fdcc8810d20c852ac8793ca5', '2.5.8', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (7, 'index.php', '7b8842445269965a434c7bae60db279d', '2.5.8', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (8, 'administrator/index.php', '43aa843ec0f3bbb0c0ee7654378a6470', '2.5.8', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (9, 'plugins/user/joomla/joomla.php', '37c680d3f1965de56b6907731392055f', '2.5.9', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (10, 'plugins/authentication/joomla/joomla.php', 'ac4e4c99f29c34feffabfa7521ca1c06', '2.5.9', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (11, 'index.php', '9d9b87b6e0d9e7caa1bddb5c34fd2097', '2.5.9', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (12, 'administrator/index.php', '49008f8372adc026f2c4229c4dddb717', '2.5.9', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (13, 'plugins/user/joomla/joomla.php', '37c680d3f1965de56b6907731392055f', '2.5.10', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (14, 'plugins/authentication/joomla/joomla.php', 'ac4e4c99f29c34feffabfa7521ca1c06', '2.5.10', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (15, 'index.php', '9d9b87b6e0d9e7caa1bddb5c34fd2097', '2.5.10', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (16, 'administrator/index.php', '49008f8372adc026f2c4229c4dddb717', '2.5.10', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (17, 'plugins/user/joomla/joomla.php', '37c680d3f1965de56b6907731392055f', '2.5.11', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (18, 'plugins/authentication/joomla/joomla.php', 'ac4e4c99f29c34feffabfa7521ca1c06', '2.5.11', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (19, 'index.php', '9d9b87b6e0d9e7caa1bddb5c34fd2097', '2.5.11', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (20, 'administrator/index.php', '49008f8372adc026f2c4229c4dddb717', '2.5.11', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (21, 'plugins/user/joomla/joomla.php', '37c680d3f1965de56b6907731392055f', '2.5.13', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (22, 'plugins/authentication/joomla/joomla.php', 'ac4e4c99f29c34feffabfa7521ca1c06', '2.5.13', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (23, 'index.php', '9d9b87b6e0d9e7caa1bddb5c34fd2097', '2.5.13', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (24, 'administrator/index.php', '49008f8372adc026f2c4229c4dddb717', '2.5.13', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (25, 'plugins/user/joomla/joomla.php', '37c680d3f1965de56b6907731392055f', '2.5.14', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (26, 'plugins/authentication/joomla/joomla.php', 'ac4e4c99f29c34feffabfa7521ca1c06', '2.5.14', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (27, 'index.php', '9d9b87b6e0d9e7caa1bddb5c34fd2097', '2.5.14', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (28, 'administrator/index.php', '49008f8372adc026f2c4229c4dddb717', '2.5.14', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (29, 'plugins/user/joomla/joomla.php', '37c680d3f1965de56b6907731392055f', '2.5.15', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (30, 'plugins/authentication/joomla/joomla.php', 'ac4e4c99f29c34feffabfa7521ca1c06', '2.5.15', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (31, 'index.php', '9d9b87b6e0d9e7caa1bddb5c34fd2097', '2.5.15', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (32, 'administrator/index.php', '49008f8372adc026f2c4229c4dddb717', '2.5.15', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (33, 'plugins/user/joomla/joomla.php', '37c680d3f1965de56b6907731392055f', '2.5.16', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (34, 'plugins/authentication/joomla/joomla.php', 'ac4e4c99f29c34feffabfa7521ca1c06', '2.5.16', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (35, 'index.php', '9d9b87b6e0d9e7caa1bddb5c34fd2097', '2.5.16', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (36, 'administrator/index.php', '49008f8372adc026f2c4229c4dddb717', '2.5.16', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (37, 'plugins/user/joomla/joomla.php', '37c680d3f1965de56b6907731392055f', '2.5.17', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (38, 'plugins/authentication/joomla/joomla.php', 'ac4e4c99f29c34feffabfa7521ca1c06', '2.5.17', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (39, 'index.php', '9d9b87b6e0d9e7caa1bddb5c34fd2097', '2.5.17', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (40, 'administrator/index.php', '49008f8372adc026f2c4229c4dddb717', '2.5.17', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (41, 'plugins/user/joomla/joomla.php', 'ae2b6a2ec8f679c30371a9f072d7ec38', '2.5.18', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (42, 'plugins/authentication/joomla/joomla.php', 'fa5ba418dfeec06e43a743b82bf45ea4', '2.5.18', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (43, 'index.php', 'd2fefc268e09cc618b02cf813a225699', '2.5.18', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (44, 'administrator/index.php', '4de85447c89483e1dbcdf669e897351f', '2.5.18', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (45, 'plugins/user/joomla/joomla.php', 'ae2b6a2ec8f679c30371a9f072d7ec38', '2.5.19', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (46, 'plugins/authentication/joomla/joomla.php', 'fa5ba418dfeec06e43a743b82bf45ea4', '2.5.19', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (47, 'index.php', 'd2fefc268e09cc618b02cf813a225699', '2.5.19', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (48, 'administrator/index.php', '4de85447c89483e1dbcdf669e897351f', '2.5.19', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (49, 'plugins/user/joomla/joomla.php', 'ae2b6a2ec8f679c30371a9f072d7ec38', '2.5.20', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (50, 'plugins/authentication/joomla/joomla.php', 'fa5ba418dfeec06e43a743b82bf45ea4', '2.5.20', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (51, 'index.php', 'd2fefc268e09cc618b02cf813a225699', '2.5.20', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (52, 'administrator/index.php', '4de85447c89483e1dbcdf669e897351f', '2.5.20', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (53, 'plugins/user/joomla/joomla.php', 'ae2b6a2ec8f679c30371a9f072d7ec38', '2.5.21', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (54, 'plugins/authentication/joomla/joomla.php', 'fa5ba418dfeec06e43a743b82bf45ea4', '2.5.21', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (55, 'index.php', 'd2fefc268e09cc618b02cf813a225699', '2.5.21', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (56, 'administrator/index.php', '4de85447c89483e1dbcdf669e897351f', '2.5.21', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (57, 'plugins/user/joomla/joomla.php', 'ae2b6a2ec8f679c30371a9f072d7ec38', '2.5.22', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (58, 'plugins/authentication/joomla/joomla.php', 'fa5ba418dfeec06e43a743b82bf45ea4', '2.5.22', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (59, 'index.php', 'd2fefc268e09cc618b02cf813a225699', '2.5.22', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (60, 'administrator/index.php', '4de85447c89483e1dbcdf669e897351f', '2.5.22', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (61, 'plugins/user/joomla/joomla.php', 'ae2b6a2ec8f679c30371a9f072d7ec38', '2.5.23', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (62, 'plugins/authentication/joomla/joomla.php', 'fa5ba418dfeec06e43a743b82bf45ea4', '2.5.23', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (63, 'index.php', 'd2fefc268e09cc618b02cf813a225699', '2.5.23', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (64, 'administrator/index.php', '4de85447c89483e1dbcdf669e897351f', '2.5.23', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (65, 'plugins/user/joomla/joomla.php', 'ae2b6a2ec8f679c30371a9f072d7ec38', '2.5.24', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (66, 'plugins/authentication/joomla/joomla.php', 'fa5ba418dfeec06e43a743b82bf45ea4', '2.5.24', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (67, 'index.php', 'd2fefc268e09cc618b02cf813a225699', '2.5.24', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (68, 'administrator/index.php', '4de85447c89483e1dbcdf669e897351f', '2.5.24', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (69, 'plugins/user/joomla/joomla.php', 'ae2b6a2ec8f679c30371a9f072d7ec38', '2.5.25', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (70, 'plugins/authentication/joomla/joomla.php', 'fa5ba418dfeec06e43a743b82bf45ea4', '2.5.25', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (71, 'index.php', 'd2fefc268e09cc618b02cf813a225699', '2.5.25', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (72, 'administrator/index.php', '4de85447c89483e1dbcdf669e897351f', '2.5.25', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (73, 'plugins/user/joomla/joomla.php', 'ae2b6a2ec8f679c30371a9f072d7ec38', '2.5.26', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (74, 'plugins/authentication/joomla/joomla.php', 'fa5ba418dfeec06e43a743b82bf45ea4', '2.5.26', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (75, 'index.php', 'd2fefc268e09cc618b02cf813a225699', '2.5.26', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (76, 'administrator/index.php', '4de85447c89483e1dbcdf669e897351f', '2.5.26', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (77, 'plugins/user/joomla/joomla.php', 'ae2b6a2ec8f679c30371a9f072d7ec38', '2.5.27', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (78, 'plugins/authentication/joomla/joomla.php', 'fa5ba418dfeec06e43a743b82bf45ea4', '2.5.27', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (79, 'index.php', 'd2fefc268e09cc618b02cf813a225699', '2.5.27', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (80, 'administrator/index.php', '4de85447c89483e1dbcdf669e897351f', '2.5.27', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (81, 'plugins/user/joomla/joomla.php', 'cdc25e22efba44c2ee96765f7f29fc94', '3.0.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (82, 'plugins/authentication/joomla/joomla.php', '8ed6639864a180fbc2206a44441a8b7d', '3.0.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (83, 'index.php', '5ef1a5edf66502c473de1439650b7157', '3.0.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (84, 'administrator/index.php', 'ee513c632afbd46b64cb6ddb11579862', '3.0.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (85, 'plugins/user/joomla/joomla.php', 'cdc25e22efba44c2ee96765f7f29fc94', '3.0.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (86, 'plugins/authentication/joomla/joomla.php', '8ed6639864a180fbc2206a44441a8b7d', '3.0.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (87, 'index.php', '5ef1a5edf66502c473de1439650b7157', '3.0.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (88, 'administrator/index.php', 'ee513c632afbd46b64cb6ddb11579862', '3.0.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (89, 'plugins/user/joomla/joomla.php', 'cdc25e22efba44c2ee96765f7f29fc94', '3.0.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (90, 'plugins/authentication/joomla/joomla.php', '8ed6639864a180fbc2206a44441a8b7d', '3.0.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (91, 'index.php', '5ef1a5edf66502c473de1439650b7157', '3.0.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (92, 'administrator/index.php', 'ee513c632afbd46b64cb6ddb11579862', '3.0.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (93, 'plugins/user/joomla/joomla.php', '9fd830d97736f5f7536f6f9c7e180995', '3.0.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (94, 'plugins/authentication/joomla/joomla.php', '6f323887899ea20d4dc5a42ef99b9176', '3.0.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (95, 'index.php', 'd5a79d6d4694694a225a6b9a678ec6b1', '3.0.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (96, 'administrator/index.php', '3527f9b34bd165f74e91c9425e8cc85a', '3.0.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (97, 'plugins/user/joomla/joomla.php', '9fd830d97736f5f7536f6f9c7e180995', '3.0.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (98, 'plugins/authentication/joomla/joomla.php', '6f323887899ea20d4dc5a42ef99b9176', '3.0.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (99, 'index.php', 'd5a79d6d4694694a225a6b9a678ec6b1', '3.0.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (100, 'administrator/index.php', '3527f9b34bd165f74e91c9425e8cc85a', '3.0.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (101, 'plugins/user/joomla/joomla.php', '3cd9d1f8beff4cad347fe808d8e48acf', '3.1.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (102, 'plugins/authentication/joomla/joomla.php', '37ef6204d8dfcd41b5d7fd7f97cdf526', '3.1.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (103, 'index.php', 'd5a79d6d4694694a225a6b9a678ec6b1', '3.1.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (104, 'administrator/index.php', '3527f9b34bd165f74e91c9425e8cc85a', '3.1.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (105, 'plugins/user/joomla/joomla.php', '3cd9d1f8beff4cad347fe808d8e48acf', '3.1.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (106, 'plugins/authentication/joomla/joomla.php', '37ef6204d8dfcd41b5d7fd7f97cdf526', '3.1.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (107, 'index.php', 'd5a79d6d4694694a225a6b9a678ec6b1', '3.1.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (108, 'administrator/index.php', '3527f9b34bd165f74e91c9425e8cc85a', '3.1.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (109, 'plugins/user/joomla/joomla.php', '3cd9d1f8beff4cad347fe808d8e48acf', '3.1.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (110, 'plugins/authentication/joomla/joomla.php', 'e32dc6b8000891726982fc265cf88bd9', '3.1.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (111, 'index.php', 'd5a79d6d4694694a225a6b9a678ec6b1', '3.1.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (112, 'administrator/index.php', '3e6d4dcde6cee18a841798773028b4ff', '3.1.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (113, 'plugins/user/joomla/joomla.php', '3cd9d1f8beff4cad347fe808d8e48acf', '3.1.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (114, 'plugins/authentication/joomla/joomla.php', 'e32dc6b8000891726982fc265cf88bd9', '3.1.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (115, 'index.php', 'd5a79d6d4694694a225a6b9a678ec6b1', '3.1.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (116, 'administrator/index.php', '3e6d4dcde6cee18a841798773028b4ff', '3.1.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (117, 'plugins/user/joomla/joomla.php', '3cd9d1f8beff4cad347fe808d8e48acf', '3.1.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (118, 'plugins/authentication/joomla/joomla.php', 'e32dc6b8000891726982fc265cf88bd9', '3.1.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (119, 'index.php', 'd5a79d6d4694694a225a6b9a678ec6b1', '3.1.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (120, 'administrator/index.php', '3e6d4dcde6cee18a841798773028b4ff', '3.1.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (121, 'plugins/user/joomla/joomla.php', '503dfe4bea35227f7c07d4401d366f30', '3.2.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (122, 'plugins/authentication/joomla/joomla.php', '5c22bb3cee69ed662d353ff1f7575a63', '3.2.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (123, 'index.php', 'acf88666df61e778e7455c5024a95eff', '3.2.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (124, 'administrator/index.php', '8ad14cf42cafbfb4345c555ae5cdd567', '3.2.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (125, 'plugins/user/joomla/joomla.php', 'd939397041ef29bd8febec3c75d433b3', '3.2.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (126, 'plugins/authentication/joomla/joomla.php', '2ef41dd148c1d9c4db79b157eabdd7d0', '3.2.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (127, 'index.php', 'acf88666df61e778e7455c5024a95eff', '3.2.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (128, 'administrator/index.php', '8ad14cf42cafbfb4345c555ae5cdd567', '3.2.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (129, 'plugins/user/joomla/joomla.php', '6cdf1c5a27a5caa6be0d373c791f2cc9', '3.2.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (130, 'plugins/authentication/joomla/joomla.php', '5604973f5b7de18ffe3ebebdb274c013', '3.2.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (131, 'index.php', 'ef5646b4d3a4de44f891bb993c5c2c27', '3.2.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (132, 'administrator/index.php', 'b65e93fd1da75297aa713c4585aaf90f', '3.2.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (133, 'plugins/user/joomla/joomla.php', '0c79ab5d674eaa3f5a81e7e1a57ac0ee', '3.2.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (134, 'plugins/authentication/joomla/joomla.php', '5604973f5b7de18ffe3ebebdb274c013', '3.2.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (135, 'index.php', 'ef5646b4d3a4de44f891bb993c5c2c27', '3.2.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (136, 'administrator/index.php', 'b65e93fd1da75297aa713c4585aaf90f', '3.2.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (137, 'plugins/user/joomla/joomla.php', '0c79ab5d674eaa3f5a81e7e1a57ac0ee', '3.2.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (138, 'plugins/authentication/joomla/joomla.php', 'f34bc9cfc67ee58e1bd5af603b76e96d', '3.2.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (139, 'index.php', 'ef5646b4d3a4de44f891bb993c5c2c27', '3.2.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (140, 'administrator/index.php', 'b65e93fd1da75297aa713c4585aaf90f', '3.2.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (141, 'plugins/user/joomla/joomla.php', '0c79ab5d674eaa3f5a81e7e1a57ac0ee', '3.2.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (142, 'plugins/authentication/joomla/joomla.php', 'f34bc9cfc67ee58e1bd5af603b76e96d', '3.2.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (143, 'index.php', 'ef5646b4d3a4de44f891bb993c5c2c27', '3.2.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (144, 'administrator/index.php', 'b65e93fd1da75297aa713c4585aaf90f', '3.2.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (145, 'plugins/user/joomla/joomla.php', '0c79ab5d674eaa3f5a81e7e1a57ac0ee', '3.2.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (146, 'plugins/authentication/joomla/joomla.php', 'f34bc9cfc67ee58e1bd5af603b76e96d', '3.2.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (147, 'index.php', 'ef5646b4d3a4de44f891bb993c5c2c27', '3.2.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (148, 'administrator/index.php', 'b65e93fd1da75297aa713c4585aaf90f', '3.2.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (149, 'plugins/user/joomla/joomla.php', '0c79ab5d674eaa3f5a81e7e1a57ac0ee', '3.2.7', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (150, 'plugins/authentication/joomla/joomla.php', 'f34bc9cfc67ee58e1bd5af603b76e96d', '3.2.7', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (151, 'index.php', 'ef5646b4d3a4de44f891bb993c5c2c27', '3.2.7', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (152, 'administrator/index.php', 'b65e93fd1da75297aa713c4585aaf90f', '3.2.7', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (153, 'plugins/user/joomla/joomla.php', '0c79ab5d674eaa3f5a81e7e1a57ac0ee', '3.3.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (154, 'plugins/authentication/joomla/joomla.php', 'f34bc9cfc67ee58e1bd5af603b76e96d', '3.3.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (155, 'index.php', '7397f4ad99a402006262384a5f48157e', '3.3.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (156, 'administrator/index.php', '2886000c74dea168b0d7d6ae49d46838', '3.3.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (157, 'plugins/user/joomla/joomla.php', '0c79ab5d674eaa3f5a81e7e1a57ac0ee', '3.3.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (158, 'plugins/authentication/joomla/joomla.php', 'f34bc9cfc67ee58e1bd5af603b76e96d', '3.3.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (159, 'index.php', '7397f4ad99a402006262384a5f48157e', '3.3.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (160, 'administrator/index.php', '2886000c74dea168b0d7d6ae49d46838', '3.3.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (161, 'plugins/user/joomla/joomla.php', 'dc7b2aad0aa7c4112596d589c843261b', '3.3.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (162, 'plugins/authentication/joomla/joomla.php', 'f34bc9cfc67ee58e1bd5af603b76e96d', '3.3.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (163, 'index.php', '7397f4ad99a402006262384a5f48157e', '3.3.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (164, 'administrator/index.php', '2886000c74dea168b0d7d6ae49d46838', '3.3.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (165, 'plugins/user/joomla/joomla.php', 'dc7b2aad0aa7c4112596d589c843261b', '3.3.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (166, 'plugins/authentication/joomla/joomla.php', 'f34bc9cfc67ee58e1bd5af603b76e96d', '3.3.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (167, 'index.php', '7397f4ad99a402006262384a5f48157e', '3.3.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (168, 'administrator/index.php', '2886000c74dea168b0d7d6ae49d46838', '3.3.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (169, 'plugins/user/joomla/joomla.php', '8125edbbdc2b3d28718d7df38aa8ef50', '3.3.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (170, 'plugins/authentication/joomla/joomla.php', 'f34bc9cfc67ee58e1bd5af603b76e96d', '3.3.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (171, 'index.php', '7397f4ad99a402006262384a5f48157e', '3.3.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (172, 'administrator/index.php', '2886000c74dea168b0d7d6ae49d46838', '3.3.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (173, 'plugins/user/joomla/joomla.php', '8125edbbdc2b3d28718d7df38aa8ef50', '3.3.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (174, 'plugins/authentication/joomla/joomla.php', 'f34bc9cfc67ee58e1bd5af603b76e96d', '3.3.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (175, 'index.php', '7397f4ad99a402006262384a5f48157e', '3.3.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (176, 'administrator/index.php', '2886000c74dea168b0d7d6ae49d46838', '3.3.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (177, 'plugins/user/joomla/joomla.php', '8125edbbdc2b3d28718d7df38aa8ef50', '3.3.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (178, 'plugins/authentication/joomla/joomla.php', 'f34bc9cfc67ee58e1bd5af603b76e96d', '3.3.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (179, 'index.php', '7397f4ad99a402006262384a5f48157e', '3.3.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (180, 'administrator/index.php', '2886000c74dea168b0d7d6ae49d46838', '3.3.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (181, 'plugins/user/joomla/joomla.php', '3078e7e560957e9236ac0f6ac1190f76', '3.4.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (182, 'plugins/authentication/joomla/joomla.php', '7689e46b5cdc9b3092a8ecd1ba8f5119', '3.4.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (183, 'index.php', 'a1229f1205110a45fda8669c0d6bed46', '3.4.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (184, 'administrator/index.php', 'c5f7cb85395682b98736e6b12418ac20', '3.4.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (185, 'plugins/user/joomla/joomla.php', '3078e7e560957e9236ac0f6ac1190f76', '3.4.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (186, 'plugins/authentication/joomla/joomla.php', '7689e46b5cdc9b3092a8ecd1ba8f5119', '3.4.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (187, 'index.php', 'a1229f1205110a45fda8669c0d6bed46', '3.4.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (188, 'administrator/index.php', 'c5f7cb85395682b98736e6b12418ac20', '3.4.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (189, 'plugins/user/joomla/joomla.php', '9dca3b201c621954da9ae768303262a9', '3.4.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (190, 'plugins/authentication/joomla/joomla.php', 'a9b4e0104b83f6c4362736d99cd575c1', '3.4.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (191, 'index.php', '5c026877a8ce708676a492a52cd12e58', '3.4.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (192, 'administrator/index.php', 'b50cff8f3c36fc71e32231cdcebbafc3', '3.4.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (193, 'plugins/user/joomla/joomla.php', '9dca3b201c621954da9ae768303262a9', '3.4.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (194, 'plugins/authentication/joomla/joomla.php', 'a9b4e0104b83f6c4362736d99cd575c1', '3.4.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (195, 'index.php', '5c026877a8ce708676a492a52cd12e58', '3.4.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (196, 'administrator/index.php', 'b50cff8f3c36fc71e32231cdcebbafc3', '3.4.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (197, 'plugins/user/joomla/joomla.php', '9dca3b201c621954da9ae768303262a9', '3.4.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (198, 'plugins/authentication/joomla/joomla.php', 'a9b4e0104b83f6c4362736d99cd575c1', '3.4.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (199, 'index.php', '5c026877a8ce708676a492a52cd12e58', '3.4.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (200, 'administrator/index.php', 'b50cff8f3c36fc71e32231cdcebbafc3', '3.4.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (201, 'plugins/user/joomla/joomla.php', '9dca3b201c621954da9ae768303262a9', '3.4.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (202, 'plugins/authentication/joomla/joomla.php', 'a9b4e0104b83f6c4362736d99cd575c1', '3.4.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (203, 'index.php', '5c026877a8ce708676a492a52cd12e58', '3.4.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (204, 'administrator/index.php', 'b50cff8f3c36fc71e32231cdcebbafc3', '3.4.5', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (205, 'plugins/user/joomla/joomla.php', '9dca3b201c621954da9ae768303262a9', '3.4.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (206, 'plugins/authentication/joomla/joomla.php', 'a9b4e0104b83f6c4362736d99cd575c1', '3.4.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (207, 'index.php', '5c026877a8ce708676a492a52cd12e58', '3.4.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (208, 'administrator/index.php', 'b50cff8f3c36fc71e32231cdcebbafc3', '3.4.6', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (209, 'plugins/user/joomla/joomla.php', '9dca3b201c621954da9ae768303262a9', '3.4.7', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (210, 'plugins/authentication/joomla/joomla.php', 'a9b4e0104b83f6c4362736d99cd575c1', '3.4.7', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (211, 'index.php', '5c026877a8ce708676a492a52cd12e58', '3.4.7', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (212, 'administrator/index.php', 'b50cff8f3c36fc71e32231cdcebbafc3', '3.4.7', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (213, 'plugins/user/joomla/joomla.php', '9dca3b201c621954da9ae768303262a9', '3.4.8', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (214, 'plugins/authentication/joomla/joomla.php', 'a9b4e0104b83f6c4362736d99cd575c1', '3.4.8', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (215, 'index.php', '5c026877a8ce708676a492a52cd12e58', '3.4.8', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (216, 'administrator/index.php', 'b50cff8f3c36fc71e32231cdcebbafc3', '3.4.8', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (217, 'plugins/user/joomla/joomla.php', 'd9337799a4e43640a5717a88c33accf0', '3.5.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (218, 'plugins/authentication/joomla/joomla.php', 'b5687c0549b50e57a4a7f583324f1487', '3.5.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (219, 'index.php', 'f81654a86c69fe7cb685905b5305c06d', '3.5.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (220, 'administrator/index.php', 'c1e6484a0bc1df6e179d49ed3956d698', '3.5.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (221, 'plugins/user/joomla/joomla.php', 'd9337799a4e43640a5717a88c33accf0', '3.5.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (222, 'plugins/authentication/joomla/joomla.php', 'b5687c0549b50e57a4a7f583324f1487', '3.5.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (223, 'index.php', 'f81654a86c69fe7cb685905b5305c06d', '3.5.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (224, 'administrator/index.php', 'c1e6484a0bc1df6e179d49ed3956d698', '3.5.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (225, 'plugins/user/joomla/joomla.php', 'ff9dc38b50f4faf6eb2874bac5bf9b69', '3.6.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (226, 'plugins/authentication/joomla/joomla.php', 'b5687c0549b50e57a4a7f583324f1487', '3.6.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (227, 'index.php', 'f81654a86c69fe7cb685905b5305c06d', '3.6.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (228, 'administrator/index.php', 'c1e6484a0bc1df6e179d49ed3956d698', '3.6.0', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (229, 'plugins/user/joomla/joomla.php', 'b4298c487c39049b75b7fbc850d257e7', '3.6.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (230, 'plugins/authentication/joomla/joomla.php', '3a8e8ad739d4105d851669f1f2c06c10', '3.6.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (231, 'index.php', 'f81654a86c69fe7cb685905b5305c06d', '3.6.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (232, 'administrator/index.php', 'c1e6484a0bc1df6e179d49ed3956d698', '3.6.1', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (233, 'plugins/user/joomla/joomla.php', 'b4298c487c39049b75b7fbc850d257e7', '3.6.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (234, 'plugins/authentication/joomla/joomla.php', '3a8e8ad739d4105d851669f1f2c06c10', '3.6.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (235, 'index.php', 'f81654a86c69fe7cb685905b5305c06d', '3.6.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (236, 'administrator/index.php', 'c1e6484a0bc1df6e179d49ed3956d698', '3.6.2', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (237, 'plugins/user/joomla/joomla.php', 'b4298c487c39049b75b7fbc850d257e7', '3.6.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (238, 'plugins/authentication/joomla/joomla.php', '1c6dda420fa9c19efc2de9ef9f05847b', '3.6.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (239, 'index.php', '62f6043c7172b6594e55a46596df31ef', '3.6.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (240, 'administrator/index.php', '9d2c9e0162bd32442a843f9633142d41', '3.6.3', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (241, 'plugins/user/joomla/joomla.php', 'b4298c487c39049b75b7fbc850d257e7', '3.6.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (242, 'plugins/authentication/joomla/joomla.php', '1c6dda420fa9c19efc2de9ef9f05847b', '3.6.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (243, 'index.php', '62f6043c7172b6594e55a46596df31ef', '3.6.4', '', '');
+INSERT INTO `aj14x_rsfirewall_hashes` VALUES (244, 'administrator/index.php', '9d2c9e0162bd32442a843f9633142d41', '3.6.4', '', '');
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_rsfirewall_ignored`
+-- 
+
+CREATE TABLE `aj14x_rsfirewall_ignored` (
+  `path` text NOT NULL,
+  `type` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_rsfirewall_ignored`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_rsfirewall_lists`
+-- 
+
+CREATE TABLE `aj14x_rsfirewall_lists` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(255) NOT NULL,
+  `type` tinyint(1) NOT NULL,
+  `reason` varchar(255) NOT NULL,
+  `date` datetime NOT NULL,
+  `published` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `published` (`published`),
+  KEY `type` (`type`),
+  KEY `ip` (`ip`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_rsfirewall_lists`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_rsfirewall_logs`
+-- 
+
+CREATE TABLE `aj14x_rsfirewall_logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `level` enum('low','medium','high','critical') NOT NULL,
+  `date` datetime NOT NULL,
+  `ip` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `page` text NOT NULL,
+  `referer` text NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `debug_variables` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ip` (`ip`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_rsfirewall_logs`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_rsfirewall_offenders`
+-- 
+
+CREATE TABLE `aj14x_rsfirewall_offenders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(255) NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_rsfirewall_offenders`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_rsfirewall_signatures`
+-- 
+
+CREATE TABLE `aj14x_rsfirewall_signatures` (
+  `signature` varchar(255) NOT NULL,
+  `type` varchar(16) NOT NULL,
+  `reason` varchar(255) NOT NULL,
+  PRIMARY KEY (`signature`,`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_rsfirewall_signatures`
+-- 
+
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(@(\\$[a-z0-9]+\\(){4,})', 'regexis', 'PHP Injection - Obfuscated function call');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(chr\\(([0-9]+){3,}\\)\\.chr\\(([0-9]+)\\)\\.chr\\(([0-9]+)\\)\\.chr\\(([0-9]+)\\))\\.chr\\(([0-9]+)\\)\\.chr\\(([0-9]+)\\)', 'regex', 'Possible PHP injection (obfuscated code)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(include\\_once|require\\_once|include|require)(\\s+)?(\\()?[''|"](.*)(\\.png|\\.gif|\\.jpg|\\.jpeg|\\.ini)[''|"](\\))?', 'regex', 'Highly suspicious inclusion (possible CryptoPHP)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(js/jquery\\.min\\.php.*?"\\?default_keyword\\=" \\+ default_keyword)', 'regex', 'Search engine referrer hijacking');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(realstatistics\\.(info|pro)|realanalytics\\.pro|siteanalytics\\.pro|webstatistics\\.pro|adobesecurupdate\\.com|microsoft-securety\\.com)', 'regexis', 'Realstatistics Malware');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(shell_exec|passthru|system|exec|popen)[\\s+]?\\([\\s+]?\\$(GLOBALS|_SERVER|_GET|_POST|_FILES|_COOKIE|_SESSION|_REQUEST|_ENV)', 'regex', 'Possible PHP injection (binary executed from superglobal variable)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(shell_exec|passthru|system|exec|popen)\\s?\\((''|")(wget|lynx|links|curl)', 'regex', 'Possible PHP injection (file download)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(wget|lynx|links|curl) https?:\\/\\/.*?; chmod .*?; \\.\\/', 'regex', 'Possible PHP injection (file download and execution)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(wget|lynx|links|curl) https?:\\/\\/.*?; perl .*?', 'regex', 'Possible PHP injection (file download and execution)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('([a-z0-9_]+\\/\\*(.*?)\\*\\/\\()', 'regex', 'PHP Injection - Obfuscated function call');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(\\$func=("[a-z_]+"[\\.]){4,})', 'regexis', 'PHP Injection - Obfuscated function name');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(\\$s\\_func=("[a-z_]+"[\\.]){4,})', 'regexis', 'PHP Injection - Obfuscated function name');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(\\$[a-z0-9]+\\s?\\(){3,}', 'regexi', 'PHP Injection - Obfuscated function name');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(\\$[a-z0-9]+\\{[0-9]+\\}\\s?\\.?\\s?){10,}', 'regexis', 'PHP Injection - Obfuscated function name');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(\\$[a-z]+)\\("[a-z]",\\s?"",\\s?"[a-z0-9_]+"\\)', 'regexis', 'PHP Injection - Obfuscated function name');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('(\\[(SHELL|ZAD)\\ID])', 'regexs', 'PHP Injection - Mass mailer');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('<!--checker_start', 'regex', 'PHP injection');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('<input name=".*?" type="file">', 'regex', 'Possible PHP Shell - File uploader');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('<\\?php[\\s+]{240,}(.*?)\\s', 'regex', 'Abnormally long spacing after PHP tag - could be used to hide code from view');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('@\\$[a-zA-Z0-9]+\\(\\$_(POST|GET|REQUEST|COOKIE)\\[.*', 'regex', 'Possible PHP Injection - obfuscated code execution from Superglobal variable.');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('act=phpinfo', 'regex', 'PHP Shell - c99shell variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('antichat', 'filename', 'PHP Shell - c99shell Antichat variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('bash_history', 'filename', 'Possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('bitchx', 'filename', 'IRC Client - possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('brute *force', 'filename', 'Bruteforce');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('c99shell', 'filename', 'PHP Shell');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('c99shell', 'regex', 'PHP Shell - c99shell variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('ccteam\\.ru', 'regex', 'PHP Shell - c99shell variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('cgi', 'filename', 'PHP Shell - c99shell Cgi variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('chr\\(\\([0-9]+\\-[0-9]+\\)\\)', 'regex', 'Possible PHP Injection - Obfuscated code');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('create\\_function\\(\\''\\$\\''(.*)', 'regex', 'Possible PHP injection (create_function() call)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('cwings', 'filename', 'PHP Shell');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('CWShellDumper', 'filename', 'PHP Shell - c99shell CWShellDumper variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('DALnet', 'filename', 'IRC Client - possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('die\\(md5\\(\\''[a-z0-9_]+\\''\\)\\);', 'regexis', 'PHP Injection - Shell');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('directmail', 'filename', 'Mailer - possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('eggdrop', 'filename', 'IRC Bot - possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('ekin0x', 'filename', 'PHP Shell - c99shell ekin0x variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('eval[\\s]?\\([\\s]?base64_decode\\([\\s]?.*?\\)\\)', 'regex', 'Possible PHP injection (encoded code - base64)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('eval\\("\\?\\>"\\.base64_decode', 'regex', 'Possible PHP injection (encoded code - base64)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('eval\\(base64_decode\\((?s).*?\\)\\)', 'regex', 'Possible PHP injection (encoded code - base64)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('eval\\(stripslashes\\(\\$_(.*?)\\)\\)', 'regex', 'Possible PHP injection (code executed from superglobal variable)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('eval\\([a-zA-Z0-9]+\\([$a-zA-Z0-9]+', 'regex', 'Possible PHP injection (code executed through obfuscated functions)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('eval\\(\\$[a-zA-Z0-9]+\\(\\$[a-zA-Z0-9]+\\(\\$[a-zA-Z0-9]+', 'regex', 'PHP Injection - Obfuscated code');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('eval\\(\\$_(.*?)\\)', 'regex', 'Possible PHP injection (code executed from superglobal variable)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('eval\\/\\*(.*)\\*\\/\\(', 'regexis', 'Obfuscated eval()');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('eval\\/\\*\\*\\/\\(', 'regex', 'Hidden eval()');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('exec\\((.*)\\/bin\\/sh', 'regex', 'Possible PHP injection (shell execution)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('guardservices', 'filename', 'Possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('h4cker\\.tr', 'regex', 'PHP Shell - General variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('hanixavi@msn.com', 'regex', 'PHP Shell - File uploader');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('header(\\s+)?\\(["|''](l|L)ocation:(\\s+)?http:(.*?)\\)', 'regex', 'Possible PHP injection (redirect)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('http\\://fbt\\.yahoo\\.com/counter\\.php', 'regex', 'PHP injection (Russian counter)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('if\\(function_exists\\(''ob_start''\\)&&!isset\\(\\$GLOBALS\\[(.*?)\\]\\)\\){\\$GLOBALS\\[(.*?)\\]=', 'regex', 'PHP injection');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('if\\(\\$_POST\\[''golden''\\]\\=\\="Done"\\)', 'regex', 'PHP Injection - File uploader');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('ini\\_set\\(chr\\(', 'regex', 'PHP injection');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('kacak', 'filename', 'PHP Shell - c99shell kacak variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('liz0zim', 'filename', 'PHP Shell - c99shell liz0zim variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('m0rtix', 'filename', 'Backdoor - possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('mail(\\s+)?\\(("|'')(.*@)', 'regex', 'Possible PHP injection (mailer)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('mkdir\\(.*?[\\s+]?,[\\s+]?0777', 'regex', 'Unsafe directory creation - 0777 permissions.');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('ob_start\\("callbck"\\)', 'regex', 'PHP injection');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('PHPencoder', 'regex', 'PHP Encoded file - PHPencoder variant, please review manually');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('PHPJiaMi\\.Com', 'regexi', 'PHP Injection - Shell');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('phpremoteview', 'filename', 'PHP Shell');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('phpshell', 'filename', 'PHP Shell');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('preg_replace\\("/\\.\\*/e"', 'regex', 'Possible PHP injection (obfuscated code using /e modifier)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('preg_replace\\([''|"]/\\(\\.\\*\\)\\/e', 'regex', 'Possible PHP injection (obfuscated code using /e modifier)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('ps -aux', 'regex', 'PHP Shell - suspicious code');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('psyBNC', 'filename', 'IRC Client - possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('r0nin', 'filename', 'Exploit - possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('r57shell', 'filename', 'PHP Shell');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('r57shell', 'regex', 'PHP Shell - r57shell variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('r57\\.gen\\.tr', 'regex', 'PHP Shell - General variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('raslan58', 'filename', 'Possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('safe0ver', 'filename', 'PHP Shell - c99shell safe0ver variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('Saudi Sh3ll', 'filename', 'PHP Shell - Saudi Sh3ll variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('shellbot', 'filename', 'Backdoor - possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('sh\\_decrypt\\_phase', 'regex', 'PHP Injection - Shell');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('sosyete', 'filename', 'PHP Shell - c99shell sosyete variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('spymeta', 'filename', 'Possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('strrev\\((''|")edoced_46esab(''|")\\)', 'regex', 'Possible PHP injection (obfuscated code)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('strrev\\(base64_decode\\((?s).*?\\)\\)', 'regex', 'Possible PHP injection (encoded code - strrev())');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('str_rot13\\(''riny''\\)', 'regex', 'PHP Injection - Obfuscated eval');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('str_rot13\\(base64_decode\\((?s).*?\\)\\)', 'regex', 'Possible PHP injection (encoded code - str_rot13())');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('tryag', 'filename', 'PHP Shell - c99shell tryag variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('undernet', 'filename', 'IRC Client - possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('Upload Gagal', 'regex', 'PHP Shell - File uploader');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('void\\.ru', 'filename', 'Possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('vulnscan', 'filename', 'Vulnerability Scanner - possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('w00t', 'filename', 'Exploit - possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('zehir4', 'filename', 'PHP Shell - c99shell zehir4 variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('[a-zA-Z0-9]{500,}', 'regex', 'Possible PHP injection (abnormally long string - might be base64)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$GLOBALS\\[''([a-z]+)?([0-9]+)?'']\\(', 'regex', 'Possible PHP injection (code executed through superglobal variable)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$GLOBALS\\[\\$GLOBALS\\[''[a-z0-9]+''\\]\\[[0-9]+\\]', 'regex', 'PHP Injection');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$QBDB51E25BF9A7F3D2475072803D1C36D', 'regex', 'PHP Shell - c99shell variant compressed');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$ua\\=@\\$_SERVER\\["HTTP_USER_AGENT"\\];\\$row\\=split\\("\\=\\=\\=",\\$ua\\)', 'regex', 'PHP Injection - Shell');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$uploadfile \\= \\$_POST\\["pt"\\]\\.\\$_FILES\\["file"\\]\\["name"\\]', 'regex', 'PHP Shell - File uploader');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$wp_add_filter\\(', 'regex', 'PHP injection (obfuscated code)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$[a-z0-9]+ = \\$\\_POST\\[''[a-z0-9]+''\\];.@?passthru\\(\\$[a-z]+\\);', 'regexis', 'PHP Injection - Shell');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$[a-z0-9]+=\\$_COOKIE', 'regex', 'Possible PHP Injection - superglobal variable obfuscation.');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$[a-z0-9]+\\s?=\\s?\\$[a-z0-9]+\\("[a-z0-9]+",\\s?"",\\s?"[a-z0-9]+\\_[a-z0-9]+"\\);', 'regex', 'PHP Injection - Obfuscated function call');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$[^ -~]+\\(.*?\\);', 'regex', 'Possible PHP Injection - Characters outside of typing range.');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$\\_(FILES|SERVER|POST|GET)\\["([A-Za-z\\_]+)?(\\\\x[0-9A-Fa-f]{1,2}){1,}([A-Za-z\\_]+)?\\"]', 'regex', 'PHP Injection - Obfuscated Superglobal variable.');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$_GET\\[''mailzor''\\]', 'regex', 'PHP Injection - Mass mailer');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$_GET\\[''sws''\\]\\=\\= ''phpinfo''', 'regex', 'PHP Shell - Saudi Sh3ll variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$_POST\\[''cmd''\\]\\=\\="php_eval"', 'regex', 'PHP Shell - r57shell variant');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\$_[a-zA-Z]=__FILE__;\\$_[a-zA-Z]=', 'regex', 'PHP injection (obfuscated code)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\("/[a-zA-Z0-9]+/e",', 'regex', 'Possible PHP injection (obfuscated code using /e modifier)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\(gzinflate\\(base64_decode\\((?s).*\\)', 'regex', 'Possible PHP injection (compressed code - gzip)');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\.ru/', 'filename', 'Possible hijacked server');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\/etc\\/passwd', 'regex', 'PHP Shell - suspicious code');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('\\/jquery\\.min\\.php', 'regex', 'PHP Injection - Search engine hijacker');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('^GIF89;([^\\n]*\\n+)+(\\<\\?php)', 'regex', 'PHP injection - Hidden inside GIF file');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('^\\#[a-z0-9]+\\#$(.*?)^\\#\\/[a-z0-9]+\\#$', 'regexms', 'PHP Injection - Page hijacker');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('^\\$password\\=@\\$_REQUEST\\[''password''\\];', 'regexm', 'Possible PHP Injection');
+INSERT INTO `aj14x_rsfirewall_signatures` VALUES ('_il_exec\\(\\)', 'regex', 'Possible risk - ionCube encrypted file');
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_rsfirewall_snapshots`
+-- 
+
+CREATE TABLE `aj14x_rsfirewall_snapshots` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `snapshot` text NOT NULL,
+  `type` varchar(16) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_rsfirewall_snapshots`
 -- 
 
 
@@ -2217,7 +2979,7 @@ CREATE TABLE `aj14x_rsform_components` (
   UNIQUE KEY `ComponentId` (`ComponentId`),
   KEY `ComponentTypeId` (`ComponentTypeId`),
   KEY `FormId` (`FormId`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_rsform_components`
@@ -2225,26 +2987,12 @@ CREATE TABLE `aj14x_rsform_components` (
 
 INSERT INTO `aj14x_rsform_components` VALUES (1, 1, 1, 2, 1);
 INSERT INTO `aj14x_rsform_components` VALUES (2, 1, 10, 1, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (3, 1, 1, 3, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (4, 1, 3, 4, 1);
 INSERT INTO `aj14x_rsform_components` VALUES (5, 1, 5, 5, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (6, 1, 4, 6, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (7, 1, 6, 7, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (8, 1, 13, 8, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (9, 1, 10, 9, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (10, 2, 1, 2, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (11, 2, 10, 1, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (12, 2, 1, 3, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (13, 2, 3, 6, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (14, 2, 5, 7, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (15, 2, 4, 10, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (16, 2, 6, 11, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (17, 2, 13, 12, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (18, 2, 10, 13, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (19, 2, 41, 4, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (20, 2, 41, 8, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (21, 2, 10, 5, 1);
-INSERT INTO `aj14x_rsform_components` VALUES (22, 2, 10, 9, 1);
+INSERT INTO `aj14x_rsform_components` VALUES (8, 1, 13, 7, 1);
+INSERT INTO `aj14x_rsform_components` VALUES (9, 1, 10, 8, 1);
+INSERT INTO `aj14x_rsform_components` VALUES (23, 1, 1, 6, 1);
+INSERT INTO `aj14x_rsform_components` VALUES (24, 1, 1, 3, 1);
+INSERT INTO `aj14x_rsform_components` VALUES (25, 1, 9, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -2481,8 +3229,7 @@ CREATE TABLE `aj14x_rsform_forms` (
 -- Sukurta duomenų kopija lentelei `aj14x_rsform_forms`
 -- 
 
-INSERT INTO `aj14x_rsform_forms` VALUES (1, 'RSFormPro example', '<h2>{global:formtitle}</h2>\r\n{error}\r\n<!-- Do not remove this ID, it is used to identify the page so that the pagination script can work correctly -->\r\n<fieldset class="formHorizontal formContainer" id="rsform_1_page_0">\r\n	<div class="rsform-block rsform-block-header">\r\n		<div class="formControlLabel">{Header:caption}</div>\r\n		<div class="formControls">\r\n		<div class="formBody">{Header:body}<span class="formValidation">{Header:validation}</span></div>\r\n		<p class="formDescription">{Header:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-fullname">\r\n		<div class="formControlLabel">{FullName:caption}<strong class="formRequired">(*)</strong></div>\r\n		<div class="formControls">\r\n		<div class="formBody">{FullName:body}<span class="formValidation">{FullName:validation}</span></div>\r\n		<p class="formDescription">{FullName:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-email">\r\n		<div class="formControlLabel">{Email:caption}<strong class="formRequired">(*)</strong></div>\r\n		<div class="formControls">\r\n		<div class="formBody">{Email:body}<span class="formValidation">{Email:validation}</span></div>\r\n		<p class="formDescription">{Email:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-companysize">\r\n		<div class="formControlLabel">{CompanySize:caption}<strong class="formRequired">(*)</strong></div>\r\n		<div class="formControls">\r\n		<div class="formBody">{CompanySize:body}<span class="formValidation">{CompanySize:validation}</span></div>\r\n		<p class="formDescription">{CompanySize:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-position">\r\n		<div class="formControlLabel">{Position:caption}<strong class="formRequired">(*)</strong></div>\r\n		<div class="formControls">\r\n		<div class="formBody">{Position:body}<span class="formValidation">{Position:validation}</span></div>\r\n		<p class="formDescription">{Position:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-contactby">\r\n		<div class="formControlLabel">{ContactBy:caption}</div>\r\n		<div class="formControls">\r\n		<div class="formBody">{ContactBy:body}<span class="formValidation">{ContactBy:validation}</span></div>\r\n		<p class="formDescription">{ContactBy:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-contactwhen">\r\n		<div class="formControlLabel">{ContactWhen:caption}<strong class="formRequired">(*)</strong></div>\r\n		<div class="formControls">\r\n		<div class="formBody">{ContactWhen:body}<span class="formValidation">{ContactWhen:validation}</span></div>\r\n		<p class="formDescription">{ContactWhen:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-submit">\r\n		<div class="formControlLabel">{Submit:caption}</div>\r\n		<div class="formControls">\r\n		<div class="formBody">{Submit:body}<span class="formValidation">{Submit:validation}</span></div>\r\n		<p class="formDescription">{Submit:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-footer">\r\n		<div class="formControlLabel">{Footer:caption}</div>\r\n		<div class="formControls">\r\n		<div class="formBody">{Footer:body}<span class="formValidation">{Footer:validation}</span></div>\r\n		<p class="formDescription">{Footer:description}</p>\r\n		</div>\r\n	</div>\r\n</fieldset>\r\n', 'responsive', 1, 1, 0, 0, '', '', 'RSForm! Pro example', 1, 1, '', '', 1, 0, 0, '<p>Dear {FullName:value},</p><p> thank you for your submission. One of our staff members will contact you by  {ContactBy:value} as soon as possible.</p>', 1, '<p>Dear {FullName:value},</p><p> we received your contact request. Someone will get back to you by {ContactBy:value} soon. </p>', '{Email:value}', '', '', '{global:mailfrom}', '', '{global:fromname}', 'Contact confirmation', 1, 0, '', '<p>Customize this e-mail also. You will receive it as administrator. </p><p>{FullName:caption}:{FullName:value}<br />\n{Email:caption}:{Email:value}<br />\n{CompanySize:caption}:{CompanySize:value}<br />\n{Position:caption}:{Position:value}<br />\n{ContactBy:caption}:{ContactBy:value}<br />\n{ContactWhen:caption}:{ContactWhen:value}</p>', 'youradminemail@email.com', '', '', '{Email:value}', '', '{FullName:value}', 'Contact', 1, '', '', '', '', '', '', 0, '', '', '(*)', '', ', ', 1, '', 'userForm', '', '', '', 0, 0, '', 1, 1, 0, 0, '');
-INSERT INTO `aj14x_rsform_forms` VALUES (2, 'RSFormPro Multipage example', '<h2>{global:formtitle}</h2>\r\n{error}\r\n<!-- Do not remove this ID, it is used to identify the page so that the pagination script can work correctly -->\r\n<fieldset class="formHorizontal formContainer" id="rsform_2_page_0">\r\n	<div class="rsform-block rsform-block-header">\r\n		<div class="formControlLabel">{Header:caption}</div>\r\n		<div class="formControls">\r\n		<div class="formBody">{Header:body}<span class="formValidation">{Header:validation}</span></div>\r\n		<p class="formDescription">{Header:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-fullname">\r\n		<div class="formControlLabel">{FullName:caption}<strong class="formRequired">(*)</strong></div>\r\n		<div class="formControls">\r\n		<div class="formBody">{FullName:body}<span class="formValidation">{FullName:validation}</span></div>\r\n		<p class="formDescription">{FullName:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-email">\r\n		<div class="formControlLabel">{Email:caption}<strong class="formRequired">(*)</strong></div>\r\n		<div class="formControls">\r\n		<div class="formBody">{Email:body}<span class="formValidation">{Email:validation}</span></div>\r\n		<p class="formDescription">{Email:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-page1">\r\n		<div class="formControlLabel">&nbsp;</div>\r\n		<div class="formControls">\r\n		<div class="formBody">{Page1:body}</div>\r\n		</div>\r\n	</div>\r\n	</fieldset>\r\n<!-- Do not remove this ID, it is used to identify the page so that the pagination script can work correctly -->\r\n<fieldset class="formHorizontal formContainer" id="rsform_2_page_1">\r\n	<div class="rsform-block rsform-block-companyheader">\r\n		<div class="formControlLabel">{CompanyHeader:caption}</div>\r\n		<div class="formControls">\r\n		<div class="formBody">{CompanyHeader:body}<span class="formValidation">{CompanyHeader:validation}</span></div>\r\n		<p class="formDescription">{CompanyHeader:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-companysize">\r\n		<div class="formControlLabel">{CompanySize:caption}<strong class="formRequired">(*)</strong></div>\r\n		<div class="formControls">\r\n		<div class="formBody">{CompanySize:body}<span class="formValidation">{CompanySize:validation}</span></div>\r\n		<p class="formDescription">{CompanySize:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-position">\r\n		<div class="formControlLabel">{Position:caption}<strong class="formRequired">(*)</strong></div>\r\n		<div class="formControls">\r\n		<div class="formBody">{Position:body}<span class="formValidation">{Position:validation}</span></div>\r\n		<p class="formDescription">{Position:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-page2">\r\n		<div class="formControlLabel">&nbsp;</div>\r\n		<div class="formControls">\r\n		<div class="formBody">{Page2:body}</div>\r\n		</div>\r\n	</div>\r\n	</fieldset>\r\n<!-- Do not remove this ID, it is used to identify the page so that the pagination script can work correctly -->\r\n<fieldset class="formHorizontal formContainer" id="rsform_2_page_2">\r\n	<div class="rsform-block rsform-block-contactheader">\r\n		<div class="formControlLabel">{ContactHeader:caption}</div>\r\n		<div class="formControls">\r\n		<div class="formBody">{ContactHeader:body}<span class="formValidation">{ContactHeader:validation}</span></div>\r\n		<p class="formDescription">{ContactHeader:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-contactby">\r\n		<div class="formControlLabel">{ContactBy:caption}</div>\r\n		<div class="formControls">\r\n		<div class="formBody">{ContactBy:body}<span class="formValidation">{ContactBy:validation}</span></div>\r\n		<p class="formDescription">{ContactBy:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-contactwhen">\r\n		<div class="formControlLabel">{ContactWhen:caption}<strong class="formRequired">(*)</strong></div>\r\n		<div class="formControls">\r\n		<div class="formBody">{ContactWhen:body}<span class="formValidation">{ContactWhen:validation}</span></div>\r\n		<p class="formDescription">{ContactWhen:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-submit">\r\n		<div class="formControlLabel">{Submit:caption}</div>\r\n		<div class="formControls">\r\n		<div class="formBody">{Submit:body}<span class="formValidation">{Submit:validation}</span></div>\r\n		<p class="formDescription">{Submit:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-footer">\r\n		<div class="formControlLabel">{Footer:caption}</div>\r\n		<div class="formControls">\r\n		<div class="formBody">{Footer:body}<span class="formValidation">{Footer:validation}</span></div>\r\n		<p class="formDescription">{Footer:description}</p>\r\n		</div>\r\n	</div>\r\n</fieldset>\r\n', 'responsive', 1, 1, 0, 0, '', '', 'RSForm! Pro Multipage example', 1, 1, '', '', 1, 0, 0, '<p>Dear {FullName:value},</p><p> thank you for your submission. One of our staff members will contact you by  {ContactBy:value} as soon as possible.</p>', 1, '<p>Dear {FullName:value},</p><p> we received your contact request. Someone will get back to you by {ContactBy:value} soon. </p>', '{Email:value}', '', '', '{global:mailfrom}', '', '{global:fromname}', 'Contact confirmation', 1, 0, '', '<p>Customize this e-mail also. You will receive it as administrator. </p><p>{FullName:caption}:{FullName:value}<br />\n{Email:caption}:{Email:value}<br />\n{CompanySize:caption}:{CompanySize:value}<br />\n{Position:caption}:{Position:value}<br />\n{ContactBy:caption}:{ContactBy:value}<br />\n{ContactWhen:caption}:{ContactWhen:value}</p>', 'youradminemail@email.com', '', '', '{global:mailfrom}', '{Email:value}', '{FullName:value}', 'Contact request', 1, '', '', '', '', '', '', 0, 'This is the meta description of your form. You can use it for SEO purposes.', 'rsform, contact, form, joomla', '(*)', '<p class="formRed">Please complete all required fields!</p>', ', ', 1, '', 'userForm', '', '', '', 0, 0, '', 1, 1, 0, 0, '');
+INSERT INTO `aj14x_rsform_forms` VALUES (1, 'Uzsakymo forma', '<h2>{global:formtitle}</h2>\r\n{error}\r\n<!-- Do not remove this ID, it is used to identify the page so that the pagination script can work correctly -->\r\n<fieldset class="formHorizontal formContainer" id="rsform_{global:formid}_page_0">\r\n	<div class="rsform-block rsform-block-header">\r\n			<div class="formBody">{Header:body}</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-fullname">\r\n	<div class="formControlLabel">{FullName:caption}<strong class="formRequired">(*)</strong></div>\r\n		<div class="formControls">\r\n			<div class="formBody">{FullName:body}<span class="formValidation">{FullName:validation}</span></div>\r\n			<p class="formDescription">{FullName:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-adress">\r\n	<div class="formControlLabel">{Adress:caption}<strong class="formRequired">(*)</strong></div>\r\n		<div class="formControls">\r\n			<div class="formBody">{Adress:body}<span class="formValidation">{Adress:validation}</span></div>\r\n			<p class="formDescription">{Adress:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-photo">\r\n	<div class="formControlLabel">{Photo:caption}</div>\r\n		<div class="formControls">\r\n			<div class="formBody">{Photo:body}<span class="formValidation">{Photo:validation}</span></div>\r\n			<p class="formDescription">{Photo:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-position">\r\n	<div class="formControlLabel">{Position:caption}<strong class="formRequired">(*)</strong></div>\r\n		<div class="formControls">\r\n			<div class="formBody">{Position:body}<span class="formValidation">{Position:validation}</span></div>\r\n			<p class="formDescription">{Position:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-email">\r\n	<div class="formControlLabel">{Email:caption}</div>\r\n		<div class="formControls">\r\n			<div class="formBody">{Email:body}<span class="formValidation">{Email:validation}</span></div>\r\n			<p class="formDescription">{Email:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-submit">\r\n	<div class="formControlLabel">{Submit:caption}</div>\r\n		<div class="formControls">\r\n			<div class="formBody">{Submit:body}<span class="formValidation">{Submit:validation}</span></div>\r\n			<p class="formDescription">{Submit:description}</p>\r\n		</div>\r\n	</div>\r\n	<div class="rsform-block rsform-block-footer">\r\n			<div class="formBody">{Footer:body}</div>\r\n	</div>\r\n</fieldset>\r\n', 'responsive', 1, 1, 0, 0, '', '', 'RSForm! Pro example', 1, 1, 'en-GB', '', 1, 0, 0, '<p>Dear {FullName:value},</p><p> thank you for your submission. One of our staff members will contact you by  {ContactBy:value} as soon as possible.</p>', 0, '<p>Dear {FullName:value},</p><p> we received your contact request. Someone will get back to you by {ContactBy:value} soon. </p>', '{Email:value}', '', '', '{global:mailfrom}', '', '{global:fromname}', 'Contact confirmation', 1, 0, '', '<p>Customize this e-mail also. You will receive it as administrator. </p><p>{FullName:caption}:{FullName:value}<br />\n{Email:caption}:{Email:value}<br />\n{CompanySize:caption}:{CompanySize:value}<br />\n{Position:caption}:{Position:value}<br />\n{ContactBy:caption}:{ContactBy:value}<br />\n{ContactWhen:caption}:{ContactWhen:value}</p>', 'youradminemail@email.com', '', '', '{Email:value}', '', '{FullName:value}', 'Contact', 1, '', '', '', '', '', '', 0, '', '', '(*)', '', ', ', 1, '', 'userForm', '', '', '', 0, 0, '', 1, 1, 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -2535,6 +3282,7 @@ CREATE TABLE `aj14x_rsform_posts` (
 -- Sukurta duomenų kopija lentelei `aj14x_rsform_posts`
 -- 
 
+INSERT INTO `aj14x_rsform_posts` VALUES (1, 0, 1, '[]', 1, 'http://');
 
 -- --------------------------------------------------------
 
@@ -2549,7 +3297,7 @@ CREATE TABLE `aj14x_rsform_properties` (
   `PropertyValue` text NOT NULL,
   UNIQUE KEY `PropertyId` (`PropertyId`),
   KEY `ComponentId` (`ComponentId`)
-) ENGINE=InnoDB AUTO_INCREMENT=149 DEFAULT CHARSET=utf8 AUTO_INCREMENT=149 ;
+) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8 AUTO_INCREMENT=206 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_rsform_properties`
@@ -2567,51 +3315,14 @@ INSERT INTO `aj14x_rsform_properties` VALUES (9, 1, 'DEFAULTVALUE', '');
 INSERT INTO `aj14x_rsform_properties` VALUES (10, 1, 'DESCRIPTION', '');
 INSERT INTO `aj14x_rsform_properties` VALUES (11, 2, 'NAME', 'Header');
 INSERT INTO `aj14x_rsform_properties` VALUES (12, 2, 'TEXT', '<b>This text describes the form. It is added using the Free Text component</b>. HTML code can be added directly here.');
-INSERT INTO `aj14x_rsform_properties` VALUES (13, 3, 'NAME', 'Email');
-INSERT INTO `aj14x_rsform_properties` VALUES (14, 3, 'CAPTION', 'E-mail');
-INSERT INTO `aj14x_rsform_properties` VALUES (15, 3, 'REQUIRED', 'YES');
-INSERT INTO `aj14x_rsform_properties` VALUES (16, 3, 'SIZE', '20');
-INSERT INTO `aj14x_rsform_properties` VALUES (17, 3, 'MAXSIZE', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (18, 3, 'VALIDATIONRULE', 'email');
-INSERT INTO `aj14x_rsform_properties` VALUES (19, 3, 'VALIDATIONMESSAGE', 'Invalid email address.');
-INSERT INTO `aj14x_rsform_properties` VALUES (20, 3, 'ADDITIONALATTRIBUTES', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (21, 3, 'DEFAULTVALUE', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (22, 3, 'DESCRIPTION', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (23, 4, 'NAME', 'CompanySize');
-INSERT INTO `aj14x_rsform_properties` VALUES (24, 4, 'CAPTION', 'Number of Employees');
-INSERT INTO `aj14x_rsform_properties` VALUES (25, 4, 'SIZE', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (26, 4, 'MULTIPLE', 'NO');
-INSERT INTO `aj14x_rsform_properties` VALUES (27, 4, 'ITEMS', '|Please Select[c]\n1-20\n21-50\n51-100\n>100|More than 100');
-INSERT INTO `aj14x_rsform_properties` VALUES (28, 4, 'REQUIRED', 'YES');
-INSERT INTO `aj14x_rsform_properties` VALUES (29, 4, 'ADDITIONALATTRIBUTES', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (30, 4, 'DESCRIPTION', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (31, 4, 'VALIDATIONMESSAGE', 'Please tell us how big is your company.');
 INSERT INTO `aj14x_rsform_properties` VALUES (32, 5, 'NAME', 'Position');
 INSERT INTO `aj14x_rsform_properties` VALUES (33, 5, 'CAPTION', 'Position');
 INSERT INTO `aj14x_rsform_properties` VALUES (34, 5, 'ITEMS', 'CEO\nCFO\nCTO\nHR[c]');
-INSERT INTO `aj14x_rsform_properties` VALUES (35, 5, 'FLOW', 'HORIZONTAL');
+INSERT INTO `aj14x_rsform_properties` VALUES (35, 5, 'FLOW', 'VERTICAL');
 INSERT INTO `aj14x_rsform_properties` VALUES (36, 5, 'REQUIRED', 'YES');
 INSERT INTO `aj14x_rsform_properties` VALUES (37, 5, 'ADDITIONALATTRIBUTES', '');
 INSERT INTO `aj14x_rsform_properties` VALUES (38, 5, 'DESCRIPTION', '');
 INSERT INTO `aj14x_rsform_properties` VALUES (39, 5, 'VALIDATIONMESSAGE', 'Please specify your position in the company');
-INSERT INTO `aj14x_rsform_properties` VALUES (40, 6, 'NAME', 'ContactBy');
-INSERT INTO `aj14x_rsform_properties` VALUES (41, 6, 'CAPTION', 'How should we contact you?');
-INSERT INTO `aj14x_rsform_properties` VALUES (42, 6, 'ITEMS', 'E-mail[c]\nPhone\nNewsletter[c]\nMail');
-INSERT INTO `aj14x_rsform_properties` VALUES (43, 6, 'FLOW', 'HORIZONTAL');
-INSERT INTO `aj14x_rsform_properties` VALUES (44, 6, 'REQUIRED', 'NO');
-INSERT INTO `aj14x_rsform_properties` VALUES (45, 6, 'ADDITIONALATTRIBUTES', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (46, 6, 'DESCRIPTION', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (47, 6, 'VALIDATIONMESSAGE', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (48, 7, 'NAME', 'ContactWhen');
-INSERT INTO `aj14x_rsform_properties` VALUES (49, 7, 'CAPTION', 'When would you like to be contacted?');
-INSERT INTO `aj14x_rsform_properties` VALUES (50, 7, 'REQUIRED', 'YES');
-INSERT INTO `aj14x_rsform_properties` VALUES (51, 7, 'DATEFORMAT', 'dd.mm.yyyy');
-INSERT INTO `aj14x_rsform_properties` VALUES (52, 7, 'CALENDARLAYOUT', 'POPUP');
-INSERT INTO `aj14x_rsform_properties` VALUES (53, 7, 'ADDITIONALATTRIBUTES', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (54, 7, 'READONLY', 'YES');
-INSERT INTO `aj14x_rsform_properties` VALUES (55, 7, 'POPUPLABEL', '...');
-INSERT INTO `aj14x_rsform_properties` VALUES (56, 7, 'DESCRIPTION', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (57, 7, 'VALIDATIONMESSAGE', 'Please select a date when we should contact you.');
 INSERT INTO `aj14x_rsform_properties` VALUES (58, 8, 'NAME', 'Submit');
 INSERT INTO `aj14x_rsform_properties` VALUES (59, 8, 'LABEL', 'Submit');
 INSERT INTO `aj14x_rsform_properties` VALUES (60, 8, 'CAPTION', '');
@@ -2620,89 +3331,63 @@ INSERT INTO `aj14x_rsform_properties` VALUES (62, 8, 'RESETLABEL', 'Reset');
 INSERT INTO `aj14x_rsform_properties` VALUES (63, 8, 'ADDITIONALATTRIBUTES', '');
 INSERT INTO `aj14x_rsform_properties` VALUES (64, 9, 'NAME', 'Footer');
 INSERT INTO `aj14x_rsform_properties` VALUES (65, 9, 'TEXT', 'This form is an example. Please check our knowledgebase for articles related to how you should build your form. Articles are updated daily. <a href="http://www.rsjoomla.com/" target="_blank">http://www.rsjoomla.com/</a>');
-INSERT INTO `aj14x_rsform_properties` VALUES (66, 10, 'NAME', 'FullName');
-INSERT INTO `aj14x_rsform_properties` VALUES (67, 10, 'CAPTION', 'Full Name');
-INSERT INTO `aj14x_rsform_properties` VALUES (68, 10, 'REQUIRED', 'YES');
-INSERT INTO `aj14x_rsform_properties` VALUES (69, 10, 'SIZE', '20');
-INSERT INTO `aj14x_rsform_properties` VALUES (70, 10, 'MAXSIZE', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (71, 10, 'VALIDATIONRULE', 'none');
-INSERT INTO `aj14x_rsform_properties` VALUES (72, 10, 'VALIDATIONMESSAGE', 'Please type your full name.');
-INSERT INTO `aj14x_rsform_properties` VALUES (73, 10, 'ADDITIONALATTRIBUTES', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (74, 10, 'DEFAULTVALUE', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (75, 10, 'DESCRIPTION', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (76, 10, 'VALIDATIONEXTRA', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (77, 11, 'NAME', 'Header');
-INSERT INTO `aj14x_rsform_properties` VALUES (78, 11, 'TEXT', '<b>This text describes the form. It is added using the Free Text component</b>. HTML code can be added directly here.');
-INSERT INTO `aj14x_rsform_properties` VALUES (79, 12, 'NAME', 'Email');
-INSERT INTO `aj14x_rsform_properties` VALUES (80, 12, 'CAPTION', 'E-mail');
-INSERT INTO `aj14x_rsform_properties` VALUES (81, 12, 'REQUIRED', 'YES');
-INSERT INTO `aj14x_rsform_properties` VALUES (82, 12, 'SIZE', '20');
-INSERT INTO `aj14x_rsform_properties` VALUES (83, 12, 'MAXSIZE', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (84, 12, 'VALIDATIONRULE', 'email');
-INSERT INTO `aj14x_rsform_properties` VALUES (85, 12, 'VALIDATIONMESSAGE', 'Invalid email address.');
-INSERT INTO `aj14x_rsform_properties` VALUES (86, 12, 'ADDITIONALATTRIBUTES', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (87, 12, 'DEFAULTVALUE', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (88, 12, 'DESCRIPTION', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (89, 12, 'VALIDATIONEXTRA', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (90, 13, 'NAME', 'CompanySize');
-INSERT INTO `aj14x_rsform_properties` VALUES (91, 13, 'CAPTION', 'Number of Employees');
-INSERT INTO `aj14x_rsform_properties` VALUES (92, 13, 'SIZE', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (93, 13, 'MULTIPLE', 'NO');
-INSERT INTO `aj14x_rsform_properties` VALUES (94, 13, 'ITEMS', '|Please Select[c]\n1-20\n21-50\n51-100\n>100|More than 100');
-INSERT INTO `aj14x_rsform_properties` VALUES (95, 13, 'REQUIRED', 'YES');
-INSERT INTO `aj14x_rsform_properties` VALUES (96, 13, 'ADDITIONALATTRIBUTES', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (97, 13, 'DESCRIPTION', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (98, 13, 'VALIDATIONMESSAGE', 'Please tell us how big is your company.');
-INSERT INTO `aj14x_rsform_properties` VALUES (99, 14, 'NAME', 'Position');
-INSERT INTO `aj14x_rsform_properties` VALUES (100, 14, 'CAPTION', 'Position');
-INSERT INTO `aj14x_rsform_properties` VALUES (101, 14, 'ITEMS', 'CEO\nCFO\nCTO\nHR[c]');
-INSERT INTO `aj14x_rsform_properties` VALUES (102, 14, 'FLOW', 'HORIZONTAL');
-INSERT INTO `aj14x_rsform_properties` VALUES (103, 14, 'REQUIRED', 'YES');
-INSERT INTO `aj14x_rsform_properties` VALUES (104, 14, 'ADDITIONALATTRIBUTES', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (105, 14, 'DESCRIPTION', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (106, 14, 'VALIDATIONMESSAGE', 'Please specify your position in the company');
-INSERT INTO `aj14x_rsform_properties` VALUES (107, 15, 'NAME', 'ContactBy');
-INSERT INTO `aj14x_rsform_properties` VALUES (108, 15, 'CAPTION', 'How should we contact you?');
-INSERT INTO `aj14x_rsform_properties` VALUES (109, 15, 'ITEMS', 'E-mail[c]\nPhone\nNewsletter[c]\nMail');
-INSERT INTO `aj14x_rsform_properties` VALUES (110, 15, 'FLOW', 'HORIZONTAL');
-INSERT INTO `aj14x_rsform_properties` VALUES (111, 15, 'REQUIRED', 'NO');
-INSERT INTO `aj14x_rsform_properties` VALUES (112, 15, 'ADDITIONALATTRIBUTES', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (113, 15, 'DESCRIPTION', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (114, 15, 'VALIDATIONMESSAGE', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (115, 16, 'NAME', 'ContactWhen');
-INSERT INTO `aj14x_rsform_properties` VALUES (116, 16, 'CAPTION', 'When would you like to be contacted?');
-INSERT INTO `aj14x_rsform_properties` VALUES (117, 16, 'REQUIRED', 'YES');
-INSERT INTO `aj14x_rsform_properties` VALUES (118, 16, 'DATEFORMAT', 'dd.mm.yyyy');
-INSERT INTO `aj14x_rsform_properties` VALUES (119, 16, 'CALENDARLAYOUT', 'POPUP');
-INSERT INTO `aj14x_rsform_properties` VALUES (120, 16, 'ADDITIONALATTRIBUTES', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (121, 16, 'READONLY', 'YES');
-INSERT INTO `aj14x_rsform_properties` VALUES (122, 16, 'POPUPLABEL', '...');
-INSERT INTO `aj14x_rsform_properties` VALUES (123, 16, 'DESCRIPTION', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (124, 16, 'VALIDATIONMESSAGE', 'Please select a date when we should contact you.');
-INSERT INTO `aj14x_rsform_properties` VALUES (125, 17, 'NAME', 'Submit');
-INSERT INTO `aj14x_rsform_properties` VALUES (126, 17, 'LABEL', 'Submit');
-INSERT INTO `aj14x_rsform_properties` VALUES (127, 17, 'CAPTION', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (128, 17, 'RESET', 'YES');
-INSERT INTO `aj14x_rsform_properties` VALUES (129, 17, 'RESETLABEL', 'Reset');
-INSERT INTO `aj14x_rsform_properties` VALUES (130, 17, 'ADDITIONALATTRIBUTES', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (131, 17, 'DISPLAYPROGRESSMSG', '<div>\r\n <p><em>Page <strong>{page}</strong> of {total}</em></p>\r\n <div class="rsformProgressContainer">\r\n  <div class="rsformProgressBar" style="width: {percent}%;"></div>\r\n </div>\r\n</div>');
-INSERT INTO `aj14x_rsform_properties` VALUES (132, 17, 'PREVBUTTON', '< Prev');
-INSERT INTO `aj14x_rsform_properties` VALUES (133, 18, 'NAME', 'Footer');
-INSERT INTO `aj14x_rsform_properties` VALUES (134, 18, 'TEXT', 'This form is an example. Please check our knowledgebase for articles related to how you should build your form. Articles are updated daily. <a href="http://www.rsjoomla.com/" target="_blank">http://www.rsjoomla.com/</a>');
-INSERT INTO `aj14x_rsform_properties` VALUES (135, 19, 'NAME', 'Page1');
-INSERT INTO `aj14x_rsform_properties` VALUES (136, 19, 'NEXTBUTTON', 'Next >');
-INSERT INTO `aj14x_rsform_properties` VALUES (137, 19, 'PREVBUTTON', '< Prev');
-INSERT INTO `aj14x_rsform_properties` VALUES (138, 19, 'DISPLAYPROGRESSMSG', '<div>\r\n <p><em>Page <strong>{page}</strong> of {total}</em></p>\r\n <div class="rsformProgressContainer">\r\n  <div class="rsformProgressBar" style="width: {percent}%;"></div>\r\n </div>\r\n</div>');
-INSERT INTO `aj14x_rsform_properties` VALUES (139, 19, 'ADDITIONALATTRIBUTES', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (140, 20, 'NAME', 'Page2');
-INSERT INTO `aj14x_rsform_properties` VALUES (141, 20, 'NEXTBUTTON', 'Next >');
-INSERT INTO `aj14x_rsform_properties` VALUES (142, 20, 'PREVBUTTON', '< Prev');
-INSERT INTO `aj14x_rsform_properties` VALUES (143, 20, 'DISPLAYPROGRESSMSG', '<div>\r\n <p><em>Page <strong>{page}</strong> of {total}</em></p>\r\n <div class="rsformProgressContainer">\r\n  <div class="rsformProgressBar" style="width: {percent}%;"></div>\r\n </div>\r\n</div>');
-INSERT INTO `aj14x_rsform_properties` VALUES (144, 20, 'ADDITIONALATTRIBUTES', '');
-INSERT INTO `aj14x_rsform_properties` VALUES (145, 21, 'NAME', 'CompanyHeader');
-INSERT INTO `aj14x_rsform_properties` VALUES (146, 21, 'TEXT', 'Please tell us a little about your company.');
-INSERT INTO `aj14x_rsform_properties` VALUES (147, 22, 'NAME', 'ContactHeader');
-INSERT INTO `aj14x_rsform_properties` VALUES (148, 22, 'TEXT', 'Please let us know how and when to contact you.');
+INSERT INTO `aj14x_rsform_properties` VALUES (149, 2, 'EMAILATTACH', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (150, 1, 'VALIDATIONEXTRA', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (151, 1, 'INPUTTYPE', 'text');
+INSERT INTO `aj14x_rsform_properties` VALUES (152, 1, 'ATTRMIN', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (153, 1, 'ATTRSTEP', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (154, 1, 'ATTRMAX', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (155, 1, 'EMAILATTACH', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (156, 5, 'EMAILATTACH', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (157, 9, 'EMAILATTACH', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (158, 23, 'NAME', 'Email');
+INSERT INTO `aj14x_rsform_properties` VALUES (159, 23, 'CAPTION', 'Elektroninis paštas');
+INSERT INTO `aj14x_rsform_properties` VALUES (160, 23, 'DEFAULTVALUE', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (161, 23, 'DESCRIPTION', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (162, 23, 'REQUIRED', 'NO');
+INSERT INTO `aj14x_rsform_properties` VALUES (163, 23, 'VALIDATIONEXTRA', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (164, 23, 'VALIDATIONRULE', 'none');
+INSERT INTO `aj14x_rsform_properties` VALUES (165, 23, 'VALIDATIONMESSAGE', 'Invalid Input');
+INSERT INTO `aj14x_rsform_properties` VALUES (166, 23, 'INPUTTYPE', 'text');
+INSERT INTO `aj14x_rsform_properties` VALUES (167, 23, 'ATTRMIN', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (168, 23, 'ATTRSTEP', '1');
+INSERT INTO `aj14x_rsform_properties` VALUES (169, 23, 'ATTRMAX', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (170, 23, 'SIZE', '20');
+INSERT INTO `aj14x_rsform_properties` VALUES (171, 23, 'MAXSIZE', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (172, 23, 'PLACEHOLDER', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (173, 23, 'ADDITIONALATTRIBUTES', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (174, 23, 'EMAILATTACH', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (175, 24, 'NAME', 'Adress');
+INSERT INTO `aj14x_rsform_properties` VALUES (176, 24, 'CAPTION', 'Namų arba darbo adresas');
+INSERT INTO `aj14x_rsform_properties` VALUES (177, 24, 'DEFAULTVALUE', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (178, 24, 'DESCRIPTION', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (179, 24, 'REQUIRED', 'YES');
+INSERT INTO `aj14x_rsform_properties` VALUES (180, 24, 'VALIDATIONEXTRA', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (181, 24, 'VALIDATIONRULE', 'none');
+INSERT INTO `aj14x_rsform_properties` VALUES (182, 24, 'VALIDATIONMESSAGE', 'Invalid Input');
+INSERT INTO `aj14x_rsform_properties` VALUES (183, 24, 'INPUTTYPE', 'text');
+INSERT INTO `aj14x_rsform_properties` VALUES (184, 24, 'ATTRMIN', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (185, 24, 'ATTRSTEP', '1');
+INSERT INTO `aj14x_rsform_properties` VALUES (186, 24, 'ATTRMAX', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (187, 24, 'SIZE', '20');
+INSERT INTO `aj14x_rsform_properties` VALUES (188, 24, 'MAXSIZE', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (189, 24, 'PLACEHOLDER', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (190, 24, 'ADDITIONALATTRIBUTES', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (191, 24, 'EMAILATTACH', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (192, 25, 'NAME', 'Photo');
+INSERT INTO `aj14x_rsform_properties` VALUES (193, 25, 'CAPTION', 'Aukos fotografija (jei turite)');
+INSERT INTO `aj14x_rsform_properties` VALUES (194, 25, 'DESCRIPTION', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (195, 25, 'REQUIRED', 'NO');
+INSERT INTO `aj14x_rsform_properties` VALUES (196, 25, 'VALIDATIONMESSAGE', 'Invalid Input');
+INSERT INTO `aj14x_rsform_properties` VALUES (197, 25, 'FILESIZE', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (198, 25, 'ACCEPTEDFILES', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (199, 25, 'PREFIX', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (200, 25, 'DESTINATION', 'components/com_rsform/uploads/');
+INSERT INTO `aj14x_rsform_properties` VALUES (201, 25, 'ADDITIONALATTRIBUTES', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (202, 25, 'EMAILATTACH', '');
+INSERT INTO `aj14x_rsform_properties` VALUES (203, 8, 'DISPLAYPROGRESS', 'NO');
+INSERT INTO `aj14x_rsform_properties` VALUES (204, 8, 'BUTTONTYPE', 'TYPEBUTTON');
+INSERT INTO `aj14x_rsform_properties` VALUES (205, 8, 'EMAILATTACH', '');
 
 -- --------------------------------------------------------
 
@@ -2737,12 +3422,452 @@ CREATE TABLE `aj14x_rsform_submission_values` (
   PRIMARY KEY (`SubmissionValueId`),
   KEY `FormId` (`FormId`),
   KEY `SubmissionId` (`SubmissionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=468 DEFAULT CHARSET=utf8 AUTO_INCREMENT=468 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_rsform_submission_values`
 -- 
 
+INSERT INTO `aj14x_rsform_submission_values` VALUES (22, 1, 5, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf16e1dfd0e-o-ANGRY-WOMAN-facebook.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (23, 1, 5, 'FullName', 'Janina Jadagonienė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (24, 1, 5, 'Adress', 'Mėtų 15, Trakai');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (25, 1, 5, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (26, 1, 5, 'Email', 'kovotojas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (27, 1, 5, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (28, 1, 5, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (29, 1, 6, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf235b01df9-11_Most_Handsome_Men_In_Politics9.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (30, 1, 6, 'FullName', 'Jurgis Keliautojas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (31, 1, 6, 'Adress', 'Vyšnių g. 24-15');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (32, 1, 6, 'Position', 'Žmogus su fizine apsauga - 40 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (33, 1, 6, 'Email', 'strielka@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (34, 1, 6, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (35, 1, 6, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (36, 1, 7, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf23b8c3465-18jun08.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (37, 1, 7, 'FullName', 'Valentina Kiauliutė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (38, 1, 7, 'Adress', 'Klevų 7, Klaipėda');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (39, 1, 7, 'Position', 'Pareigūnas - 20 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (40, 1, 7, 'Email', 'stinger@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (41, 1, 7, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (42, 1, 7, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (43, 1, 8, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf241a3c469-2014-men-business-suits.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (44, 1, 8, 'FullName', 'Zenonas Plaktukaitis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (45, 1, 8, 'Adress', 'Palangos g. 11, Šiauliai');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (46, 1, 8, 'Position', 'Valdžios atstovas - 50 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (47, 1, 8, 'Email', 'sliekas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (48, 1, 8, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (49, 1, 8, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (50, 1, 9, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf247756676-Ukrainian-girls.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (51, 1, 9, 'FullName', 'Lionė Barboraitė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (52, 1, 9, 'Adress', 'Laisvės al. 15-86, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (53, 1, 9, 'Position', 'Žmogus su fizine apsauga - 40 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (54, 1, 9, 'Email', 'svieta@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (55, 1, 9, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (56, 1, 9, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (57, 1, 10, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf25e397d6f-2015-Men-s-Casual-Business-Slim-Denim-Blazer-Coat-Jacket-Suits-for-Men-Man-Cowboy-Suit.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (58, 1, 10, 'FullName', 'Lidas Lirbevičius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (59, 1, 10, 'Adress', 'Sniego 86, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (60, 1, 10, 'Position', 'Žmogus su fizine apsauga - 40 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (61, 1, 10, 'Email', 'wirqis@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (62, 1, 10, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (63, 1, 10, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (64, 1, 11, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf264f93465-3290-3690-1_yoga_sports_clothing_for_men_top_trousers_pants_sport_clothes_wear_cheap_online_sportswear-600x600.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (65, 1, 11, 'FullName', 'Saimonas Drugelis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (66, 1, 11, 'Adress', 'Baltu 286-14, Kėdainiai');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (67, 1, 11, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (68, 1, 11, 'Email', 'snaige@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (69, 1, 11, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (70, 1, 11, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (71, 1, 12, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf26916ffbf-155438-566x848r1-khaki-jacket-dark-pants.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (72, 1, 12, 'FullName', 'Darius Palubinskas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (73, 1, 12, 'Adress', 'Pipirų g. 47, Alytus');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (74, 1, 12, 'Position', 'Pareigūnas - 20 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (75, 1, 12, 'Email', 'mamania@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (76, 1, 12, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (77, 1, 12, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (78, 1, 13, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf26cb3b329-th (7).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (79, 1, 13, 'FullName', 'Greta Grigaitė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (80, 1, 13, 'Adress', 'Vieversių g. 18');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (81, 1, 13, 'Position', 'Eilinis žmogus - 5 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (82, 1, 13, 'Email', 'smitas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (83, 1, 13, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (84, 1, 13, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (85, 1, 14, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf27358e3f4-th (5).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (86, 1, 14, 'FullName', 'Silvija Staidžiūnaitė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (87, 1, 14, 'Adress', 'Kokosų g.84, Trakai');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (88, 1, 14, 'Position', 'Eilinis žmogus - 5 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (89, 1, 14, 'Email', 'slide@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (90, 1, 14, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (91, 1, 14, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (92, 1, 15, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf277b4133d-450390909.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (93, 1, 15, 'FullName', 'Saulius Kamilius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (94, 1, 15, 'Adress', 'Liepų g, 12, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (95, 1, 15, 'Position', 'Eilinis žmogus - 5 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (96, 1, 15, 'Email', 'sos@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (97, 1, 15, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (98, 1, 15, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (99, 1, 16, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf27d74a392-th (3).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (100, 1, 16, 'FullName', 'Loreta Misiūnaitė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (101, 1, 16, 'Adress', 'Obuolių g, 72, Panevėžys');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (102, 1, 16, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (103, 1, 16, 'Email', 'sruoga@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (104, 1, 16, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (105, 1, 16, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (106, 1, 17, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf283260d33-140401164519-01-neel-kashkari-restricted-story-top.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (107, 1, 17, 'FullName', 'Audrius Moliūgėlis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (108, 1, 17, 'Adress', 'Smolensko 45, Šiauliai');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (109, 1, 17, 'Position', 'Valdžios atstovas - 50 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (110, 1, 17, 'Email', 'viesas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (111, 1, 17, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (112, 1, 17, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (113, 1, 18, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf28943cfd1-Adam-Levine-Hairstyle-for-Business-Man.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (114, 1, 18, 'FullName', 'Lukas Murmėnas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (115, 1, 18, 'Adress', 'Mindaugo 58, Biržai');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (116, 1, 18, 'Position', 'Pareigūnas - 20 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (117, 1, 18, 'Email', 'svajus@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (118, 1, 18, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (119, 1, 18, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (120, 1, 19, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf28c9c0256-amiri97zs.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (121, 1, 19, 'FullName', 'Danguolė Naujokaitė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (122, 1, 19, 'Adress', 'Žvėrių 47, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (123, 1, 19, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (124, 1, 19, 'Email', 'dede@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (125, 1, 19, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (126, 1, 19, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (127, 1, 20, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf29003f141-Avril Lavigne Hot4.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (128, 1, 20, 'FullName', 'Saulė, Pijokaitė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (129, 1, 20, 'Adress', 'Elnių g. 18, Palanga');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (130, 1, 20, 'Position', 'Žmogus su fizine apsauga - 40 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (131, 1, 20, 'Email', 'kaimynas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (132, 1, 20, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (133, 1, 20, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (134, 1, 21, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf2940d04dc-beautifullymade6.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (135, 1, 21, 'FullName', 'Tomas Vilkelis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (136, 1, 21, 'Adress', 'Slėnio 47, Biržai');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (137, 1, 21, 'Position', 'Valdžios atstovas - 50 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (138, 1, 21, 'Email', 'seilius@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (139, 1, 21, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (140, 1, 21, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (141, 1, 22, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf2981e48f8-th (4).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (142, 1, 22, 'FullName', 'Svieta, Naglinskienė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (143, 1, 22, 'Adress', 'Kelmų 2. Klaipėda');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (144, 1, 22, 'Position', 'Įmonės vadovas - 10 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (145, 1, 22, 'Email', 'stogas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (146, 1, 22, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (147, 1, 22, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (148, 1, 23, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf29be5049b-th (8).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (149, 1, 23, 'FullName', 'Rūta Bujauskienė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (150, 1, 23, 'Adress', 'Gedimino 458-58, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (151, 1, 23, 'Position', 'Eilinis žmogus - 5 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (152, 1, 23, 'Email', 'svola@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (153, 1, 23, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (154, 1, 23, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (155, 1, 24, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf2a010b36c-th (6).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (156, 1, 24, 'FullName', 'Laima Valatkienė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (157, 1, 24, 'Adress', 'Liepų 48, Klaipėda');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (158, 1, 24, 'Position', 'Žmogus su fizine apsauga - 40 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (159, 1, 24, 'Email', 'gratis@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (160, 1, 24, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (161, 1, 24, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (162, 1, 25, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf2a497e379-Business-Hairstyles-4.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (163, 1, 25, 'FullName', 'Audrius Meška');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (164, 1, 25, 'Adress', 'Kaimynų g. 84, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (165, 1, 25, 'Position', 'Pareigūnas - 20 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (166, 1, 25, 'Email', 'Pareiga@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (167, 1, 25, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (168, 1, 25, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (169, 1, 26, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf2a8e81955-Business-Hairstyles-11.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (170, 1, 26, 'FullName', 'Giedrius Perkūnas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (171, 1, 26, 'Adress', 'Geležinkelio 47, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (172, 1, 26, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (173, 1, 26, 'Email', 'stiklinis@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (174, 1, 26, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (175, 1, 26, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (176, 1, 27, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf31d40496a-th.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (177, 1, 27, 'FullName', 'Irena Liliutė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (178, 1, 27, 'Adress', 'Sausainių 56-85, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (179, 1, 27, 'Position', 'Eilinis žmogus - 5 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (180, 1, 27, 'Email', 'snobas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (181, 1, 27, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (182, 1, 27, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (183, 1, 28, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3214aebfa-Business-Hairstyles-for-Men1.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (184, 1, 28, 'FullName', 'Stanislavas Pabiedinskis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (185, 1, 28, 'Adress', 'Krioklio 54-87, Ignalina');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (186, 1, 28, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (187, 1, 28, 'Email', 'nojus@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (188, 1, 28, 'Submit', 'Submit');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (189, 1, 28, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (190, 1, 29, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf33c67b899-business-man-1385050_960_720.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (191, 1, 29, 'FullName', 'Jaunius Maldeikis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (192, 1, 29, 'Adress', 'Strijų g, 54, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (193, 1, 29, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (194, 1, 29, 'Email', 'kiaule@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (195, 1, 29, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (196, 1, 29, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (197, 1, 30, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf340f9b7cf-Business-Man-Reading-by-Alex-E-Proimos.png');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (198, 1, 30, 'FullName', 'Steponas Poviliūnas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (199, 1, 30, 'Adress', 'Savanorių 95-68, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (200, 1, 30, 'Position', 'Žmogus su fizine apsauga - 40 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (201, 1, 30, 'Email', 'drasus@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (202, 1, 30, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (203, 1, 30, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (204, 1, 31, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf344a2765e-Woman_masked_by_a_scarfe.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (205, 1, 31, 'FullName', 'Justė Paulauskaitė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (206, 1, 31, 'Adress', 'Kibirų 16, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (207, 1, 31, 'Position', 'Eilinis žmogus - 5 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (208, 1, 31, 'Email', 'stepukas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (209, 1, 31, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (210, 1, 31, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (211, 1, 32, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3483f3cb1-China_Men_s_Business_Dress_Suit20125221444451.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (212, 1, 32, 'FullName', 'Donatas Banionis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (213, 1, 32, 'Adress', 'Sraigių 17, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (214, 1, 32, 'Position', 'Valdžios atstovas - 50 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (215, 1, 32, 'Email', 'statula@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (216, 1, 32, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (217, 1, 32, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (218, 1, 33, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf34bf7d373-date-with-russian-singles-russianstodate.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (219, 1, 33, 'FullName', 'Jurgita Skielienė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (220, 1, 33, 'Adress', 'Stebuklų 47, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (221, 1, 33, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (222, 1, 33, 'Email', 'sausis@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (223, 1, 33, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (224, 1, 33, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (225, 1, 34, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf34ed2dd60-digvijay-singh-agencies.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (226, 1, 34, 'FullName', 'Eduardas Biliūnas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (227, 1, 34, 'Adress', 'Romuvos 75-5, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (228, 1, 34, 'Position', 'Valdžios atstovas - 50 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (229, 1, 34, 'Email', 'jurgis@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (230, 1, 34, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (231, 1, 34, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (232, 1, 35, 'FullName', 'Ieva pievaitė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (233, 1, 35, 'Adress', 'Sausumos 17, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (234, 1, 35, 'Position', 'Įmonės vadovas - 10 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (235, 1, 35, 'Email', 'sasiuvinys@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (236, 1, 35, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (237, 1, 35, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (238, 1, 36, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf355bef01c-Girls_and_Ferraris_e06a23a6c0aa72ad5b0a_1.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (239, 1, 36, 'FullName', 'Ligita Purpuraitė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (240, 1, 36, 'Adress', 'Kanalų 14, Palanga');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (241, 1, 36, 'Position', 'Eilinis žmogus - 5 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (242, 1, 36, 'Email', 'kriause@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (243, 1, 36, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (244, 1, 36, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (245, 1, 37, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf35e884087-Girls-Leggings-HD-5.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (246, 1, 37, 'FullName', 'Živilė Kairytė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (247, 1, 37, 'Adress', 'Viešbučių g. 47, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (248, 1, 37, 'Position', 'Pareigūnas - 20 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (249, 1, 37, 'Email', 'policininkas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (250, 1, 37, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (251, 1, 37, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (252, 1, 38, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3652b942a-Young_man_exhibiting_a_serious_expression.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (253, 1, 38, 'FullName', 'Gabrielius Kisielius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (254, 1, 38, 'Adress', 'Paukščių 47, Nida');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (255, 1, 38, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (256, 1, 38, 'Email', 'pajuris@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (257, 1, 38, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (258, 1, 38, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (259, 1, 39, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3683f25a8-jamie-alexander.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (260, 1, 39, 'FullName', 'Rasa Riekumaitė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (261, 1, 39, 'Adress', 'Salos 57, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (262, 1, 39, 'Position', 'Įmonės vadovas - 10 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (263, 1, 39, 'Email', 'sventa@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (264, 1, 39, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (265, 1, 39, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (266, 1, 40, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf36b459a2f-Last-Man-Standing.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (267, 1, 40, 'FullName', 'Giedrius Oželis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (268, 1, 40, 'Adress', 'Lipetsko 45, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (269, 1, 40, 'Position', 'Eilinis žmogus - 5 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (270, 1, 40, 'Email', 'kaunietis@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (271, 1, 40, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (272, 1, 40, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (273, 1, 41, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf36f22f0ad-man-bun-hairstyle-42.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (274, 1, 41, 'FullName', 'Tauras Klaidenis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (275, 1, 41, 'Adress', 'Piratų 48, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (276, 1, 41, 'Position', 'Valdžios atstovas - 50 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (277, 1, 41, 'Email', 'jura@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (278, 1, 41, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (279, 1, 41, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (280, 1, 42, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf37290e5a8-la-et-hc-wonder-woman-patty-jenkins-20170530.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (281, 1, 42, 'FullName', 'Gitana Nezabeikaitė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (282, 1, 42, 'Adress', 'Korių 42, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (283, 1, 42, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (284, 1, 42, 'Email', 'sauja@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (285, 1, 42, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (286, 1, 42, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (287, 1, 43, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf377c2da1d-Mango-Man-Sport-Autumn-2015-Men’s-Lookbook-2.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (288, 1, 43, 'FullName', 'Naudžius Karabinierius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (289, 1, 43, 'Adress', 'Šaulių 95, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (290, 1, 43, 'Position', 'Įmonės vadovas - 10 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (291, 1, 43, 'Email', 'strielkas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (292, 1, 43, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (293, 1, 43, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (294, 1, 44, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf37a985509-man-suit-5.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (295, 1, 44, 'FullName', 'Deividas Abalius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (296, 1, 44, 'Adress', 'Polinezijos 15, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (297, 1, 44, 'Position', 'Pareigūnas - 20 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (298, 1, 44, 'Email', 'samitas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (299, 1, 44, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (300, 1, 44, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (301, 1, 45, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf37f1e06e6-Priyanka-Chopra-Most-Beautiful-Woman-2016.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (302, 1, 45, 'FullName', 'Eglė Jaunikaitė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (303, 1, 45, 'Adress', 'Stulginskio 47, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (304, 1, 45, 'Position', 'Eilinis žmogus - 5 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (305, 1, 45, 'Email', 'svietute@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (306, 1, 45, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (307, 1, 45, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (308, 1, 46, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3829d1740-Man-Transparent.png');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (309, 1, 46, 'FullName', 'Juozukas Kanapienis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (310, 1, 46, 'Adress', 'Perkūno 41, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (311, 1, 46, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (312, 1, 46, 'Email', 'juokas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (313, 1, 46, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (314, 1, 46, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (315, 1, 47, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf386a318b6-Men-fashion-2017-blazers-for-men-and-mens-sport-coats-2017-6.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (316, 1, 47, 'FullName', 'Egidijus Miežinis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (317, 1, 47, 'Adress', 'Maišiogalos 47-8, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (318, 1, 47, 'Position', 'Žmogus su fizine apsauga - 40 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (319, 1, 47, 'Email', 'duokite@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (320, 1, 47, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (321, 1, 47, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (328, 1, 49, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3908370a0-Method-Man-1.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (329, 1, 49, 'FullName', 'Gintaras Giedraitis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (330, 1, 49, 'Adress', 'Sausakimšos 47, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (331, 1, 49, 'Position', 'Žmogus su fizine apsauga - 40 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (332, 1, 49, 'Email', 'saulute@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (333, 1, 49, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (334, 1, 49, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (335, 1, 50, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf393ce9630-NEW-Men-Korea-Casual-Harem-Baggy-Hip-Hop-Dance-Taper-Sport-Sweat-Pants-Sweatpants-Trousers-Slack.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (336, 1, 50, 'FullName', 'Ramūnas Gabalis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (337, 1, 50, 'Adress', 'Rimties 18, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (338, 1, 50, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (339, 1, 50, 'Email', 'rimtas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (340, 1, 50, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (341, 1, 50, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (342, 1, 51, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf39873294a-paris.png');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (343, 1, 51, 'FullName', 'Eleonora Karaliūtė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (344, 1, 51, 'Adress', 'Sidabro 78, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (345, 1, 51, 'Position', 'Įmonės vadovas - 10 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (346, 1, 51, 'Email', 'suodis@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (347, 1, 51, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (348, 1, 51, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (349, 1, 52, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf39c4d69ef-the-man-who-was-supposed-to-be-integral-to-trumps-economic-policy-appears-to-be-losing-influence.png');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (350, 1, 52, 'FullName', 'Genadijus Garmus');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (351, 1, 52, 'Adress', 'Smaližių 45, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (352, 1, 52, 'Position', 'Valdžios atstovas - 50 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (353, 1, 52, 'Email', 'cukrus@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (354, 1, 52, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (355, 1, 52, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (356, 1, 53, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3a097e8e7-photodune-5559097-bald-man-m.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (357, 1, 53, 'FullName', 'Ignas Perėjūnas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (358, 1, 53, 'Adress', 'Žvirblių 78, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (359, 1, 53, 'Position', 'Žmogus su fizine apsauga - 40 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (360, 1, 53, 'Email', 'paukstis@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (361, 1, 53, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (362, 1, 53, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (363, 1, 54, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3a3f298e0-politics-sara-latife-ruiz-chavez.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (364, 1, 54, 'FullName', 'Gražina Slaugutė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (365, 1, 54, 'Adress', 'Žvejų 87, Klaipėda');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (366, 1, 54, 'Position', 'Įmonės vadovas - 10 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (367, 1, 54, 'Email', 'stepe@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (368, 1, 54, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (369, 1, 54, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (370, 1, 55, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3a7a2f96d-popular-sports-featured-image.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (371, 1, 55, 'FullName', 'Angelė Mataitytė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (372, 1, 55, 'Adress', 'Sporto g. 69, Palanga');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (373, 1, 55, 'Position', 'Įmonės vadovas - 10 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (374, 1, 55, 'Email', 'sopotas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (375, 1, 55, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (376, 1, 55, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (377, 1, 56, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3ab11eb22-stupid-man.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (378, 1, 56, 'FullName', 'Juozas Valatka');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (379, 1, 56, 'Adress', 'Saldumynų 77, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (380, 1, 56, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (381, 1, 56, 'Email', 'smala@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (382, 1, 56, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (383, 1, 56, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (384, 1, 57, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3af501b42-SweatMan1.png');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (385, 1, 57, 'FullName', 'Egis Makarovas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (386, 1, 57, 'Adress', 'Menininkų 73, Panevėžys');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (387, 1, 57, 'Position', 'Įmonės vadovas - 10 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (388, 1, 57, 'Email', 'miestai@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (389, 1, 57, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (390, 1, 57, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (391, 1, 58, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3b40d0344-tan-mens-sport-coats-blazers-long-island.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (392, 1, 58, 'FullName', 'Sigis Luknevičius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (393, 1, 58, 'Adress', 'Seržntų 17-2');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (394, 1, 58, 'Position', 'Pareigūnas - 20 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (395, 1, 58, 'Email', 'mokslai@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (396, 1, 58, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (397, 1, 58, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (398, 1, 59, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3b88e31e4-th (1).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (399, 1, 59, 'FullName', 'ligita Masionytė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (400, 1, 59, 'Adress', 'Lietuvių g. 71-1, Šiauliai');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (401, 1, 59, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (402, 1, 59, 'Email', 'smilkalai@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (403, 1, 59, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (404, 1, 59, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (405, 1, 60, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3bbb335bd-tetinotete-tumblr1.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (406, 1, 60, 'FullName', 'Julius Pobedinskas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (407, 1, 60, 'Adress', 'Stepo 5, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (408, 1, 60, 'Position', 'Valdžios atstovas - 50 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (409, 1, 60, 'Email', 'sotus@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (410, 1, 60, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (411, 1, 60, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (412, 1, 61, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3bf7d7a6a-th (9).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (413, 1, 61, 'FullName', 'Jurgis Matulis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (414, 1, 61, 'Adress', 'Kosmonautų 47, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (415, 1, 61, 'Position', 'Įmonės vadovas - 10 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (416, 1, 61, 'Email', 'menulis@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (417, 1, 61, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (418, 1, 61, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (419, 1, 62, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3c3334316-th (10).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (420, 1, 62, 'FullName', 'Gediminas Natulis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (421, 1, 62, 'Adress', 'Liepų 15 Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (422, 1, 62, 'Position', 'Pareigūnas - 20 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (423, 1, 62, 'Email', 'stabas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (424, 1, 62, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (425, 1, 62, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (426, 1, 63, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3c6c9626d-th (11).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (427, 1, 63, 'FullName', 'Sergejus Suvorovietis');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (428, 1, 63, 'Adress', 'Tankų g. 4, Šiauliai');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (429, 1, 63, 'Position', 'Įmonės vadovas - 10 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (430, 1, 63, 'Email', 'siaure@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (431, 1, 63, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (432, 1, 63, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (433, 1, 64, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3cb5abb40-th (12).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (434, 1, 64, 'FullName', 'Motiejus Makijauskas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (435, 1, 64, 'Adress', 'Salomėjos 47-2, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (436, 1, 64, 'Position', 'Žmogus su fizine apsauga - 40 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (437, 1, 64, 'Email', 'slove@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (438, 1, 64, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (439, 1, 64, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (440, 1, 65, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3cf9ed908-th (2).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (441, 1, 65, 'FullName', 'Milda Genytė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (442, 1, 65, 'Adress', 'Maironio 15-4, Vilnius');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (443, 1, 65, 'Position', 'Įmonės vadovas - 10 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (444, 1, 65, 'Email', 'kaunas@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (445, 1, 65, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (446, 1, 65, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (447, 1, 66, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3d38cea2a-th (13).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (448, 1, 66, 'FullName', 'Vytautas Mikoliūnas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (449, 1, 66, 'Adress', 'Suvalkiečių g. 84, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (450, 1, 66, 'Position', 'Verslo savininkas - 30 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (451, 1, 66, 'Email', 'striuka@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (452, 1, 66, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (453, 1, 66, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (454, 1, 67, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf3d8357cbf-th (14).jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (455, 1, 67, 'FullName', 'Svajūnas Lančiauskas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (456, 1, 67, 'Adress', 'Vytauto g. 58, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (457, 1, 67, 'Position', 'Įmonės vadovas - 10 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (458, 1, 67, 'Email', 'Kaimynai@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (459, 1, 67, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (460, 1, 67, 'formId', '1');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (461, 1, 68, 'Photo', '/hermes/bosnacweb02/bosnacweb02ap/b407/ipg.modelagencypegasusco/agentura_pegasus/kileris/components/com_rsform/uploads/59bf41ce20cf1-marcus-hiles-developments-bettering-area-park-spaces.jpg');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (462, 1, 68, 'FullName', 'Renata Mantaitė');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (463, 1, 68, 'Adress', 'Taikos pr. 48-1, Kaunas');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (464, 1, 68, 'Position', 'Įmonės vadovas - 10 000 €');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (465, 1, 68, 'Email', 'wirqis@gmail.com');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (466, 1, 68, 'Submit', '');
+INSERT INTO `aj14x_rsform_submission_values` VALUES (467, 1, 68, 'formId', '1');
 
 -- --------------------------------------------------------
 
@@ -2761,12 +3886,75 @@ CREATE TABLE `aj14x_rsform_submissions` (
   `confirmed` tinyint(1) NOT NULL,
   PRIMARY KEY (`SubmissionId`),
   KEY `FormId` (`FormId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8 AUTO_INCREMENT=69 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_rsform_submissions`
 -- 
 
+INSERT INTO `aj14x_rsform_submissions` VALUES (5, 1, '2017-09-18 00:44:17', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (6, 1, '2017-09-18 01:37:30', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (7, 1, '2017-09-18 01:39:04', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (8, 1, '2017-09-18 01:40:42', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (9, 1, '2017-09-18 01:42:15', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (10, 1, '2017-09-18 01:48:19', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (11, 1, '2017-09-18 01:50:07', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (12, 1, '2017-09-18 01:51:13', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (13, 1, '2017-09-18 01:52:11', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (14, 1, '2017-09-18 01:53:57', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (15, 1, '2017-09-18 01:55:07', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (16, 1, '2017-09-18 01:56:39', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (17, 1, '2017-09-18 01:58:10', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (18, 1, '2017-09-18 01:59:48', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (19, 1, '2017-09-18 02:00:41', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (20, 1, '2017-09-18 02:01:36', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (21, 1, '2017-09-18 02:02:40', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (22, 1, '2017-09-18 02:03:45', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (23, 1, '2017-09-18 02:04:46', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (24, 1, '2017-09-18 02:05:53', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (25, 1, '2017-09-18 02:07:05', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (26, 1, '2017-09-18 02:08:14', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (27, 1, '2017-09-18 02:39:15', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (28, 1, '2017-09-18 02:40:20', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (29, 1, '2017-09-18 02:47:34', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (30, 1, '2017-09-18 02:48:47', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (31, 1, '2017-09-18 02:49:46', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (32, 1, '2017-09-18 02:50:43', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (33, 1, '2017-09-18 02:51:43', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (34, 1, '2017-09-18 02:52:29', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (35, 1, '2017-09-18 02:53:19', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (36, 1, '2017-09-18 02:54:19', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (37, 1, '2017-09-18 02:56:40', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (38, 1, '2017-09-18 02:58:26', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (39, 1, '2017-09-18 02:59:15', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (40, 1, '2017-09-18 03:00:04', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (41, 1, '2017-09-18 03:01:06', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (42, 1, '2017-09-18 03:02:01', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (43, 1, '2017-09-18 03:03:24', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (44, 1, '2017-09-18 03:04:09', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (45, 1, '2017-09-18 03:05:21', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (46, 1, '2017-09-18 03:06:17', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (47, 1, '2017-09-18 03:07:22', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (49, 1, '2017-09-18 03:10:00', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (50, 1, '2017-09-18 03:10:52', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (51, 1, '2017-09-18 03:12:07', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (52, 1, '2017-09-18 03:13:08', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (53, 1, '2017-09-18 03:14:17', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (54, 1, '2017-09-18 03:15:11', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (55, 1, '2017-09-18 03:16:10', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (56, 1, '2017-09-18 03:17:05', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (57, 1, '2017-09-18 03:18:12', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (58, 1, '2017-09-18 03:19:28', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (59, 1, '2017-09-18 03:20:40', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (60, 1, '2017-09-18 03:21:31', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (61, 1, '2017-09-18 03:22:31', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (62, 1, '2017-09-18 03:23:31', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (63, 1, '2017-09-18 03:24:28', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (64, 1, '2017-09-18 03:25:41', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (65, 1, '2017-09-18 03:26:49', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (66, 1, '2017-09-18 03:27:52', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (67, 1, '2017-09-18 03:29:07', '88.119.86.191', '', '0', 'lt-LT', 1);
+INSERT INTO `aj14x_rsform_submissions` VALUES (68, 1, '2017-09-18 03:47:26', '88.119.86.191', '', '0', 'lt-LT', 1);
 
 -- --------------------------------------------------------
 
@@ -2783,12 +3971,51 @@ CREATE TABLE `aj14x_rsform_translations` (
   `value` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `form_id` (`form_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 AUTO_INCREMENT=40 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_rsform_translations`
 -- 
 
+INSERT INTO `aj14x_rsform_translations` VALUES (1, 1, 'lt-LT', 'properties', '2.TEXT', '<b>Noriu pašalinti sekantį žmogų</b>. ');
+INSERT INTO `aj14x_rsform_translations` VALUES (2, 1, 'lt-LT', 'properties', '1.CAPTION', 'Vardas Pavardė');
+INSERT INTO `aj14x_rsform_translations` VALUES (3, 1, 'lt-LT', 'properties', '1.DESCRIPTION', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (4, 1, 'lt-LT', 'properties', '1.VALIDATIONMESSAGE', 'Please type your full name.');
+INSERT INTO `aj14x_rsform_translations` VALUES (5, 1, 'lt-LT', 'properties', '1.DEFAULTVALUE', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (6, 1, 'lt-LT', 'properties', '1.PLACEHOLDER', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (7, 1, 'lt-LT', 'properties', '5.CAPTION', 'Aukos statusas');
+INSERT INTO `aj14x_rsform_translations` VALUES (8, 1, 'lt-LT', 'properties', '5.DESCRIPTION', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (9, 1, 'lt-LT', 'properties', '5.VALIDATIONMESSAGE', 'Please specify your position in the company');
+INSERT INTO `aj14x_rsform_translations` VALUES (10, 1, 'lt-LT', 'properties', '5.ITEMS', 'Eilinis žmogus - 5 000 €[c]\r\nĮmonės vadovas - 10 000 €\r\nPareigūnas - 20 000 €\r\nVerslo savininkas - 30 000 €\r\nŽmogus su fizine apsauga - 40 000 €\r\nValdžios atstovas - 50 000 €');
+INSERT INTO `aj14x_rsform_translations` VALUES (11, 1, 'lt-LT', 'properties', '9.TEXT', '<b> Pinigus sumokėjau. Sutinku kad darbas būtų atliktas per 2 savaites nuo pinigų sumokėjimo. Mano nurodymas yra galutinis ir neatšaukiamas</b>.');
+INSERT INTO `aj14x_rsform_translations` VALUES (12, 1, 'lt-LT', 'properties', '23.CAPTION', 'Elektroninis paštas (rašykite tik tuo atveju, jei norite gauti aukos nuotraukas po užsakymo įvykdymo)');
+INSERT INTO `aj14x_rsform_translations` VALUES (13, 1, 'lt-LT', 'properties', '23.DESCRIPTION', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (14, 1, 'lt-LT', 'properties', '23.VALIDATIONMESSAGE', 'Invalid Input');
+INSERT INTO `aj14x_rsform_translations` VALUES (15, 1, 'lt-LT', 'properties', '23.DEFAULTVALUE', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (16, 1, 'lt-LT', 'properties', '23.PLACEHOLDER', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (17, 1, 'lt-LT', 'forms', 'FormTitle', 'Užsakymo forma:');
+INSERT INTO `aj14x_rsform_translations` VALUES (18, 1, 'lt-LT', 'forms', 'UserEmailFromName', '{global:fromname}');
+INSERT INTO `aj14x_rsform_translations` VALUES (19, 1, 'lt-LT', 'forms', 'UserEmailSubject', 'Užsakymo patvirtinimas');
+INSERT INTO `aj14x_rsform_translations` VALUES (20, 1, 'lt-LT', 'forms', 'AdminEmailFromName', '{FullName:value}');
+INSERT INTO `aj14x_rsform_translations` VALUES (21, 1, 'lt-LT', 'forms', 'AdminEmailSubject', 'Contact');
+INSERT INTO `aj14x_rsform_translations` VALUES (22, 1, 'lt-LT', 'forms', 'MetaDesc', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (23, 1, 'lt-LT', 'forms', 'MetaKeywords', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (24, 1, 'lt-LT', 'properties', '24.CAPTION', 'Namų arba darbo adresas');
+INSERT INTO `aj14x_rsform_translations` VALUES (25, 1, 'lt-LT', 'properties', '24.DESCRIPTION', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (26, 1, 'lt-LT', 'properties', '24.VALIDATIONMESSAGE', 'Invalid Input');
+INSERT INTO `aj14x_rsform_translations` VALUES (27, 1, 'lt-LT', 'properties', '24.DEFAULTVALUE', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (28, 1, 'lt-LT', 'properties', '24.PLACEHOLDER', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (29, 1, 'lt-LT', 'properties', '25.CAPTION', 'Aukos fotografija (jei turite)');
+INSERT INTO `aj14x_rsform_translations` VALUES (30, 1, 'lt-LT', 'properties', '25.DESCRIPTION', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (31, 1, 'lt-LT', 'properties', '25.VALIDATIONMESSAGE', 'Invalid Input');
+INSERT INTO `aj14x_rsform_translations` VALUES (32, 1, 'lt-LT', 'forms', 'Thankyou', '<p>Labas,</p>\r\n<p>malonu, kad pasitikite mūsų ilgamete darbo patirtimi. Per ateinančias 2 savaites Jūsų trukdis &nbsp;{FullName:value} liks tik kaip prisiminimas.</p>');
+INSERT INTO `aj14x_rsform_translations` VALUES (33, 1, 'lt-LT', 'properties', '8.LABEL', 'Patvirtinti');
+INSERT INTO `aj14x_rsform_translations` VALUES (34, 1, 'lt-LT', 'properties', '8.RESETLABEL', 'Atmesti');
+INSERT INTO `aj14x_rsform_translations` VALUES (35, 1, 'lt-LT', 'properties', '8.PREVBUTTON', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (36, 1, 'lt-LT', 'properties', '8.CAPTION', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (37, 1, 'lt-LT', 'properties', '8.DISPLAYPROGRESSMSG', '');
+INSERT INTO `aj14x_rsform_translations` VALUES (38, 1, 'lt-LT', 'forms', 'ErrorMessage', '<p>Klaida.</p>');
+INSERT INTO `aj14x_rsform_translations` VALUES (39, 1, 'lt-LT', 'forms', 'UserEmailText', '<p>Labas,</p>\r\n<p>malonu, kad pasitikite mūsų ilgamete darbo patirtimi. Per ateinančias 2 savaites Jūsų trukdis &nbsp;{FullName:value} liks tik kaip prisiminimas.</p>');
 
 -- --------------------------------------------------------
 
@@ -2831,8 +4058,8 @@ CREATE TABLE `aj14x_session` (
 -- Sukurta duomenų kopija lentelei `aj14x_session`
 -- 
 
-INSERT INTO `aj14x_session` VALUES ('da2eba7adb0dcbdce3cf7233ccf609f3', 1, 0, '1505672064', 'joomla|s:1536:"TzoyNDoiSm9vbWxhXFJlZ2lzdHJ5XFJlZ2lzdHJ5IjozOntzOjc6IgAqAGRhdGEiO086ODoic3RkQ2xhc3MiOjE6e3M6OToiX19kZWZhdWx0IjtPOjg6InN0ZENsYXNzIjo1OntzOjc6InNlc3Npb24iO086ODoic3RkQ2xhc3MiOjM6e3M6NzoiY291bnRlciI7aTozNjtzOjU6InRpbWVyIjtPOjg6InN0ZENsYXNzIjozOntzOjU6InN0YXJ0IjtpOjE1MDU2NzE3Njc7czo0OiJsYXN0IjtpOjE1MDU2NzIwNjI7czozOiJub3ciO2k6MTUwNTY3MjA2Mjt9czo1OiJ0b2tlbiI7czozMjoiMzRWZXhhOHV6WHI4YkdJSnAwSnN0N2UzeHNuSzdGS0wiO31zOjg6InJlZ2lzdHJ5IjtPOjI0OiJKb29tbGFcUmVnaXN0cnlcUmVnaXN0cnkiOjM6e3M6NzoiACoAZGF0YSI7Tzo4OiJzdGRDbGFzcyI6Mzp7czoxMzoiY29tX2luc3RhbGxlciI7Tzo4OiJzdGRDbGFzcyI6NDp7czo3OiJtZXNzYWdlIjtzOjA6IiI7czoxNzoiZXh0ZW5zaW9uX21lc3NhZ2UiO3M6MDoiIjtzOjc6Imluc3RhbGwiO086ODoic3RkQ2xhc3MiOjE6e3M6MTc6Imluc3RhbGxfZGlyZWN0b3J5IjtzOjkyOiIvaGVybWVzL2Jvc25hY3dlYjAyL2Jvc25hY3dlYjAyYXAvYjQwNy9pcGcubW9kZWxhZ2VuY3lwZWdhc3VzY28vYWdlbnR1cmFfcGVnYXN1cy9raWxlcmlzL3RtcCI7fXM6MTI6InJlZGlyZWN0X3VybCI7Tjt9czoxMzoiY29tX3RlbXBsYXRlcyI7Tzo4OiJzdGRDbGFzcyI6MTp7czo0OiJlZGl0IjtPOjg6InN0ZENsYXNzIjoxOntzOjU6InN0eWxlIjtPOjg6InN0ZENsYXNzIjoyOntzOjI6ImlkIjthOjA6e31zOjQ6ImRhdGEiO047fX19czoxMToiY29tX2NvbnRlbnQiO086ODoic3RkQ2xhc3MiOjE6e3M6NDoiZWRpdCI7Tzo4OiJzdGRDbGFzcyI6MTp7czo3OiJhcnRpY2xlIjtPOjg6InN0ZENsYXNzIjoxOntzOjQ6ImRhdGEiO047fX19fXM6MTQ6IgAqAGluaXRpYWxpemVkIjtiOjA7czo5OiJzZXBhcmF0b3IiO3M6MToiLiI7fXM6NDoidXNlciI7Tzo1OiJKVXNlciI6MTp7czoyOiJpZCI7czozOiIyOTAiO31zOjExOiJhcHBsaWNhdGlvbiI7Tzo4OiJzdGRDbGFzcyI6MTp7czo1OiJxdWV1ZSI7Tjt9czoyOiJUMyI7Tzo4OiJzdGRDbGFzcyI6MTp7czo2OiJ0M2xvY2siO047fX19czoxNDoiACoAaW5pdGlhbGl6ZWQiO2I6MDtzOjk6InNlcGFyYXRvciI7czoxOiIuIjt9";', 290, 'virgis');
-INSERT INTO `aj14x_session` VALUES ('f4d2c7c29c17fb23431438a418b44bc6', 0, 1, '1505672013', 'joomla|s:716:"TzoyNDoiSm9vbWxhXFJlZ2lzdHJ5XFJlZ2lzdHJ5IjozOntzOjc6IgAqAGRhdGEiO086ODoic3RkQ2xhc3MiOjE6e3M6OToiX19kZWZhdWx0IjtPOjg6InN0ZENsYXNzIjozOntzOjc6InNlc3Npb24iO086ODoic3RkQ2xhc3MiOjM6e3M6NzoiY291bnRlciI7aToxMDtzOjU6InRpbWVyIjtPOjg6InN0ZENsYXNzIjozOntzOjU6InN0YXJ0IjtpOjE1MDU2Njk5NTI7czo0OiJsYXN0IjtpOjE1MDU2NzE5Nzk7czozOiJub3ciO2k6MTUwNTY3MjAxMjt9czo1OiJ0b2tlbiI7czozMjoiaHZlQlZzSDNOaWRiYWVOSU9SZEp6aTlUalVIcVBzZ1oiO31zOjg6InJlZ2lzdHJ5IjtPOjI0OiJKb29tbGFcUmVnaXN0cnlcUmVnaXN0cnkiOjM6e3M6NzoiACoAZGF0YSI7Tzo4OiJzdGRDbGFzcyI6MDp7fXM6MTQ6IgAqAGluaXRpYWxpemVkIjtiOjA7czo5OiJzZXBhcmF0b3IiO3M6MToiLiI7fXM6NDoidXNlciI7Tzo1OiJKVXNlciI6MTp7czoyOiJpZCI7aTowO319fXM6MTQ6IgAqAGluaXRpYWxpemVkIjtiOjA7czo5OiJzZXBhcmF0b3IiO3M6MToiLiI7fQ==";', 0, '');
+INSERT INTO `aj14x_session` VALUES ('9efd049f6cd1ae2f98a1a1ae852bf308', 0, 1, '1505711285', 'joomla|s:832:"TzoyNDoiSm9vbWxhXFJlZ2lzdHJ5XFJlZ2lzdHJ5IjozOntzOjc6IgAqAGRhdGEiO086ODoic3RkQ2xhc3MiOjE6e3M6OToiX19kZWZhdWx0IjtPOjg6InN0ZENsYXNzIjozOntzOjc6InNlc3Npb24iO086ODoic3RkQ2xhc3MiOjI6e3M6NzoiY291bnRlciI7aToxODtzOjU6InRpbWVyIjtPOjg6InN0ZENsYXNzIjozOntzOjU6InN0YXJ0IjtpOjE1MDU3MDk5MTM7czo0OiJsYXN0IjtpOjE1MDU3MTA3ODA7czozOiJub3ciO2k6MTUwNTcxMTI4NDt9fXM6ODoicmVnaXN0cnkiO086MjQ6Ikpvb21sYVxSZWdpc3RyeVxSZWdpc3RyeSI6Mzp7czo3OiIAKgBkYXRhIjtPOjg6InN0ZENsYXNzIjoxOntzOjEwOiJjb21fcnNmb3JtIjtPOjg6InN0ZENsYXNzIjoxOntzOjExOiJzdWJtaXNzaW9ucyI7Tzo4OiJzdGRDbGFzcyI6MTp7czoxNzoiY3VycmVudGZpbHRlcmhhc2giO3M6MzI6ImQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlIjt9fX1zOjE0OiIAKgBpbml0aWFsaXplZCI7YjowO3M6OToic2VwYXJhdG9yIjtzOjE6Ii4iO31zOjQ6InVzZXIiO086NToiSlVzZXIiOjE6e3M6MjoiaWQiO2k6MDt9fX1zOjE0OiIAKgBpbml0aWFsaXplZCI7YjowO3M6OToic2VwYXJhdG9yIjtzOjE6Ii4iO30=";', 0, '');
+INSERT INTO `aj14x_session` VALUES ('dd3a37903483571dcfd9f05fdf0ee7af', 1, 0, '1505711337', 'joomla|s:8552:"TzoyNDoiSm9vbWxhXFJlZ2lzdHJ5XFJlZ2lzdHJ5IjozOntzOjc6IgAqAGRhdGEiO086ODoic3RkQ2xhc3MiOjE6e3M6OToiX19kZWZhdWx0IjtPOjg6InN0ZENsYXNzIjo3OntzOjc6InNlc3Npb24iO086ODoic3RkQ2xhc3MiOjM6e3M6NzoiY291bnRlciI7aTo1NTE7czo1OiJ0aW1lciI7Tzo4OiJzdGRDbGFzcyI6Mzp7czo1OiJzdGFydCI7aToxNTA1Njg1NjkxO3M6NDoibGFzdCI7aToxNTA1NzExMzIyO3M6Mzoibm93IjtpOjE1MDU3MTEzMjU7fXM6NToidG9rZW4iO3M6MzI6IlBneDB5b2FLOVNzWFhYVk1NT2g1OTlYS3B0d1N4NzRrIjt9czo4OiJyZWdpc3RyeSI7TzoyNDoiSm9vbWxhXFJlZ2lzdHJ5XFJlZ2lzdHJ5IjozOntzOjc6IgAqAGRhdGEiO086ODoic3RkQ2xhc3MiOjc6e3M6MTM6ImNvbV9pbnN0YWxsZXIiO086ODoic3RkQ2xhc3MiOjM6e3M6NzoibWVzc2FnZSI7czowOiIiO3M6MTc6ImV4dGVuc2lvbl9tZXNzYWdlIjtzOjA6IiI7czoxMjoicmVkaXJlY3RfdXJsIjtOO31zOjEwOiJjb21fY29uZmlnIjtPOjg6InN0ZENsYXNzIjoxOntzOjY6ImNvbmZpZyI7Tzo4OiJzdGRDbGFzcyI6MTp7czo2OiJnbG9iYWwiO086ODoic3RkQ2xhc3MiOjE6e3M6NDoiZGF0YSI7YTo5MTp7czoxMzoiY2FjaGVfaGFuZGxlciI7czo0OiJmaWxlIjtzOjEwOiJjYWNoZV9wYXRoIjtzOjA6IiI7czoxNjoibWVtY2FjaGVfcGVyc2lzdCI7aToxO3M6MTc6Im1lbWNhY2hlX2NvbXByZXNzIjtpOjA7czoyMDoibWVtY2FjaGVfc2VydmVyX2hvc3QiO3M6OToibG9jYWxob3N0IjtzOjIwOiJtZW1jYWNoZV9zZXJ2ZXJfcG9ydCI7aToxMTIxMTtzOjE3OiJtZW1jYWNoZWRfcGVyc2lzdCI7aToxO3M6MTg6Im1lbWNhY2hlZF9jb21wcmVzcyI7aTowO3M6MjE6Im1lbWNhY2hlZF9zZXJ2ZXJfaG9zdCI7czo5OiJsb2NhbGhvc3QiO3M6MjE6Im1lbWNhY2hlZF9zZXJ2ZXJfcG9ydCI7aToxMTIxMTtzOjEzOiJyZWRpc19wZXJzaXN0IjtpOjE7czoxNzoicmVkaXNfc2VydmVyX2hvc3QiO3M6OToibG9jYWxob3N0IjtzOjE3OiJyZWRpc19zZXJ2ZXJfcG9ydCI7aTo2Mzc5O3M6MTc6InJlZGlzX3NlcnZlcl9hdXRoIjtzOjA6IiI7czoxNToicmVkaXNfc2VydmVyX2RiIjtpOjA7czo5OiJjYWNoZXRpbWUiO2k6MTU7czoyMDoiY2FjaGVfcGxhdGZvcm1wcmVmaXgiO2k6MDtzOjc6ImNhY2hpbmciO2k6MDtzOjY6ImRidHlwZSI7czo2OiJteXNxbGkiO3M6NDoiaG9zdCI7czozNToibW9kZWxhZ2VuY3lwZWdhc3VzY28uaXBhZ2VteXNxbC5jb20iO3M6NDoidXNlciI7czoxMToia2lsZXJpc19uZnEiO3M6MjoiZGIiO3M6MTE6ImtpbGVyaXNfbmZxIjtzOjg6ImRicHJlZml4IjtzOjY6ImFqMTR4XyI7czo1OiJkZWJ1ZyI7aTowO3M6MTA6ImRlYnVnX2xhbmciO2k6MDtzOjEwOiJmdHBfZW5hYmxlIjtpOjA7czo4OiJmdHBfaG9zdCI7czowOiIiO3M6ODoiZnRwX3BvcnQiO3M6MDoiIjtzOjg6ImZ0cF91c2VyIjtzOjA6IiI7czo4OiJmdHBfcGFzcyI7czowOiIiO3M6ODoiZnRwX3Jvb3QiO3M6MDoiIjtzOjEyOiJwcm94eV9lbmFibGUiO2k6MDtzOjEwOiJwcm94eV9ob3N0IjtzOjA6IiI7czoxMDoicHJveHlfcG9ydCI7czowOiIiO3M6MTA6InByb3h5X3VzZXIiO3M6MDoiIjtzOjEwOiJwcm94eV9wYXNzIjtzOjA6IiI7czo2OiJvZmZzZXQiO3M6MzoiVVRDIjtzOjEwOiJtYWlsb25saW5lIjtpOjE7czoxMToibWFzc21haWxvZmYiO2k6MDtzOjg6Im1haWxmcm9tIjtzOjIyOiJ2aXJnaXNtYW5rdXNAZ21haWwuY29tIjtzOjg6ImZyb21uYW1lIjtzOjQ4OiJLaWxlcmlzIC0gcGHFoWFsaW5hbWUgSnVtcyBuZXJlaWthbGluZ3VzIMW+bW9uZXMiO3M6NzoicmVwbHl0byI7czowOiIiO3M6MTE6InJlcGx5dG9uYW1lIjtzOjA6IiI7czo2OiJtYWlsZXIiO3M6NDoibWFpbCI7czo4OiJzZW5kbWFpbCI7czoxODoiL3Vzci9zYmluL3NlbmRtYWlsIjtzOjg6InNtdHBob3N0IjtzOjk6ImxvY2FsaG9zdCI7czo4OiJzbXRwcG9ydCI7aToyNTtzOjEwOiJzbXRwc2VjdXJlIjtzOjQ6Im5vbmUiO3M6ODoic210cGF1dGgiO2k6MDtzOjg6InNtdHB1c2VyIjtzOjA6IiI7czo4OiJzbXRwcGFzcyI7czowOiIiO3M6ODoiTWV0YURlc2MiO3M6NDk6IktpbGVyaXMgLSBwYcWhYWxpbmFtZSBKdW1zIG5lcmVpa2FsaW5ndXMgxb5tb25lcy4iO3M6ODoiTWV0YUtleXMiO3M6MDoiIjtzOjY6InJvYm90cyI7czowOiIiO3M6MTA6Ik1ldGFSaWdodHMiO3M6MDoiIjtzOjEwOiJNZXRhQXV0aG9yIjtpOjE7czoxMToiTWV0YVZlcnNpb24iO2k6MDtzOjM6InNlZiI7aToxO3M6MTE6InNlZl9yZXdyaXRlIjtpOjE7czoxMDoic2VmX3N1ZmZpeCI7aToxO3M6MTI6InVuaWNvZGVzbHVncyI7aTowO3M6MTk6InNpdGVuYW1lX3BhZ2V0aXRsZXMiO2k6MDtzOjg6InRtcF9wYXRoIjtzOjkyOiIvaGVybWVzL2Jvc25hY3dlYjAyL2Jvc25hY3dlYjAyYXAvYjQwNy9pcGcubW9kZWxhZ2VuY3lwZWdhc3VzY28vYWdlbnR1cmFfcGVnYXN1cy9raWxlcmlzL3RtcCI7czo0OiJnemlwIjtpOjA7czoxNToiZXJyb3JfcmVwb3J0aW5nIjtzOjc6ImRlZmF1bHQiO3M6OToiZm9yY2Vfc3NsIjtpOjA7czoxNToic2Vzc2lvbl9oYW5kbGVyIjtzOjg6ImRhdGFiYXNlIjtzOjI4OiJzZXNzaW9uX21lbWNhY2hlX3NlcnZlcl9ob3N0IjtzOjk6ImxvY2FsaG9zdCI7czoyODoic2Vzc2lvbl9tZW1jYWNoZV9zZXJ2ZXJfcG9ydCI7aToxMTIxMTtzOjI5OiJzZXNzaW9uX21lbWNhY2hlZF9zZXJ2ZXJfaG9zdCI7czo5OiJsb2NhbGhvc3QiO3M6Mjk6InNlc3Npb25fbWVtY2FjaGVkX3NlcnZlcl9wb3J0IjtpOjExMjExO3M6ODoibGlmZXRpbWUiO2k6MTU7czoxNDoic2hhcmVkX3Nlc3Npb24iO2k6MDtzOjg6InNpdGVuYW1lIjtzOjQ4OiJLaWxlcmlzIC0gcGHFoWFsaW5hbWUgSnVtcyBuZXJlaWthbGluZ3VzIMW+bW9uZXMiO3M6Nzoib2ZmbGluZSI7aTowO3M6MjM6ImRpc3BsYXlfb2ZmbGluZV9tZXNzYWdlIjtpOjE7czoxNToib2ZmbGluZV9tZXNzYWdlIjtzOjY5OiJUaGlzIHNpdGUgaXMgZG93biBmb3IgbWFpbnRlbmFuY2UuPGJyIC8+UGxlYXNlIGNoZWNrIGJhY2sgYWdhaW4gc29vbi4iO3M6MTM6Im9mZmxpbmVfaW1hZ2UiO3M6MDoiIjtzOjEyOiJmcm9udGVkaXRpbmciO2k6MTtzOjY6ImVkaXRvciI7czozOiJqY2UiO3M6NzoiY2FwdGNoYSI7czoxOiIwIjtzOjY6ImFjY2VzcyI7aToxO3M6MTA6Imxpc3RfbGltaXQiO2k6MjA7czoxMDoiZmVlZF9saW1pdCI7aToxMDtzOjEwOiJmZWVkX2VtYWlsIjtzOjQ6Im5vbmUiO3M6ODoibG9nX3BhdGgiO3M6MTA3OiIvaGVybWVzL2Jvc25hY3dlYjAyL2Jvc25hY3dlYjAyYXAvYjQwNy9pcGcubW9kZWxhZ2VuY3lwZWdhc3VzY28vYWdlbnR1cmFfcGVnYXN1cy9raWxlcmlzL2FkbWluaXN0cmF0b3IvbG9ncyI7czo3OiJoZWxwdXJsIjtzOjgwOiJodHRwczovL2hlbHAuam9vbWxhLm9yZy9wcm94eT9rZXlyZWY9SGVscHttYWpvcn17bWlub3J9OntrZXlyZWZ9Jmxhbmc9e2xhbmdjb2RlfSI7czoxMzoiY29va2llX2RvbWFpbiI7czowOiIiO3M6MTE6ImNvb2tpZV9wYXRoIjtzOjA6IiI7czo3OiJmaWx0ZXJzIjthOjk6e2k6MTthOjM6e3M6MTE6ImZpbHRlcl90eXBlIjtzOjI6Ik5IIjtzOjExOiJmaWx0ZXJfdGFncyI7czowOiIiO3M6MTc6ImZpbHRlcl9hdHRyaWJ1dGVzIjtzOjA6IiI7fWk6OTthOjM6e3M6MTE6ImZpbHRlcl90eXBlIjtzOjI6IkJMIjtzOjExOiJmaWx0ZXJfdGFncyI7czowOiIiO3M6MTc6ImZpbHRlcl9hdHRyaWJ1dGVzIjtzOjA6IiI7fWk6NjthOjM6e3M6MTE6ImZpbHRlcl90eXBlIjtzOjI6IkJMIjtzOjExOiJmaWx0ZXJfdGFncyI7czowOiIiO3M6MTc6ImZpbHRlcl9hdHRyaWJ1dGVzIjtzOjA6IiI7fWk6NzthOjM6e3M6MTE6ImZpbHRlcl90eXBlIjtzOjQ6Ik5PTkUiO3M6MTE6ImZpbHRlcl90YWdzIjtzOjA6IiI7czoxNzoiZmlsdGVyX2F0dHJpYnV0ZXMiO3M6MDoiIjt9aToyO2E6Mzp7czoxMToiZmlsdGVyX3R5cGUiO3M6MjoiTkgiO3M6MTE6ImZpbHRlcl90YWdzIjtzOjA6IiI7czoxNzoiZmlsdGVyX2F0dHJpYnV0ZXMiO3M6MDoiIjt9aTozO2E6Mzp7czoxMToiZmlsdGVyX3R5cGUiO3M6MjoiQkwiO3M6MTE6ImZpbHRlcl90YWdzIjtzOjA6IiI7czoxNzoiZmlsdGVyX2F0dHJpYnV0ZXMiO3M6MDoiIjt9aTo0O2E6Mzp7czoxMToiZmlsdGVyX3R5cGUiO3M6MjoiQkwiO3M6MTE6ImZpbHRlcl90YWdzIjtzOjA6IiI7czoxNzoiZmlsdGVyX2F0dHJpYnV0ZXMiO3M6MDoiIjt9aTo1O2E6Mzp7czoxMToiZmlsdGVyX3R5cGUiO3M6MjoiQkwiO3M6MTE6ImZpbHRlcl90YWdzIjtzOjA6IiI7czoxNzoiZmlsdGVyX2F0dHJpYnV0ZXMiO3M6MDoiIjt9aTo4O2E6Mzp7czoxMToiZmlsdGVyX3R5cGUiO3M6NDoiTk9ORSI7czoxMToiZmlsdGVyX3RhZ3MiO3M6MDoiIjtzOjE3OiJmaWx0ZXJfYXR0cmlidXRlcyI7czowOiIiO319czo4OiJhc3NldF9pZCI7aToxO319fX1zOjk6ImNvbV9tZW51cyI7Tzo4OiJzdGRDbGFzcyI6Mjp7czo1OiJpdGVtcyI7Tzo4OiJzdGRDbGFzcyI6NDp7czo4OiJtZW51dHlwZSI7czo4OiJtYWlubWVudSI7czo5OiJjbGllbnRfaWQiO2k6MDtzOjEwOiJsaW1pdHN0YXJ0IjtpOjA7czo0OiJsaXN0IjthOjQ6e3M6OToiZGlyZWN0aW9uIjtzOjM6ImFzYyI7czo1OiJsaW1pdCI7czoyOiIyMCI7czo4OiJvcmRlcmluZyI7czo1OiJhLmxmdCI7czo1OiJzdGFydCI7ZDowO319czo0OiJlZGl0IjtPOjg6InN0ZENsYXNzIjoyOntzOjQ6Iml0ZW0iO086ODoic3RkQ2xhc3MiOjQ6e3M6MjoiaWQiO2E6MDp7fXM6NDoiZGF0YSI7TjtzOjQ6InR5cGUiO047czo0OiJsaW5rIjtOO31zOjQ6Im1lbnUiO086ODoic3RkQ2xhc3MiOjI6e3M6NDoiZGF0YSI7TjtzOjI6ImlkIjthOjA6e319fX1zOjExOiJjb21fY29udGVudCI7Tzo4OiJzdGRDbGFzcyI6MTp7czo0OiJlZGl0IjtPOjg6InN0ZENsYXNzIjoxOntzOjc6ImFydGljbGUiO086ODoic3RkQ2xhc3MiOjI6e3M6MjoiaWQiO2E6MDp7fXM6NDoiZGF0YSI7Tjt9fX1zOjEwOiJjb21fcnNmb3JtIjtPOjg6InN0ZENsYXNzIjoxOntzOjExOiJzdWJtaXNzaW9ucyI7Tzo4OiJzdGRDbGFzcyI6MTA6e3M6MTc6ImN1cnJlbnRmaWx0ZXJoYXNoIjtzOjMyOiJjNGNhNDIzOGEwYjkyMzgyMGRjYzUwOWE2Zjc1ODQ5YiI7czo2OiJmb3JtSWQiO2k6MTtzOjY6ImZpbHRlciI7czowOiIiO3M6NDoibGFuZyI7czowOiIiO3M6ODoiZGF0ZUZyb20iO3M6MDoiIjtzOjY6ImRhdGVUbyI7czowOiIiO3M6MTI6ImZpbHRlcl9vcmRlciI7czoxMzoiRGF0ZVN1Ym1pdHRlZCI7czoxNjoiZmlsdGVyX29yZGVyX0RpciI7czo0OiJERVNDIjtzOjU6ImxpbWl0IjtpOjIwO3M6MTA6ImxpbWl0c3RhcnQiO2k6MDt9fXM6MTQ6ImNvbV9jYXRlZ29yaWVzIjtPOjg6InN0ZENsYXNzIjoyOntzOjEwOiJjYXRlZ29yaWVzIjtPOjg6InN0ZENsYXNzIjoxOntzOjc6ImNvbnRlbnQiO086ODoic3RkQ2xhc3MiOjI6e3M6NjoiZmlsdGVyIjtPOjg6InN0ZENsYXNzIjoxOntzOjk6ImV4dGVuc2lvbiI7czoxMToiY29tX2NvbnRlbnQiO31zOjQ6Imxpc3QiO2E6NDp7czo5OiJkaXJlY3Rpb24iO3M6MzoiYXNjIjtzOjU6ImxpbWl0IjtzOjI6IjIwIjtzOjg6Im9yZGVyaW5nIjtzOjU6ImEubGZ0IjtzOjU6InN0YXJ0IjtkOjA7fX19czo0OiJlZGl0IjtPOjg6InN0ZENsYXNzIjoxOntzOjg6ImNhdGVnb3J5IjtPOjg6InN0ZENsYXNzIjoyOntzOjI6ImlkIjthOjA6e31zOjQ6ImRhdGEiO047fX19czoxMzoiY29tX3RlbXBsYXRlcyI7Tzo4OiJzdGRDbGFzcyI6MTp7czo0OiJlZGl0IjtPOjg6InN0ZENsYXNzIjoxOntzOjU6InN0eWxlIjtPOjg6InN0ZENsYXNzIjoyOntzOjI6ImlkIjthOjA6e31zOjQ6ImRhdGEiO047fX19fXM6MTQ6IgAqAGluaXRpYWxpemVkIjtiOjA7czo5OiJzZXBhcmF0b3IiO3M6MToiLiI7fXM6NDoidXNlciI7Tzo1OiJKVXNlciI6MTp7czoyOiJpZCI7czozOiIyOTAiO31zOjExOiJhcHBsaWNhdGlvbiI7Tzo4OiJzdGRDbGFzcyI6MTp7czo1OiJxdWV1ZSI7Tjt9czoxMDoiY29tX3JzZm9ybSI7Tzo4OiJzdGRDbGFzcyI6MTp7czo0OiJmb3JtIjtPOjg6InN0ZENsYXNzIjoxOntzOjc6ImZvcm1JZDEiO086ODoic3RkQ2xhc3MiOjE6e3M6NDoibGFuZyI7czo1OiJsdC1MVCI7fX19czoyOiJUMyI7Tzo4OiJzdGRDbGFzcyI6MTp7czo2OiJ0M2xvY2siO047fXM6OToiY29tX21lZGlhIjtPOjg6InN0ZENsYXNzIjoxOntzOjEwOiJyZXR1cm5fdXJsIjtzOjEyMDoiaW5kZXgucGhwP29wdGlvbj1jb21fbWVkaWEmdmlldz1pbWFnZXMmdG1wbD1jb21wb25lbnQmZmllbGRpZD1qZm9ybV9wYXJhbXNfbG9nb2ltYWdlJmVfbmFtZT0mYXNzZXQ9Y29tX3RlbXBsYXRlcyZhdXRob3I9Ijt9fX1zOjE0OiIAKgBpbml0aWFsaXplZCI7YjowO3M6OToic2VwYXJhdG9yIjtzOjE6Ii4iO30=";', 290, 'virgis');
 
 -- --------------------------------------------------------
 
@@ -2913,7 +4140,7 @@ INSERT INTO `aj14x_template_styles` VALUES (4, 'beez3', 0, '0', 'Beez3 - Default
 INSERT INTO `aj14x_template_styles` VALUES (5, 'hathor', 1, '0', 'Hathor - Default', '{"showSiteName":"0","colourChoice":"","boldText":"0"}');
 INSERT INTO `aj14x_template_styles` VALUES (7, 'protostar', 0, '0', 'protostar - Default', '{"templateColor":"","logoFile":"","googleFont":"1","googleFontName":"Open+Sans","fluidContainer":"0"}');
 INSERT INTO `aj14x_template_styles` VALUES (8, 'isis', 1, '1', 'isis - Default', '{"templateColor":"","logoFile":""}');
-INSERT INTO `aj14x_template_styles` VALUES (9, 'purity_iii', 0, '1', 'purity_III - Numatytasis', '{"tpl_article_info_datetime_format":"d M Y","t3_template":"1","devmode":"0","themermode":"1","legacy_css":"1","responsive":"1","non_responsive_width":"970px","build_rtl":"1","t3-assets":"t3-assets","t3-rmvlogo":"1","minify":"1","minify_js":"1","minify_js_tool":"jsmin","minify_exclude":"","link_titles":"","theme":"red","logotype":"image","sitename":"","slogan":"","logoimage":"","enable_logoimage_sm":"0","logoimage_sm":"","mainlayout":"blog","sublayout":"","mm_type":"mainmenu","navigation_trigger":"hover","navigation_type":"megamenu","navigation_animation":"","navigation_animation_duration":"400","mm_config":"","navigation_collapse_enable":"1","addon_offcanvas_enable":"1","addon_offcanvas_effect":"off-canvas-effect-4","snippet_open_head":"","snippet_close_head":"","snippet_open_body":"","snippet_close_body":"","snippet_debug":"0"}');
+INSERT INTO `aj14x_template_styles` VALUES (9, 'purity_iii', 0, '1', 'purity_III - Numatytasis', '{"tpl_article_info_datetime_format":"d M Y","t3_template":"1","devmode":"0","themermode":"1","legacy_css":"1","responsive":"1","non_responsive_width":"970px","build_rtl":"1","t3-assets":"t3-assets","t3-rmvlogo":"1","minify":"1","minify_js":"1","minify_js_tool":"jsmin","minify_exclude":"","link_titles":"","theme":"red","logotype":"image","sitename":"","slogan":"","logoimage":"images\\/photos\\/nfq-logo.png","enable_logoimage_sm":"0","logoimage_sm":"","mainlayout":"blog","sublayout":"","mm_type":"mainmenu","navigation_trigger":"hover","navigation_type":"megamenu","navigation_animation":"","navigation_animation_duration":"400","mm_config":"","navigation_collapse_enable":"1","addon_offcanvas_enable":"1","addon_offcanvas_effect":"off-canvas-effect-4","snippet_open_head":"","snippet_close_head":"","snippet_open_body":"","snippet_close_body":"","snippet_debug":"0"}');
 
 -- --------------------------------------------------------
 
@@ -3016,12 +4243,28 @@ CREATE TABLE `aj14x_ucm_history` (
   PRIMARY KEY (`version_id`),
   KEY `idx_ucm_item_id` (`ucm_type_id`,`ucm_item_id`),
   KEY `idx_save_date` (`save_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=24 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_ucm_history`
 -- 
 
+INSERT INTO `aj14x_ucm_history` VALUES (1, 1, 1, '', '2017-09-17 20:42:50', 290, 1772, '23909a96c497f658e9a703f9fab64c567f46e1d4', '{"id":1,"asset_id":58,"title":"Kainos","alias":"kainos","introtext":"<p>100 e<\\/p>","fulltext":"","state":1,"catid":"2","created":"2017-09-17 20:42:50","created_by":"290","created_by_alias":"","modified":"2017-09-17 20:42:50","modified_by":null,"checked_out":null,"checked_out_time":null,"publish_up":"2017-09-17 20:42:50","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":1,"ordering":null,"metakey":"","metadesc":"","access":"1","hits":null,"metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (9, 2, 1, '', '2017-09-17 23:54:29', 290, 2887, '5a1e7332b9dc97fadcaf2127bace11b706b39513', '{"id":2,"asset_id":"59","title":"1 puslapis","alias":"1-puslapis","introtext":"<p>Jums nusibodo J\\u016bs\\u0173 vyras ar \\u017emona? Norite perimti bizn\\u012f i\\u0161 verslo partnerio? Ne\\u017einote kaip atsikratyti savo vyro meilu\\u017ee?<\\/p>\\r\\n<p>KILERIS (samdomas \\u017eudikas) lengvai i\\u0161spr\\u0119s J\\u0173s\\u016b problemas.<\\/p>\\r\\n<p>2014 m. rugpj\\u016b\\u010dio 27 d. i\\u0161 kal\\u0117jimo anks\\u010diau laiko buvo paleistas samdomas \\u017eudikas Johnas Jairo Velasquezas, pravarde Popajus, kuris dirbo garsiam Kolumbijos narkotik\\u0173 baronui Pablo Escobarui. Po 24 met\\u0173, praleist\\u0173 u\\u017e grot\\u0173, buv\\u0119s narkotik\\u0173 kartelio narys, prisid\\u0117j\\u0119s prie daugiau nei 300 u\\u017esakyt\\u0173 \\u017emog\\u017eudys\\u010di\\u0173, nusprend\\u0117 prapl\\u0117sti veikl\\u0105 Europoje.<\\/p>\\r\\n<p>Apie atvykstan\\u010dius \\u017eudikus Lietuvos policija neturi joki\\u0173 duomen\\u0173 ir net jei jie ir palieka savo DNR nusikaltimo vietoje, jos vis tiek n\\u0117ra su kuo palyginti. Samdomi \\u017eudikai visuomet naudoja visi\\u0161kai naujus ginklus, kuriuos v\\u0117liau i\\u0161meta.<\\/p>","fulltext":"","state":1,"catid":"2","created":"2017-09-17 20:43:03","created_by":"290","created_by_alias":"","modified":"2017-09-17 23:54:29","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-17 23:49:43","publish_up":"2017-09-17 20:43:03","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"images\\\\\\/photos\\\\\\/pablo-escobar-jairo-velasquez-alias-popeye.jpg\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":9,"ordering":"0","metakey":"","metadesc":"","access":"1","hits":"17","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (10, 2, 1, '', '2017-09-17 23:56:02', 290, 2902, 'a27cc438cc271caf2f85d63872ecf5f281a96e75', '{"id":2,"asset_id":"59","title":"1 puslapis","alias":"1-puslapis","introtext":"<p>Jums nusibodo J\\u016bs\\u0173 vyras ar \\u017emona? Norite perimti bizn\\u012f i\\u0161 verslo partnerio ar konkurento? Ne\\u017einote kaip atsikratyti savo vyro meilu\\u017ee?<\\/p>\\r\\n<p>KILERIS (samdomas \\u017eudikas) lengvai i\\u0161spr\\u0119s J\\u0173s\\u016b problemas.<\\/p>\\r\\n<p>2014 m. rugpj\\u016b\\u010dio 27 d. i\\u0161 kal\\u0117jimo anks\\u010diau laiko buvo paleistas samdomas \\u017eudikas Johnas Jairo Velasquezas, pravarde Popajus, kuris dirbo garsiam Kolumbijos narkotik\\u0173 baronui Pablo Escobarui. Po 24 met\\u0173, praleist\\u0173 u\\u017e grot\\u0173, buv\\u0119s narkotik\\u0173 kartelio narys, prisid\\u0117j\\u0119s prie daugiau nei 300 u\\u017esakyt\\u0173 \\u017emog\\u017eudys\\u010di\\u0173, nusprend\\u0117 prapl\\u0117sti veikl\\u0105 Europoje.<\\/p>\\r\\n<p>Apie atvykstan\\u010dius \\u017eudikus Lietuvos policija neturi joki\\u0173 duomen\\u0173 ir net jei jie ir palieka savo DNR nusikaltimo vietoje, jos vis tiek n\\u0117ra su kuo palyginti. Samdomi \\u017eudikai visuomet naudoja visi\\u0161kai naujus ginklus, kuriuos v\\u0117liau i\\u0161meta.<\\/p>","fulltext":"","state":1,"catid":"2","created":"2017-09-17 20:43:03","created_by":"290","created_by_alias":"","modified":"2017-09-17 23:56:02","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-17 23:54:29","publish_up":"2017-09-17 20:43:03","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"images\\\\\\/photos\\\\\\/pablo-escobar-jairo-velasquez-alias-popeye.jpg\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":10,"ordering":"0","metakey":"","metadesc":"","access":"1","hits":"18","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (11, 2, 1, '', '2017-09-17 23:56:47', 290, 2988, '4eeb1eeeaad7883dd3f064a124c3a9be42004b99', '{"id":2,"asset_id":"59","title":"1 puslapis","alias":"1-puslapis","introtext":"<h2><span style=\\"font-size: 12pt;\\">Jums nusibodo J\\u016bs\\u0173 vyras ar \\u017emona? Norite perimti bizn\\u012f i\\u0161 verslo partnerio ar konkurento? Ne\\u017einote kaip atsikratyti savo vyro meilu\\u017ee?<\\/span><\\/h2>\\r\\n<h1><span style=\\"font-size: 12pt;\\">KILERIS (samdomas \\u017eudikas) lengvai i\\u0161spr\\u0119s J\\u0173s\\u016b problemas.<\\/span><\\/h1>\\r\\n<p>2014 m. rugpj\\u016b\\u010dio 27 d. i\\u0161 kal\\u0117jimo anks\\u010diau laiko buvo paleistas samdomas \\u017eudikas Johnas Jairo Velasquezas, pravarde Popajus, kuris dirbo garsiam Kolumbijos narkotik\\u0173 baronui Pablo Escobarui. Po 24 met\\u0173, praleist\\u0173 u\\u017e grot\\u0173, buv\\u0119s narkotik\\u0173 kartelio narys, prisid\\u0117j\\u0119s prie daugiau nei 300 u\\u017esakyt\\u0173 \\u017emog\\u017eudys\\u010di\\u0173, nusprend\\u0117 prapl\\u0117sti veikl\\u0105 Europoje.<\\/p>\\r\\n<p>Apie atvykstan\\u010dius \\u017eudikus Lietuvos policija neturi joki\\u0173 duomen\\u0173 ir net jei jie ir palieka savo DNR nusikaltimo vietoje, jos vis tiek n\\u0117ra su kuo palyginti. Samdomi \\u017eudikai visuomet naudoja visi\\u0161kai naujus ginklus, kuriuos v\\u0117liau i\\u0161meta.<\\/p>","fulltext":"","state":1,"catid":"2","created":"2017-09-17 20:43:03","created_by":"290","created_by_alias":"","modified":"2017-09-17 23:56:47","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-17 23:56:07","publish_up":"2017-09-17 20:43:03","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"images\\\\\\/photos\\\\\\/pablo-escobar-jairo-velasquez-alias-popeye.jpg\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":11,"ordering":"0","metakey":"","metadesc":"","access":"1","hits":"18","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (12, 2, 1, '', '2017-09-17 23:57:36', 290, 3004, 'b73d50d1dc43b5c463af0d1fc1a889816f386d3e', '{"id":2,"asset_id":"59","title":"1 puslapis","alias":"1-puslapis","introtext":"<h2><span style=\\"font-size: 12pt;\\">Jums nusibodo J\\u016bs\\u0173 vyras ar \\u017emona? Norite perimti bizn\\u012f i\\u0161 verslo partnerio ar konkurento? Ne\\u017einote kaip atsikratyti savo vyro meilu\\u017ee?<\\/span><\\/h2>\\r\\n<h1><span style=\\"font-size: 12pt; color: #ff0000;\\">KILERIS (samdomas \\u017eudikas) lengvai i\\u0161spr\\u0119s J\\u0173s\\u016b problemas.<\\/span><\\/h1>\\r\\n<p>2014 m. rugpj\\u016b\\u010dio 27 d. i\\u0161 kal\\u0117jimo anks\\u010diau laiko buvo paleistas samdomas \\u017eudikas Johnas Jairo Velasquezas, pravarde Popajus, kuris dirbo garsiam Kolumbijos narkotik\\u0173 baronui Pablo Escobarui. Po 24 met\\u0173, praleist\\u0173 u\\u017e grot\\u0173, buv\\u0119s narkotik\\u0173 kartelio narys, prisid\\u0117j\\u0119s prie daugiau nei 300 u\\u017esakyt\\u0173 \\u017emog\\u017eudys\\u010di\\u0173, nusprend\\u0117 prapl\\u0117sti veikl\\u0105 Europoje.<\\/p>\\r\\n<p>Apie atvykstan\\u010dius \\u017eudikus Lietuvos policija neturi joki\\u0173 duomen\\u0173 ir net jei jie ir palieka savo DNR nusikaltimo vietoje, jos vis tiek n\\u0117ra su kuo palyginti. Samdomi \\u017eudikai visuomet naudoja visi\\u0161kai naujus ginklus, kuriuos v\\u0117liau i\\u0161meta.<\\/p>","fulltext":"","state":1,"catid":"2","created":"2017-09-17 20:43:03","created_by":"290","created_by_alias":"","modified":"2017-09-17 23:57:36","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-17 23:56:47","publish_up":"2017-09-17 20:43:03","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"images\\\\\\/photos\\\\\\/pablo-escobar-jairo-velasquez-alias-popeye.jpg\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":12,"ordering":"0","metakey":"","metadesc":"","access":"1","hits":"19","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (13, 2, 1, '', '2017-09-17 23:58:02', 290, 3004, 'fa2aed035b4828ca3fbcb6af62b54bba38ba852a', '{"id":2,"asset_id":"59","title":"1 puslapis","alias":"1-puslapis","introtext":"<h2><span style=\\"font-size: 14pt;\\">Jums nusibodo J\\u016bs\\u0173 vyras ar \\u017emona? Norite perimti bizn\\u012f i\\u0161 verslo partnerio ar konkurento? Ne\\u017einote kaip atsikratyti savo vyro meilu\\u017ee?<\\/span><\\/h2>\\r\\n<h1><span style=\\"font-size: 14pt; color: #ff0000;\\">KILERIS (samdomas \\u017eudikas) lengvai i\\u0161spr\\u0119s J\\u0173s\\u016b problemas.<\\/span><\\/h1>\\r\\n<p>2014 m. rugpj\\u016b\\u010dio 27 d. i\\u0161 kal\\u0117jimo anks\\u010diau laiko buvo paleistas samdomas \\u017eudikas Johnas Jairo Velasquezas, pravarde Popajus, kuris dirbo garsiam Kolumbijos narkotik\\u0173 baronui Pablo Escobarui. Po 24 met\\u0173, praleist\\u0173 u\\u017e grot\\u0173, buv\\u0119s narkotik\\u0173 kartelio narys, prisid\\u0117j\\u0119s prie daugiau nei 300 u\\u017esakyt\\u0173 \\u017emog\\u017eudys\\u010di\\u0173, nusprend\\u0117 prapl\\u0117sti veikl\\u0105 Europoje.<\\/p>\\r\\n<p>Apie atvykstan\\u010dius \\u017eudikus Lietuvos policija neturi joki\\u0173 duomen\\u0173 ir net jei jie ir palieka savo DNR nusikaltimo vietoje, jos vis tiek n\\u0117ra su kuo palyginti. Samdomi \\u017eudikai visuomet naudoja visi\\u0161kai naujus ginklus, kuriuos v\\u0117liau i\\u0161meta.<\\/p>","fulltext":"","state":1,"catid":"2","created":"2017-09-17 20:43:03","created_by":"290","created_by_alias":"","modified":"2017-09-17 23:58:02","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-17 23:57:36","publish_up":"2017-09-17 20:43:03","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"images\\\\\\/photos\\\\\\/pablo-escobar-jairo-velasquez-alias-popeye.jpg\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":13,"ordering":"0","metakey":"","metadesc":"","access":"1","hits":"20","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (14, 2, 1, '', '2017-09-17 23:59:54', 290, 2960, '738bd3c4a928c7336f3103ccd0301eef23925f9f', '{"id":2,"asset_id":"59","title":"1 puslapis","alias":"1-puslapis","introtext":"<h2><span style=\\"font-size: 14pt;\\">Norite perimti bizn\\u012f i\\u0161 verslo partnerio? Trukdo konkurentai? Ne\\u017einote kaip atsikratyti savo vyro meilu\\u017ee?<\\/span><\\/h2>\\r\\n<h1><span style=\\"font-size: 14pt; color: #ff0000;\\">KILERIS (samdomas \\u017eudikas) lengvai i\\u0161spr\\u0119s J\\u0173s\\u016b problemas.<\\/span><\\/h1>\\r\\n<p>2014 m. rugpj\\u016b\\u010dio 27 d. i\\u0161 kal\\u0117jimo anks\\u010diau laiko buvo paleistas samdomas \\u017eudikas Johnas Jairo Velasquezas, pravarde Popajus, kuris dirbo garsiam Kolumbijos narkotik\\u0173 baronui Pablo Escobarui. Po 24 met\\u0173, praleist\\u0173 u\\u017e grot\\u0173, buv\\u0119s narkotik\\u0173 kartelio narys, prisid\\u0117j\\u0119s prie daugiau nei 300 u\\u017esakyt\\u0173 \\u017emog\\u017eudys\\u010di\\u0173, nusprend\\u0117 prapl\\u0117sti veikl\\u0105 Europoje.<\\/p>\\r\\n<p>Apie atvykstan\\u010dius \\u017eudikus Lietuvos policija neturi joki\\u0173 duomen\\u0173 ir net jei jie ir palieka savo DNR nusikaltimo vietoje, jos vis tiek n\\u0117ra su kuo palyginti. Samdomi \\u017eudikai visuomet naudoja visi\\u0161kai naujus ginklus, kuriuos v\\u0117liau i\\u0161meta.<\\/p>","fulltext":"","state":1,"catid":"2","created":"2017-09-17 20:43:03","created_by":"290","created_by_alias":"","modified":"2017-09-17 23:59:54","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-17 23:58:02","publish_up":"2017-09-17 20:43:03","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"images\\\\\\/photos\\\\\\/pablo-escobar-jairo-velasquez-alias-popeye.jpg\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":14,"ordering":"0","metakey":"","metadesc":"","access":"1","hits":"22","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (15, 2, 1, '', '2017-09-18 00:01:33', 290, 3078, '86da03b3d354a0f5f9e1e2d26e180f4afa4d98a7', '{"id":2,"asset_id":"59","title":"1 puslapis","alias":"1-puslapis","introtext":"<h2><span style=\\"font-size: 14pt;\\">Norite perimti bizn\\u012f i\\u0161 verslo partnerio? Trukdo konkurentai? Ne\\u017einote kaip atsikratyti savo vyro meilu\\u017ee?<\\/span><\\/h2>\\r\\n<h1><span style=\\"font-size: 14pt; color: #ff0000;\\">KILERIS (samdomas \\u017eudikas) lengvai i\\u0161spr\\u0119s J\\u016bs\\u0173 problemas.<\\/span><\\/h1>\\r\\n<p>2014 m. rugpj\\u016b\\u010dio 27 d. i\\u0161 kal\\u0117jimo anks\\u010diau laiko buvo paleistas samdomas \\u017eudikas Johnas Jairo Velasquezas, pravarde Popajus, kuris dirbo garsiam Kolumbijos narkotik\\u0173 baronui Pablo Escobarui. Po 24 met\\u0173, praleist\\u0173 u\\u017e grot\\u0173, buv\\u0119s narkotik\\u0173 kartelio narys, prisid\\u0117j\\u0119s prie daugiau nei 300 u\\u017esakyt\\u0173 \\u017emog\\u017eudys\\u010di\\u0173, nusprend\\u0117 prapl\\u0117sti veikl\\u0105 Europoje.<\\/p>\\r\\n<p><span style=\\"color: #ff0000; font-size: 14pt;\\">Taigi J\\u016bs\\u0173 taikinys patikimose rankose.<\\/span><\\/p>\\r\\n<p>Apie atvykstan\\u010dius \\u017eudikus Lietuvos policija neturi joki\\u0173 duomen\\u0173 ir net jei jie ir palieka savo DNR nusikaltimo vietoje, jos vis tiek n\\u0117ra su kuo palyginti. Samdomi \\u017eudikai visuomet naudoja visi\\u0161kai naujus ginklus, kuriuos v\\u0117liau i\\u0161meta.<\\/p>","fulltext":"","state":1,"catid":"2","created":"2017-09-17 20:43:03","created_by":"290","created_by_alias":"","modified":"2017-09-18 00:01:33","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-17 23:59:54","publish_up":"2017-09-17 20:43:03","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"images\\\\\\/photos\\\\\\/pablo-escobar-jairo-velasquez-alias-popeye.jpg\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":15,"ordering":"0","metakey":"","metadesc":"","access":"1","hits":"23","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (16, 1, 1, '', '2017-09-18 00:08:32', 290, 2228, '9f19695454fba7c1c20c279eb11be02a17272bf7', '{"id":1,"asset_id":"58","title":"Kainos","alias":"kainos","introtext":"<p>Kuklus kainininkas u\\u017e ger\\u0105 paslaug\\u0105:<\\/p>\\r\\n<p>Eilinis \\u017emogus - 10 000 \\u20ac<\\/p>\\r\\n<p>\\u012emon\\u0117s vadovas - 15 000 \\u20ac<\\/p>\\r\\n<p>Pareig\\u016bnas - 20 000 \\u20ac<\\/p>\\r\\n<p>Verslo savininkas - 30 000 \\u20ac<\\/p>\\r\\n<p>\\u017dmogus su fizine apsauga - 40 000 \\u20ac<\\/p>\\r\\n<p>Vald\\u017eios atstovas - 50 000 \\u20ac<\\/p>\\r\\n<p>Kas nori der\\u0117tis, gali netik\\u0117tai pats tapti taikiniu - taigi nedarykite to.<\\/p>","fulltext":"","state":1,"catid":"2","created":"2017-09-17 20:42:50","created_by":"290","created_by_alias":"","modified":"2017-09-18 00:08:32","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-18 00:03:16","publish_up":"2017-09-17 20:42:50","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":2,"ordering":"1","metakey":"","metadesc":"","access":"1","hits":"5","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (17, 1, 1, '', '2017-09-18 00:09:22', 290, 2344, 'e224efbda3f42f21daf18426b9295a3265b5cc43', '{"id":1,"asset_id":"58","title":"Kainos","alias":"kainos","introtext":"<h1><span style=\\"font-size: 14pt; color: #ff0000;\\">Kuklus kainininkas u\\u017e ger\\u0105 paslaug\\u0105:<\\/span><\\/h1>\\r\\n<p>Eilinis \\u017emogus - 10 000 \\u20ac<\\/p>\\r\\n<p>\\u012emon\\u0117s vadovas - 15 000 \\u20ac<\\/p>\\r\\n<p>Pareig\\u016bnas - 20 000 \\u20ac<\\/p>\\r\\n<p>Verslo savininkas - 30 000 \\u20ac<\\/p>\\r\\n<p>\\u017dmogus su fizine apsauga - 40 000 \\u20ac<\\/p>\\r\\n<p>Vald\\u017eios atstovas - 50 000 \\u20ac<\\/p>\\r\\n<p><span style=\\"color: #ff0000; font-size: 14pt;\\">Kas nori der\\u0117tis, gali netik\\u0117tai pats tapti taikiniu - taigi nedarykite to.<\\/span><\\/p>","fulltext":"","state":1,"catid":"2","created":"2017-09-17 20:42:50","created_by":"290","created_by_alias":"","modified":"2017-09-18 00:09:22","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-18 00:08:32","publish_up":"2017-09-17 20:42:50","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":3,"ordering":"1","metakey":"","metadesc":"","access":"1","hits":"6","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (18, 1, 1, '', '2017-09-18 01:15:38', 290, 2962, '8cc633f247fbd201014c72bd7e2b392a11026dd9', '{"id":1,"asset_id":"58","title":"Kainos","alias":"kainos","introtext":"<h1><span style=\\"font-size: 14pt; color: #ff0000;\\">Kuklus kainininkas u\\u017e ger\\u0105 paslaug\\u0105:<\\/span><\\/h1>\\r\\n<p>Eilinis \\u017emogus - 10 000 \\u20ac<\\/p>\\r\\n<p>\\u012emon\\u0117s vadovas - 15 000 \\u20ac<\\/p>\\r\\n<p>Pareig\\u016bnas - 20 000 \\u20ac<\\/p>\\r\\n<p>Verslo savininkas - 30 000 \\u20ac<\\/p>\\r\\n<p>\\u017dmogus su fizine apsauga - 40 000 \\u20ac<\\/p>\\r\\n<p>Vald\\u017eios atstovas - 50 000 \\u20ac<\\/p>\\r\\n<p>U\\u017e dvigub\\u0105 kain\\u0105 padarysime taip, kad tai atrodyt\\u0173 savi\\u017eudyb\\u0117.<\\/p>\\r\\n<p>U\\u017e trigub\\u0105 kain\\u0105 padarysime taip, kad tai atrodyt\\u0173 nelaimingas atsitikimas.<\\/p>\\r\\n<p><span style=\\"color: #ff0000; font-size: 14pt;\\">Kas nori der\\u0117tis, gali netik\\u0117tai pats tapti taikiniu - taigi nedarykite to.<\\/span><\\/p>\\r\\n<p>50 procent\\u0173 kainos praveskite \\u012f m\\u016bs\\u0173 Badaujan\\u010di\\u0173 Afrikos vaik\\u0173 labdaros fondo s\\u0105skait\\u0105:<\\/p>\\r\\n<p>S\\u0105sk.nr. LT66 6666 6666 6666 6666<\\/p>\\r\\n<p>likusi\\u0105 sumos dal\\u012f per 3 dienas po u\\u017eduoties \\u012fvykdymo.<\\/p>\\r\\n<p><span style=\\"color: #ff0000; font-size: 14pt;\\">Nesugalvokite su mumis juokauti - mums tai gali nepatikti.<\\/span><\\/p>","fulltext":"","state":1,"catid":"2","created":"2017-09-17 20:42:50","created_by":"290","created_by_alias":"","modified":"2017-09-18 01:15:38","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-18 01:06:22","publish_up":"2017-09-17 20:42:50","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":4,"ordering":"1","metakey":"","metadesc":"","access":"1","hits":"7","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (19, 2, 1, '', '2017-09-18 03:30:24', 290, 3084, '9738b940548e2fcd4a793aacb3621a476bd81f62', '{"id":2,"asset_id":"59","title":"1 puslapis","alias":"1-puslapis","introtext":"<h2><span style=\\"font-size: 14pt;\\">Norite perimti bizn\\u012f i\\u0161 verslo partnerio? Trukdo konkurentai? Ne\\u017einote kaip atsikratyti savo vyro meilu\\u017e\\u0117s?<\\/span><\\/h2>\\r\\n<h1><span style=\\"font-size: 14pt; color: #ff0000;\\">KILERIS (samdomas \\u017eudikas) lengvai i\\u0161spr\\u0119s J\\u016bs\\u0173 problemas.<\\/span><\\/h1>\\r\\n<p>2014 m. rugpj\\u016b\\u010dio 27 d. i\\u0161 kal\\u0117jimo anks\\u010diau laiko buvo paleistas samdomas \\u017eudikas Johnas Jairo Velasquezas, pravarde Popajus, kuris dirbo garsiam Kolumbijos narkotik\\u0173 baronui Pablo Escobarui. Po 24 met\\u0173, praleist\\u0173 u\\u017e grot\\u0173, buv\\u0119s narkotik\\u0173 kartelio narys, prisid\\u0117j\\u0119s prie daugiau nei 300 u\\u017esakyt\\u0173 \\u017emog\\u017eudys\\u010di\\u0173, nusprend\\u0117 prapl\\u0117sti veikl\\u0105 Europoje.<\\/p>\\r\\n<p><span style=\\"color: #ff0000; font-size: 14pt;\\">Taigi J\\u016bs\\u0173 taikinys patikimose rankose.<\\/span><\\/p>\\r\\n<p>Apie atvykstan\\u010dius \\u017eudikus Lietuvos policija neturi joki\\u0173 duomen\\u0173 ir net jei jie ir palieka savo DNR nusikaltimo vietoje, jos vis tiek n\\u0117ra su kuo palyginti. Samdomi \\u017eudikai visuomet naudoja visi\\u0161kai naujus ginklus, kuriuos v\\u0117liau i\\u0161meta.<\\/p>","fulltext":"","state":1,"catid":"2","created":"2017-09-17 20:43:03","created_by":"290","created_by_alias":"","modified":"2017-09-18 03:30:24","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-18 03:29:59","publish_up":"2017-09-17 20:43:03","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"images\\\\\\/photos\\\\\\/pablo-escobar-jairo-velasquez-alias-popeye.jpg\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":17,"ordering":"0","metakey":"","metadesc":"","access":"1","hits":"29","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (20, 8, 5, '', '2017-09-18 03:32:33', 290, 579, 'f232586d7309f86541c874d5803c8b29855e8710', '{"id":8,"asset_id":61,"parent_id":"1","lft":"11","rgt":12,"level":1,"path":null,"extension":"com_content","title":"Puslapiai","alias":"puslapiai","note":"","description":"","published":"1","checked_out":null,"checked_out_time":null,"access":"1","params":"{\\"category_layout\\":\\"\\",\\"image\\":\\"\\",\\"image_alt\\":\\"\\",\\"t3_extrafields\\":\\"\\"}","metadesc":"","metakey":"","metadata":"{\\"author\\":\\"\\",\\"robots\\":\\"\\"}","created_user_id":"290","created_time":"2017-09-18 03:32:33","modified_user_id":null,"modified_time":"2017-09-18 03:32:33","hits":"0","language":"*","version":null}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (21, 2, 1, '', '2017-09-18 03:32:57', 290, 3084, '0d8b4fcd61109af9ee60d4ad8249071fbdbc0ce9', '{"id":2,"asset_id":"59","title":"1 puslapis","alias":"1-puslapis","introtext":"<h2><span style=\\"font-size: 14pt;\\">Norite perimti bizn\\u012f i\\u0161 verslo partnerio? Trukdo konkurentai? Ne\\u017einote kaip atsikratyti savo vyro meilu\\u017e\\u0117s?<\\/span><\\/h2>\\r\\n<h1><span style=\\"font-size: 14pt; color: #ff0000;\\">KILERIS (samdomas \\u017eudikas) lengvai i\\u0161spr\\u0119s J\\u016bs\\u0173 problemas.<\\/span><\\/h1>\\r\\n<p>2014 m. rugpj\\u016b\\u010dio 27 d. i\\u0161 kal\\u0117jimo anks\\u010diau laiko buvo paleistas samdomas \\u017eudikas Johnas Jairo Velasquezas, pravarde Popajus, kuris dirbo garsiam Kolumbijos narkotik\\u0173 baronui Pablo Escobarui. Po 24 met\\u0173, praleist\\u0173 u\\u017e grot\\u0173, buv\\u0119s narkotik\\u0173 kartelio narys, prisid\\u0117j\\u0119s prie daugiau nei 300 u\\u017esakyt\\u0173 \\u017emog\\u017eudys\\u010di\\u0173, nusprend\\u0117 prapl\\u0117sti veikl\\u0105 Europoje.<\\/p>\\r\\n<p><span style=\\"color: #ff0000; font-size: 14pt;\\">Taigi J\\u016bs\\u0173 taikinys patikimose rankose.<\\/span><\\/p>\\r\\n<p>Apie atvykstan\\u010dius \\u017eudikus Lietuvos policija neturi joki\\u0173 duomen\\u0173 ir net jei jie ir palieka savo DNR nusikaltimo vietoje, jos vis tiek n\\u0117ra su kuo palyginti. Samdomi \\u017eudikai visuomet naudoja visi\\u0161kai naujus ginklus, kuriuos v\\u0117liau i\\u0161meta.<\\/p>","fulltext":"","state":1,"catid":"8","created":"2017-09-17 20:43:03","created_by":"290","created_by_alias":"","modified":"2017-09-18 03:32:57","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-18 03:32:45","publish_up":"2017-09-17 20:43:03","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"images\\\\\\/photos\\\\\\/pablo-escobar-jairo-velasquez-alias-popeye.jpg\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":18,"ordering":"0","metakey":"","metadesc":"","access":"1","hits":"29","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (22, 1, 1, '', '2017-09-18 03:33:09', 290, 2962, 'b7e0c5b8be936500d830ba1e6faadf4b932606fe', '{"id":1,"asset_id":"58","title":"Kainos","alias":"kainos","introtext":"<h1><span style=\\"font-size: 14pt; color: #ff0000;\\">Kuklus kainininkas u\\u017e ger\\u0105 paslaug\\u0105:<\\/span><\\/h1>\\r\\n<p>Eilinis \\u017emogus - 10 000 \\u20ac<\\/p>\\r\\n<p>\\u012emon\\u0117s vadovas - 15 000 \\u20ac<\\/p>\\r\\n<p>Pareig\\u016bnas - 20 000 \\u20ac<\\/p>\\r\\n<p>Verslo savininkas - 30 000 \\u20ac<\\/p>\\r\\n<p>\\u017dmogus su fizine apsauga - 40 000 \\u20ac<\\/p>\\r\\n<p>Vald\\u017eios atstovas - 50 000 \\u20ac<\\/p>\\r\\n<p>U\\u017e dvigub\\u0105 kain\\u0105 padarysime taip, kad tai atrodyt\\u0173 savi\\u017eudyb\\u0117.<\\/p>\\r\\n<p>U\\u017e trigub\\u0105 kain\\u0105 padarysime taip, kad tai atrodyt\\u0173 nelaimingas atsitikimas.<\\/p>\\r\\n<p><span style=\\"color: #ff0000; font-size: 14pt;\\">Kas nori der\\u0117tis, gali netik\\u0117tai pats tapti taikiniu - taigi nedarykite to.<\\/span><\\/p>\\r\\n<p>50 procent\\u0173 kainos praveskite \\u012f m\\u016bs\\u0173 Badaujan\\u010di\\u0173 Afrikos vaik\\u0173 labdaros fondo s\\u0105skait\\u0105:<\\/p>\\r\\n<p>S\\u0105sk.nr. LT66 6666 6666 6666 6666<\\/p>\\r\\n<p>likusi\\u0105 sumos dal\\u012f per 3 dienas po u\\u017eduoties \\u012fvykdymo.<\\/p>\\r\\n<p><span style=\\"color: #ff0000; font-size: 14pt;\\">Nesugalvokite su mumis juokauti - mums tai gali nepatikti.<\\/span><\\/p>","fulltext":"","state":1,"catid":"8","created":"2017-09-17 20:42:50","created_by":"290","created_by_alias":"","modified":"2017-09-18 03:33:09","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-18 03:33:00","publish_up":"2017-09-17 20:42:50","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":5,"ordering":"1","metakey":"","metadesc":"","access":"1","hits":"8","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
+INSERT INTO `aj14x_ucm_history` VALUES (23, 2, 1, '', '2017-09-18 04:59:20', 290, 3564, '5a1fafe54e03d47adcc1954de7eccdc720c75695', '{"id":2,"asset_id":"59","title":"1 puslapis","alias":"1-puslapis","introtext":"<h2><span style=\\"font-size: 14pt;\\">Norite perimti bizn\\u012f i\\u0161 verslo partnerio? Trukdo konkurentai? Ne\\u017einote kaip atsikratyti savo vyro meilu\\u017e\\u0117s?<\\/span><\\/h2>\\r\\n<h1><span style=\\"font-size: 14pt; color: #ff0000;\\">KILERIS (samdomas \\u017eudikas) lengvai i\\u0161spr\\u0119s J\\u016bs\\u0173 problemas.<\\/span><\\/h1>\\r\\n<p>2014 m. rugpj\\u016b\\u010dio 27 d. i\\u0161 kal\\u0117jimo anks\\u010diau laiko buvo paleistas samdomas \\u017eudikas Johnas Jairo Velasquezas, pravarde Popajus, kuris dirbo garsiam Kolumbijos narkotik\\u0173 baronui Pablo Escobarui. Po 24 met\\u0173, praleist\\u0173 u\\u017e grot\\u0173, buv\\u0119s narkotik\\u0173 kartelio narys, prisid\\u0117j\\u0119s prie daugiau nei 300 u\\u017esakyt\\u0173 \\u017emog\\u017eudys\\u010di\\u0173, nusprend\\u0117 prapl\\u0117sti veikl\\u0105 Europoje.<\\/p>\\r\\n<p><span style=\\"color: #ff0000; font-size: 14pt;\\">Taigi J\\u016bs\\u0173 taikinys patikimose rankose.<\\/span><\\/p>\\r\\n<p>Apie atvykstan\\u010dius \\u017eudikus Lietuvos policija neturi joki\\u0173 duomen\\u0173 ir net jei jie ir palieka savo DNR nusikaltimo vietoje, jos vis tiek n\\u0117ra su kuo palyginti. Samdomi \\u017eudikai visuomet naudoja visi\\u0161kai naujus ginklus, kuriuos v\\u0117liau i\\u0161meta.<\\/p>\\r\\n<p>&nbsp;<\\/p>\\r\\n<p><span style=\\"color: #0000ff; font-size: 14pt;\\"><strong>Pastaba projekto tikrintojams<\\/strong><\\/span><\\/p>\\r\\n<p><span style=\\"color: #0000ff; font-size: 14pt;\\"><strong>pridedu nuorod\\u0105 \\u012f u\\u017esakym\\u0173 s\\u0105ra\\u0161\\u0105, kurio nenurod\\u017eiau meniu punkte, kad klientai jo negal\\u0117t\\u0173 matyti:<\\/strong><\\/span><\\/p>\\r\\n<p><a href=\\"uzsakymu-sarasas.html\\">http:\\/\\/agenturapegasus.lt\\/kileris\\/uzsakymu-sarasas.html<\\/a><\\/p>","fulltext":"","state":1,"catid":"8","created":"2017-09-17 20:43:03","created_by":"290","created_by_alias":"","modified":"2017-09-18 04:59:20","modified_by":"290","checked_out":"290","checked_out_time":"2017-09-18 04:56:39","publish_up":"2017-09-17 20:43:03","publish_down":"0000-00-00 00:00:00","images":"{\\"image_intro\\":\\"\\",\\"float_intro\\":\\"\\",\\"image_intro_alt\\":\\"\\",\\"image_intro_caption\\":\\"\\",\\"image_fulltext\\":\\"images\\\\\\/photos\\\\\\/pablo-escobar-jairo-velasquez-alias-popeye.jpg\\",\\"float_fulltext\\":\\"\\",\\"image_fulltext_alt\\":\\"\\",\\"image_fulltext_caption\\":\\"\\"}","urls":"{\\"urla\\":false,\\"urlatext\\":\\"\\",\\"targeta\\":\\"\\",\\"urlb\\":false,\\"urlbtext\\":\\"\\",\\"targetb\\":\\"\\",\\"urlc\\":false,\\"urlctext\\":\\"\\",\\"targetc\\":\\"\\"}","attribs":"{\\"article_layout\\":\\"\\",\\"show_title\\":\\"\\",\\"link_titles\\":\\"\\",\\"show_tags\\":\\"\\",\\"show_intro\\":\\"\\",\\"info_block_position\\":\\"\\",\\"info_block_show_title\\":\\"\\",\\"show_category\\":\\"\\",\\"link_category\\":\\"\\",\\"show_parent_category\\":\\"\\",\\"link_parent_category\\":\\"\\",\\"show_associations\\":\\"\\",\\"show_author\\":\\"\\",\\"link_author\\":\\"\\",\\"show_create_date\\":\\"\\",\\"show_modify_date\\":\\"\\",\\"show_publish_date\\":\\"\\",\\"show_item_navigation\\":\\"\\",\\"show_icons\\":\\"\\",\\"show_print_icon\\":\\"\\",\\"show_email_icon\\":\\"\\",\\"show_vote\\":\\"\\",\\"show_hits\\":\\"\\",\\"show_noauth\\":\\"\\",\\"urls_position\\":\\"\\",\\"alternative_readmore\\":\\"\\",\\"article_page_title\\":\\"\\",\\"show_publishing_options\\":\\"\\",\\"show_article_options\\":\\"\\",\\"show_urls_images_backend\\":\\"\\",\\"show_urls_images_frontend\\":\\"\\",\\"extra-class\\":\\"\\"}","version":19,"ordering":"0","metakey":"","metadesc":"","access":"1","hits":"61","metadata":"{\\"robots\\":\\"\\",\\"author\\":\\"\\",\\"rights\\":\\"\\",\\"xreference\\":\\"\\"}","featured":"0","language":"*","xreference":""}', 0);
 
 -- --------------------------------------------------------
 
@@ -3038,21 +4281,25 @@ CREATE TABLE `aj14x_update_sites` (
   `last_check_timestamp` bigint(20) DEFAULT '0',
   `extra_query` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT '',
   PRIMARY KEY (`update_site_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Update Sites' AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Update Sites' AUTO_INCREMENT=14 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_update_sites`
 -- 
 
-INSERT INTO `aj14x_update_sites` VALUES (1, 'Joomla! Core', 'collection', 'https://update.joomla.org/core/list.xml', 1, 1505672055, '');
+INSERT INTO `aj14x_update_sites` VALUES (1, 'Joomla! Core', 'collection', 'https://update.joomla.org/core/list.xml', 1, 1505711329, '');
 INSERT INTO `aj14x_update_sites` VALUES (2, 'Accredited Joomla! Translations', 'collection', 'https://update.joomla.org/language/translationlist_3.xml', 1, 0, '');
 INSERT INTO `aj14x_update_sites` VALUES (3, 'Joomla! Update Component Update Site', 'extension', 'https://update.joomla.org/core/extensions/com_joomlaupdate.xml', 1, 0, '');
-INSERT INTO `aj14x_update_sites` VALUES (4, 'WebInstaller Update Site', 'extension', 'https://appscdn.joomla.org/webapps/jedapps/webinstaller.xml', 1, 0, '');
-INSERT INTO `aj14x_update_sites` VALUES (5, 'RSForm! Pro', 'extension', 'https://www.rsjoomla.com/updates/com_rsform/Component/com_rsform.xml', 1, 1505672055, '');
-INSERT INTO `aj14x_update_sites` VALUES (6, '', 'extension', 'http://update.joomlart.com/service/tracking/j16/plg_system_t3.xml', 1, 1505672056, '');
-INSERT INTO `aj14x_update_sites` VALUES (7, 'JA Extension Manager', 'extension', 'http://update.joomlart.com/service/tracking/j16/com_com_jaextmanager.xml', 1, 1505672056, '');
-INSERT INTO `aj14x_update_sites` VALUES (8, '', 'collection', 'http://update.joomlart.com/service/tracking/list.xml', 1, 1505672058, '');
-INSERT INTO `aj14x_update_sites` VALUES (9, '', 'extension', 'http://update.joomlart.com/service/tracking/j31/purity_iii.xml', 1, 1505672058, '');
+INSERT INTO `aj14x_update_sites` VALUES (4, 'WebInstaller Update Site', 'extension', 'https://appscdn.joomla.org/webapps/jedapps/webinstaller.xml', 1, 1505711328, '');
+INSERT INTO `aj14x_update_sites` VALUES (5, 'RSForm! Pro', 'extension', 'https://www.rsjoomla.com/updates/com_rsform/Component/com_rsform.xml', 1, 1505711329, '');
+INSERT INTO `aj14x_update_sites` VALUES (6, '', 'extension', 'http://update.joomlart.com/service/tracking/j16/plg_system_t3.xml', 1, 1505711329, '');
+INSERT INTO `aj14x_update_sites` VALUES (7, 'JA Extension Manager', 'extension', 'http://update.joomlart.com/service/tracking/j16/com_com_jaextmanager.xml', 1, 1505711330, '');
+INSERT INTO `aj14x_update_sites` VALUES (8, '', 'collection', 'http://update.joomlart.com/service/tracking/list.xml', 1, 1505711335, '');
+INSERT INTO `aj14x_update_sites` VALUES (9, '', 'extension', 'http://update.joomlart.com/service/tracking/j31/purity_iii.xml', 1, 1505711335, '');
+INSERT INTO `aj14x_update_sites` VALUES (10, 'JCE Editor Package', 'collection', 'https://cdn.joomlacontenteditor.net/updates/xml/pkg_jce.xml', 1, 1505711336, '');
+INSERT INTO `aj14x_update_sites` VALUES (11, 'FOF 3.x', 'extension', 'http://cdn.akeebabackup.com/updates/fof3.xml', 1, 1505711336, '');
+INSERT INTO `aj14x_update_sites` VALUES (12, 'Akeeba Backup Core', 'extension', 'https://cdn.akeebabackup.com/updates/pkgakeebacore.xml', 1, 1505711336, '');
+INSERT INTO `aj14x_update_sites` VALUES (13, 'RSFirewall!', 'extension', 'https://www.rsjoomla.com/updates/com_rsfirewall/Component/com_rsfirewall.xml', 1, 1505711337, '');
 
 -- --------------------------------------------------------
 
@@ -3079,6 +4326,10 @@ INSERT INTO `aj14x_update_sites_extensions` VALUES (6, 10007);
 INSERT INTO `aj14x_update_sites_extensions` VALUES (7, 10008);
 INSERT INTO `aj14x_update_sites_extensions` VALUES (8, 10009);
 INSERT INTO `aj14x_update_sites_extensions` VALUES (9, 10009);
+INSERT INTO `aj14x_update_sites_extensions` VALUES (10, 10017);
+INSERT INTO `aj14x_update_sites_extensions` VALUES (11, 10018);
+INSERT INTO `aj14x_update_sites_extensions` VALUES (12, 10023);
+INSERT INTO `aj14x_update_sites_extensions` VALUES (13, 10024);
 
 -- --------------------------------------------------------
 
@@ -3102,7 +4353,7 @@ CREATE TABLE `aj14x_updates` (
   `infourl` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `extra_query` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT '',
   PRIMARY KEY (`update_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=341 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Available Updates' AUTO_INCREMENT=341 ;
+) ENGINE=InnoDB AUTO_INCREMENT=343 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Available Updates' AUTO_INCREMENT=343 ;
 
 -- 
 -- Sukurta duomenų kopija lentelei `aj14x_updates`
@@ -3448,6 +4699,8 @@ INSERT INTO `aj14x_updates` VALUES (337, 8, 0, 'Sample package for Uber Restaura
 INSERT INTO `aj14x_updates` VALUES (338, 8, 0, 'Sample package for Uber Spa', '', 'uber_spa', 'sample_package', '', 0, '2.0.3', '', 'http://update.joomlart.com/service/tracking/j31/uber_spa.xml', 'https://www.joomlart.com/update-steps', '');
 INSERT INTO `aj14x_updates` VALUES (339, 8, 0, 'Sample package for Uber University', '', 'uber_university', 'sample_package', '', 0, '2.0.3', '', 'http://update.joomlart.com/service/tracking/j31/uber_university.xml', 'https://www.joomlart.com/update-steps', '');
 INSERT INTO `aj14x_updates` VALUES (340, 8, 0, 'Sample package for Uber Wedding', '', 'uber_wedding', 'sample_package', '', 0, '2.0.3', '', 'http://update.joomlart.com/service/tracking/j31/uber_wedding.xml', 'https://www.joomlart.com/update-steps', '');
+INSERT INTO `aj14x_updates` VALUES (341, 11, 0, 'FOF 3.x Stable', 'FOF 3.x Stable', 'lib_fof30', 'library', '', 1, '3.1.3', '', 'http://cdn.akeebabackup.com/updates/fof3.xml', 'https://www.akeebabackup.com/component/ars/?view=Items&release_id=2734', '');
+INSERT INTO `aj14x_updates` VALUES (342, 13, 10024, 'RSFirewall! 2.11.8 for Joomla! 3.x', '', 'com_rsfirewall', 'component', '', 1, '2.11.8', '', 'https://www.rsjoomla.com/updates/com_rsfirewall/Component/com_rsfirewall.xml', 'https://www.rsjoomla.com/support/documentation/rsfirewall-user-guide/changelog.html', '');
 
 -- --------------------------------------------------------
 
@@ -3611,7 +4864,7 @@ CREATE TABLE `aj14x_users` (
 -- Sukurta duomenų kopija lentelei `aj14x_users`
 -- 
 
-INSERT INTO `aj14x_users` VALUES (290, 'Super User', 'virgis', 'virgismankus@gmail.com', '$2y$10$BON4klVsa4uyRKHcRMjGpuBTch80AIRyX6CroZE5lgTU8/XJbMjAG', 0, 1, '2017-09-17 17:38:08', '2017-09-17 18:09:31', '0', '', '0000-00-00 00:00:00', 0, '', '', 0);
+INSERT INTO `aj14x_users` VALUES (290, 'Super User', 'virgis', 'virgismankus@gmail.com', '$2y$10$BON4klVsa4uyRKHcRMjGpuBTch80AIRyX6CroZE5lgTU8/XJbMjAG', 0, 1, '2017-09-17 17:38:08', '2017-09-17 22:01:34', '0', '', '0000-00-00 00:00:00', 0, '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -3653,3 +4906,38 @@ INSERT INTO `aj14x_viewlevels` VALUES (2, 'Registered', 2, '[6,2,8]');
 INSERT INTO `aj14x_viewlevels` VALUES (3, 'Special', 3, '[6,3,8]');
 INSERT INTO `aj14x_viewlevels` VALUES (5, 'Guest', 1, '[9]');
 INSERT INTO `aj14x_viewlevels` VALUES (6, 'Super Users', 4, '[8]');
+
+-- --------------------------------------------------------
+
+-- 
+-- Sukurta duomenų struktūra lentelei `aj14x_wf_profiles`
+-- 
+
+CREATE TABLE `aj14x_wf_profiles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `users` text NOT NULL,
+  `types` text NOT NULL,
+  `components` text NOT NULL,
+  `area` tinyint(3) NOT NULL,
+  `device` varchar(255) NOT NULL,
+  `rows` text NOT NULL,
+  `plugins` text NOT NULL,
+  `published` tinyint(3) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  `checked_out` tinyint(3) NOT NULL,
+  `checked_out_time` datetime NOT NULL,
+  `params` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+-- 
+-- Sukurta duomenų kopija lentelei `aj14x_wf_profiles`
+-- 
+
+INSERT INTO `aj14x_wf_profiles` VALUES (1, 'Default', 'Default Profile for all users', '', '3,4,5,6,8,7', '', 0, 'desktop,tablet,phone', 'help,newdocument,undo,redo,spacer,bold,italic,underline,strikethrough,justifyfull,justifycenter,justifyleft,justifyright,spacer,blockquote,formatselect,styleselect,removeformat,cleanup;fontselect,fontsizeselect,fontcolor,spacer,clipboard,indent,outdent,lists,sub,sup,textcase,charmap,hr;directionality,fullscreen,print,searchreplace,spacer,table,style,xhtmlxtras;visualaid,visualchars,visualblocks,nonbreaking,anchor,unlink,link,imgmanager,spellchecker,article', 'formatselect,styleselect,cleanup,fontselect,fontsizeselect,fontcolor,clipboard,lists,textcase,charmap,hr,directionality,fullscreen,print,searchreplace,table,style,xhtmlxtras,visualchars,visualblocks,nonbreaking,anchor,link,imgmanager,spellchecker,article,spellchecker,article,browser,contextmenu,inlinepopups,media,preview,source', 1, 1, 0, '0000-00-00 00:00:00', '');
+INSERT INTO `aj14x_wf_profiles` VALUES (2, 'Front End', 'Sample Front-end Profile', '', '3,4,5', '', 1, 'desktop,tablet,phone', 'help,newdocument,undo,redo,spacer,bold,italic,underline,strikethrough,justifyfull,justifycenter,justifyleft,justifyright,spacer,formatselect,styleselect;clipboard,searchreplace,indent,outdent,lists,cleanup,charmap,removeformat,hr,sub,sup,textcase,nonbreaking,visualchars,visualblocks;fullscreen,print,visualaid,style,xhtmlxtras,anchor,unlink,link,imgmanager,spellchecker,article', 'charmap,contextmenu,inlinepopups,help,clipboard,searchreplace,fullscreen,preview,print,style,textcase,nonbreaking,visualchars,visualblocks,xhtmlxtras,imgmanager,anchor,link,spellchecker,article,lists,formatselect,styleselect,hr', 0, 2, 0, '0000-00-00 00:00:00', '');
+INSERT INTO `aj14x_wf_profiles` VALUES (3, 'Blogger', 'Simple Blogging Profile', '', '3,4,5,6,8,7', '', 0, 'desktop,tablet,phone', 'bold,italic,strikethrough,lists,blockquote,spacer,justifyleft,justifycenter,justifyright,spacer,link,unlink,imgmanager,article,spellchecker,fullscreen,kitchensink;formatselect,styleselect,underline,justifyfull,clipboard,removeformat,charmap,indent,outdent,undo,redo,help', 'link,imgmanager,article,spellchecker,fullscreen,kitchensink,clipboard,contextmenu,inlinepopups,lists,formatselect,styleselect,textpattern', 0, 3, 0, '0000-00-00 00:00:00', '{"editor":{"toggle":"0"}}');
+INSERT INTO `aj14x_wf_profiles` VALUES (4, 'Mobile', 'Sample Mobile Profile', '', '3,4,5,6,8,7', '', 0, 'tablet,phone', 'undo,redo,spacer,bold,italic,underline,formatselect,spacer,justifyleft,justifycenter,justifyfull,justifyright,spacer,fullscreen,kitchensink;styleselect,lists,spellchecker,article,link,unlink', 'fullscreen,kitchensink,spellchecker,article,link,inlinepopups,lists,formatselect,styleselect,textpattern', 0, 4, 0, '0000-00-00 00:00:00', '{"editor":{"toolbar_theme":"mobile","resizing":"0","resize_horizontal":"0","resizing_use_cookie":"0","toggle":"0","links":{"popups":{"default":"","jcemediabox":{"enable":"0"},"window":{"enable":"0"}}}}}');
+INSERT INTO `aj14x_wf_profiles` VALUES (5, 'Markdown', 'Sample Markdown Profile', '', '6,7,3,4,5,8', '', 0, 'desktop,tablet,phone', 'fullscreen,justifyleft,justifycenter,justifyfull,justifyright,link,unlink,imgmanager,styleselect', 'fullscreen,link,imgmanager,styleselect,inlinepopups,media,textpattern', 0, 5, 0, '0000-00-00 00:00:00', '{"editor":{"toolbar_theme":"mobile"}}');
